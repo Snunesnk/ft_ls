@@ -1,0 +1,28 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    ideas.txt                                          :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: root <snunes@student.42.fr>                +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2019/07/23 14:00:05 by root              #+#    #+#              #
+#    Updated: 2019/07/23 14:07:00 by root             ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+To do :
+
+ -	Une fonction que je passe au debut et qui me detecte tout mles flags passes en param,
+	et qui me rempli une struct ou alors qui me retourne une chaine avec tout les param
+	passe. Cette fonction detectera les erreur de parametres aussi.
+
+ -	Une fonction / une astuce qui me permet d'afficher par ordre alphabetique 
+
+ -	Une fonction qui fera des opendir et closedir sur chaque repertoire demande, peut etre
+	en commencant avec "."
+
+ -	Des fonctions qui me permettent d'afficher des informations supplementaires
+
+ -	Une structure qui contiendra les flags demandee, mais peut etre une autre struct qui
+	contiendrai toutes les informations relative au fichier, et donc adapter la couleur en
+	fonction
