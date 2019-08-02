@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 12:35:15 by snunes            #+#    #+#             */
-/*   Updated: 2019/07/23 12:04:59 by root             ###   ########.fr       */
+/*   Updated: 2019/08/02 11:27:04 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	*make_espaces(t_flags *flag, int len)
 	return (str);
 }
 
-char	*fill_nb_base(t_flags *flag, __uintmax_t nbr, int base)
+char	*fill_nb_base(t_flags *flag, uintmax_t nbr, int base)
 {
 	int		len;
 	char	*num;
@@ -46,7 +46,7 @@ char	*fill_nb_base(t_flags *flag, __uintmax_t nbr, int base)
 	return (num);
 }
 
-int		fill_att(t_flags *flag, __uintmax_t nb, char att[5])
+int		fill_att(t_flags *flag, uintmax_t nb, char att[5])
 {
 	int	len;
 

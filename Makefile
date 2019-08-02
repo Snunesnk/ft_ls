@@ -6,15 +6,17 @@
 #    By: snunes <snunes@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/05 12:37:58 by snunes            #+#    #+#              #
-#    Updated: 2019/07/23 12:45:40 by root             ###   ########.fr        #
+#    Updated: 2019/08/02 16:25:58 by snunes           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = gcc
 NAME = ft_ls
-VPATH = .:include
+VPATH = .:include:src
 
-SRC = 		main.c
+SRC = 		ft_ls.c \
+			read.c \
+			sort_names.c
 
 LDFLAG = -Llibft
 LDLIB = -lft

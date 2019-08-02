@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 13:50:17 by snunes            #+#    #+#             */
-/*   Updated: 2019/07/23 12:02:39 by root             ###   ########.fr       */
+/*   Updated: 2019/08/02 11:24:07 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ int				handle_exept(t_flags *flag, int exept, int sign);
 int				print_double(t_flags *flag, char *mant, char *espaces,
 																	char *att);
 int				create_doub(char *bits, char *mant);
-int				fill_att(t_flags *flag, __uintmax_t nbr, char *att);
-char			*fill_nb_base(t_flags *flag, __uintmax_t nbr, int base);
+int				fill_att(t_flags *flag, uintmax_t nbr, char *att);
+char			*fill_nb_base(t_flags *flag, uintmax_t nbr, int base);
 char			*make_espaces(t_flags *flag, int len);
 int				ft_add(char *mantissa, char *two);
 int				ft_multiply(char *buff);
@@ -65,11 +65,11 @@ void			ft_divide(char *buff);
 void			ft_shiftstr(char *buff, int mode);
 int				is_exept(char *mant, int exp);
 int				ft_round(char *mant, int bound);
-int				print_nb(t_flags *flag, __intmax_t nb, int base);
+int				print_nb(t_flags *flag, intmax_t nb, int base);
 int				get_j_int(t_flags *flag, va_list *ap);
 int				get_uj_int(t_flags *flag, va_list *ap);
 void			ft_reset_flags(t_flags *flag, int nb_flags);
-int				print_unb(t_flags *flag, __uintmax_t nb, int base);
+int				print_unb(t_flags *flag, uintmax_t nb, int base);
 void			order_flags(t_flags *flag);
 int				get_flag(const char *str, t_flags *flag, va_list *ap);
 int				get_uh_int(t_flags *flag, va_list *ap);

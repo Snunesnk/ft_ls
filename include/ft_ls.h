@@ -6,7 +6,7 @@
 /*   By: root <snunes@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/19 15:11:41 by root              #+#    #+#             */
-/*   Updated: 2019/07/23 12:17:19 by root             ###   ########.fr       */
+/*   Updated: 2019/08/02 16:50:57 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,5 +17,27 @@
 # include <unistd.h>
 # include "libft.h"
 # include "ft_printf.h"
+# include <sys/stat.h>
+
+typedef struct	s_opt
+{
+	int opt_R;
+	int opt_a;
+	int opt_l;
+	int opt_r;
+	int opt_t;
+	int	multi_dir;
+}				t_opt;
+
+typedef struct	s_node
+{
+	char			*name;
+	int				type;
+	struct s_node	*right;
+	struct s_node	*left;
+}				t_node;
+
+int		organize_names(t_node *names, DIR *directory);
+void	read_all(int i, char **argv, int argc, t_opt *options);
 
 #endif

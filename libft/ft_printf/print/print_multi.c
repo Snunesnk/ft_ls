@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 15:01:50 by snunes            #+#    #+#             */
-/*   Updated: 2019/07/23 12:04:11 by root             ###   ########.fr       */
+/*   Updated: 2019/08/02 11:26:02 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	print_all(t_flags *flag, char *esp, char *num, char att[5])
 	return (len);
 }
 
-int	print_nb(t_flags *flag, __intmax_t nb, int base)
+int	print_nb(t_flags *flag, intmax_t nb, int base)
 {
 	char	*num;
 	char	*esp;
@@ -57,7 +57,7 @@ int	print_nb(t_flags *flag, __intmax_t nb, int base)
 	return (len);
 }
 
-int	print_unb(t_flags *flag, __uintmax_t nb, int base)
+int	print_unb(t_flags *flag, uintmax_t nb, int base)
 {
 	char	*num;
 	char	*esp;
