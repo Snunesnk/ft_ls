@@ -6,7 +6,7 @@
 /*   By: root <snunes@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/19 15:11:41 by root              #+#    #+#             */
-/*   Updated: 2019/08/03 17:45:26 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/03 18:48:50 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,9 @@ typedef struct	s_length
 {
 	int	name_l;
 	int	link_l;
+	int	user_l;
+	int	group_l;
+	int size_l;
 }				t_length;
 
 typedef struct	s_node
@@ -53,6 +56,8 @@ typedef struct	s_node
 	struct s_node	*left;
 }				t_node;
 
+void	update_l(t_length *len, t_node *node, t_opt *options);
+int		give_length(int length, int to_reach);
 int		organize_names(t_node *names, DIR *dir, t_opt *options, t_length *len);
 void	read_all(int i, char **argv, int argc, t_opt *options);
 void	init_file_type(char file_type[20]);

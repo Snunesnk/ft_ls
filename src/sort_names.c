@@ -6,13 +6,13 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 15:33:50 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/03 17:45:52 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/03 19:00:31 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_ls.h>
 
-int	fill_spec(struct stat st, t_node *new_node)
+int	fill_spec(struct stat st, t_node *new_node, t_length *len, t_opt *options)
 {
 	struct passwd	*user;
 	struct group	*grp;
@@ -33,10 +33,11 @@ int	fill_spec(struct stat st, t_node *new_node)
 	new_node->owner = ft_strdup(user->pw_name);
 	new_node->group = ft_strdup(grp->gr_name);
 	new_node->links = st.st_nlink;
+	update_l(len, new_node, options);
 	return (1);
 }
 
-int	add_elem(t_node *new_node, struct dirent *files)
+int	add_elem(t_node *new_node, struct dirent *files, t_length *len, t_opt *opt)
 {
 	struct stat st;
 
@@ -50,7 +51,7 @@ int	add_elem(t_node *new_node, struct dirent *files)
 	else
 		new_node->type = files->d_type;
 	lstat(files->d_name, &st);
-	fill_spec(st, new_node);
+	fill_spec(st, new_node, len, opt);
 	new_node->right = NULL;
 	new_node->left = NULL;
 	return (1);
@@ -72,7 +73,7 @@ int	sort_tree(t_opt *options, t_node *new_node, t_node *tmp_tree)
 		return (0);
 }
 
-int	add_node(struct dirent *files, t_node **names, t_opt *options)
+int	add_node(struct dirent *files, t_node **names, t_opt *option, t_length *len)
 {
 	t_node	*new_node;
 	t_node	*tmp_node;
@@ -81,7 +82,7 @@ int	add_node(struct dirent *files, t_node **names, t_opt *options)
 	tmp_tree = *names;
 	if (!(new_node = (t_node *)ft_memalloc(sizeof(t_node))))
 			return (0);
-	if (!(add_elem(new_node, files)))
+	if (!(add_elem(new_node, files, len, option)))
 	{
 		free(new_node);
 		return (0);
@@ -89,7 +90,7 @@ int	add_node(struct dirent *files, t_node **names, t_opt *options)
 	while (tmp_tree)
 	{
 		tmp_node = tmp_tree;
-		if (sort_tree(options, new_node, tmp_tree) <= 0)
+		if (sort_tree(option, new_node, tmp_tree) <= 0)
 		{
 			tmp_tree = tmp_tree->left;
 			if (!tmp_tree)
@@ -108,22 +109,15 @@ int	add_node(struct dirent *files, t_node **names, t_opt *options)
 int		organize_names(t_node *names, DIR *dir, t_opt *options, t_length *len)
 {
 	struct dirent	*files;
-	struct stat		st;
 
-	len->link_l = 0;
 	files = readdir(dir);
-	len->name_l = ft_strlen(files->d_name);
-	if (!(add_elem(names, files)))
+	len->name_l = 0;
+	len->link_l = 0;
+	len->user_l = 0;
+	len->group_l = 0;
+	if (!(add_elem(names, files, len, options)))
 		return (0);
 	while ((files = readdir(dir)))
-	{
-		stat(files->d_name, &st);
-		if (ft_strlen(files->d_name) > (size_t)len->name_l 
-				&& (files->d_name[0] != '.'|| options->opt_a == 1))
-			len->name_l = ft_strlen(files->d_name) + 1;
-		if (ft_nbrlen(st.st_nlink) > len->link_l)
-			len->link_l = ft_nbrlen(st.st_nlink);
-		add_node(files, &names, options);
-	}
+		add_node(files, &names, options, len);
 	return (1);
 }

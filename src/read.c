@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 12:42:46 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/03 17:46:45 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/03 19:00:29 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,9 @@ void	print_info(t_node *names, t_length *len)
 {
 	char	file_type[20];
 	int		i;
+	int		link_l;
+	int		owner_l;
+	int		group_l;
 
 	i = 0;
 	init_file_type(file_type);
@@ -45,13 +48,11 @@ void	print_info(t_node *names, t_length *len)
 	print_perms(names->u_perm);
 	print_perms(names->g_perm);
 	print_perms(names->o_perm);
-	i = 0;
-	while (ft_nbrlen(names->links) + i < len->link_l + 2)
-	{
-		i++;
-		write(1, " ", 1);
-	}
-	ft_printf("%d ", names->links);
+	link_l = give_length(ft_nbrlen(names->links), len->link_l + 2);
+	owner_l = give_length(ft_strlen(names->owner), len->user_l);
+	group_l = give_length(ft_strlen(names->group), len->group_l);
+	ft_printf("%*d%*s", link_l, names->links, owner_l, names->owner);
+	ft_printf("%*s", group_l, names->group);
 //	print_next(names, len);
 }
 
