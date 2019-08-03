@@ -6,11 +6,33 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 12:42:46 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/03 11:52:49 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/03 12:00:16 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_ls.h>
+
+int	print_tree_reverse(t_node *names, t_opt *options, int name_l)
+{
+	if (!names)
+		return (0);
+	if (names->right)
+		print_tree_reverse(names->right, options, name_l);
+	if ((names->name[0] != '.' || options->opt_a == 1))
+	{
+		if (names->type == 4)
+			ft_printf("{B_cyan}%s", names->name);
+		else
+			ft_printf("%s", names->name);
+		while (name_l > names->length++ && !options->opt_l)
+			write(1, " ", 1);
+		if (options->opt_l)
+			write(1, "\n", 1);
+	}
+	if (names->left)
+		print_tree_reverse(names->left, options, name_l);
+	return (1);
+}
 
 int	print_tree(t_node *names, t_opt *options, int name_l)
 {
@@ -50,7 +72,10 @@ void		print_asked(DIR *directory, t_opt *options)
 	int		name_l;
 
 	name_l = organize_names(&names, directory, options) + 1;
-	print_tree(&names, options, name_l);
+	if (!options->opt_r)
+		print_tree(&names, options, name_l);
+	else
+		print_tree_reverse(&names, options, name_l);
 	if (!options->opt_l)
 		ft_printf("\n");
 }
