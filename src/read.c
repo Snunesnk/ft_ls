@@ -6,27 +6,31 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 12:42:46 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/02 16:50:55 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/03 11:52:49 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_ls.h>
 
-int	print_tree(t_node *names, t_opt *options)
+int	print_tree(t_node *names, t_opt *options, int name_l)
 {
 	if (!names)
 		return (0);
 	if (names->left)
-		print_tree(names->left, options);
-	if (names->name[0] != '.' || options->opt_a == 1)
+		print_tree(names->left, options, name_l);
+	if ((names->name[0] != '.' || options->opt_a == 1))
 	{
 		if (names->type == 4)
 			ft_printf("{B_cyan}%s", names->name);
 		else
 			ft_printf("%s", names->name);
+		while (name_l > names->length++ && !options->opt_l)
+			write(1, " ", 1);
+		if (options->opt_l)
+			write(1, "\n", 1);
 	}
 	if (names->right)
-		print_tree(names->right, options);
+		print_tree(names->right, options, name_l);
 	return (1);
 }
 
@@ -42,16 +46,18 @@ unsigned int	get_info(char *path)
 
 void		print_asked(DIR *directory, t_opt *options)
 {
-	t_node			names;
+	t_node	names;
+	int		name_l;
 
-	organize_names(&names, directory);
-	print_tree(&names, options);
-	ft_printf("\n");
+	name_l = organize_names(&names, directory, options) + 1;
+	print_tree(&names, options, name_l);
+	if (!options->opt_l)
+		ft_printf("\n");
 }
 
 void		read_all(int i, char **argv, int argc, t_opt *options)
 {
-	DIR				*directory;
+	DIR	*directory;
 
 	if (i >= argc || !argv[i])
 	{
