@@ -6,15 +6,15 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/29 15:34:52 by snunes            #+#    #+#             */
-/*   Updated: 2019/05/29 15:41:07 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/03 17:36:39 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_nbrlen(int nbr)
+int	ft_nbrlen(long long int nbr)
 {
-	int len;
+	long int len;
 
 	len = 1;
 	while (nbr > 9)

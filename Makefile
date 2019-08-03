@@ -6,7 +6,7 @@
 #    By: snunes <snunes@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/05 12:37:58 by snunes            #+#    #+#              #
-#    Updated: 2019/08/02 16:25:58 by snunes           ###   ########.fr        #
+#    Updated: 2019/08/03 16:45:42 by snunes           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,8 @@ VPATH = .:include:src
 
 SRC = 		ft_ls.c \
 			read.c \
-			sort_names.c
+			sort_names.c \
+			option_l.c
 
 LDFLAG = -Llibft
 LDLIB = -lft

@@ -6,7 +6,7 @@
 /*   By: root <snunes@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/19 15:11:41 by root              #+#    #+#             */
-/*   Updated: 2019/08/03 13:38:33 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/03 17:45:26 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,9 @@
 # include "libft.h"
 # include "ft_printf.h"
 # include <sys/stat.h>
+# include <pwd.h>
+# include <grp.h>
+# include <stdio.h>
 
 typedef struct	s_opt
 {
@@ -29,16 +32,29 @@ typedef struct	s_opt
 	int	multi_dir;
 }				t_opt;
 
+typedef struct	s_length
+{
+	int	name_l;
+	int	link_l;
+}				t_length;
+
 typedef struct	s_node
 {
 	char			*name;
 	int				type;
+	int				u_perm;
+	int				g_perm;
+	int				o_perm;
 	int				length;
+	int				links;
+	char			*owner;
+	char			*group;
 	struct s_node	*right;
 	struct s_node	*left;
 }				t_node;
 
-int		organize_names(t_node *names, DIR *directory, t_opt *options);
+int		organize_names(t_node *names, DIR *dir, t_opt *options, t_length *len);
 void	read_all(int i, char **argv, int argc, t_opt *options);
+void	init_file_type(char file_type[20]);
 
 #endif

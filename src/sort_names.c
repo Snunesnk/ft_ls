@@ -6,11 +6,35 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 15:33:50 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/03 13:38:31 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/03 17:45:52 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_ls.h>
+
+int	fill_spec(struct stat st, t_node *new_node)
+{
+	struct passwd	*user;
+	struct group	*grp;
+
+	if (!(user = getpwuid(st.st_uid)))
+	{
+		perror("getpwuid()");
+		return (0);
+	}
+	if (!(grp = getgrgid(st.st_gid)))
+	{
+		perror("getgrid()");
+		return (0);
+	}
+	new_node->u_perm = (st.st_mode & S_IRWXU) / 64;
+	new_node->g_perm = (st.st_mode & S_IRWXG) % 64 / 8;
+	new_node->o_perm = (st.st_mode & S_IRWXO) % 8;
+	new_node->owner = ft_strdup(user->pw_name);
+	new_node->group = ft_strdup(grp->gr_name);
+	new_node->links = st.st_nlink;
+	return (1);
+}
 
 int	add_elem(t_node *new_node, struct dirent *files)
 {
@@ -20,12 +44,13 @@ int	add_elem(t_node *new_node, struct dirent *files)
 	if (!(new_node->name = ft_strdup(files->d_name)))
 		return (0);
 	new_node->length = ft_strlen(files->d_name);
-	if (st.st_nlink > 1)
-		new_node->type = 4;
-	else if ((st.st_mode & (S_IRWXU | S_IRWXG | S_IRWXO))/ 64 == 7)
+	if (files->d_type == 8
+			&& (st.st_mode & (S_IRWXU | S_IRWXG | S_IRWXO)) / 64 == 7)
 		new_node->type = 7;
 	else
-		new_node->type = 0;
+		new_node->type = files->d_type;
+	lstat(files->d_name, &st);
+	fill_spec(st, new_node);
 	new_node->right = NULL;
 	new_node->left = NULL;
 	return (1);
@@ -80,21 +105,25 @@ int	add_node(struct dirent *files, t_node **names, t_opt *options)
 	return (1);
 }
 
-int		organize_names(t_node *names, DIR *directory, t_opt *options)
+int		organize_names(t_node *names, DIR *dir, t_opt *options, t_length *len)
 {
 	struct dirent	*files;
-	size_t			name_l;
+	struct stat		st;
 
-	files = readdir(directory);
-	name_l = ft_strlen(files->d_name);
+	len->link_l = 0;
+	files = readdir(dir);
+	len->name_l = ft_strlen(files->d_name);
 	if (!(add_elem(names, files)))
 		return (0);
-	while ((files = readdir(directory)))
+	while ((files = readdir(dir)))
 	{
-		if (ft_strlen(files->d_name) > name_l && (files->d_name[0] != '.'
-					|| options->opt_a == 1))
-			name_l = ft_strlen(files->d_name);
+		stat(files->d_name, &st);
+		if (ft_strlen(files->d_name) > (size_t)len->name_l 
+				&& (files->d_name[0] != '.'|| options->opt_a == 1))
+			len->name_l = ft_strlen(files->d_name) + 1;
+		if (ft_nbrlen(st.st_nlink) > len->link_l)
+			len->link_l = ft_nbrlen(st.st_nlink);
 		add_node(files, &names, options);
 	}
-	return (name_l);
+	return (1);
 }

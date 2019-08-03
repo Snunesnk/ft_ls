@@ -6,7 +6,7 @@
 /*   By: snunes <snunes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 19:07:48 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/02 12:38:39 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/03 17:38:34 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef	struct	s_list
 	struct s_list	*next;
 }				t_list;
 
+int				ft_nbrlen(long long int nbr);
 int				ft_occur(char *to_find, char *str);
 void			ft_putlongnbr(long long int nbr);
 long long int	ft_nbrrev(long long int nbr);
