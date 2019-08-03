@@ -6,33 +6,11 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 12:42:46 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/03 12:00:16 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/03 13:26:38 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_ls.h>
-
-int	print_tree_reverse(t_node *names, t_opt *options, int name_l)
-{
-	if (!names)
-		return (0);
-	if (names->right)
-		print_tree_reverse(names->right, options, name_l);
-	if ((names->name[0] != '.' || options->opt_a == 1))
-	{
-		if (names->type == 4)
-			ft_printf("{B_cyan}%s", names->name);
-		else
-			ft_printf("%s", names->name);
-		while (name_l > names->length++ && !options->opt_l)
-			write(1, " ", 1);
-		if (options->opt_l)
-			write(1, "\n", 1);
-	}
-	if (names->left)
-		print_tree_reverse(names->left, options, name_l);
-	return (1);
-}
 
 int	print_tree(t_node *names, t_opt *options, int name_l)
 {
@@ -44,6 +22,8 @@ int	print_tree(t_node *names, t_opt *options, int name_l)
 	{
 		if (names->type == 4)
 			ft_printf("{B_cyan}%s", names->name);
+		else if (names->type == 7)
+			ft_printf("{red}%s", names->name);
 		else
 			ft_printf("%s", names->name);
 		while (name_l > names->length++ && !options->opt_l)
@@ -58,12 +38,11 @@ int	print_tree(t_node *names, t_opt *options, int name_l)
 
 unsigned int	get_info(char *path)
 {
-	struct stat	*buff;
+	struct stat	buff;
 
-	if (!(buff = (struct stat *)ft_memalloc(sizeof(stat))))
-		return (0);
-	lstat(path, buff);
-	return (buff->st_nlink);
+	lstat(path, &buff);
+
+	return (buff.st_nlink);
 }
 
 void		print_asked(DIR *directory, t_opt *options)
@@ -72,10 +51,7 @@ void		print_asked(DIR *directory, t_opt *options)
 	int		name_l;
 
 	name_l = organize_names(&names, directory, options) + 1;
-	if (!options->opt_r)
-		print_tree(&names, options, name_l);
-	else
-		print_tree_reverse(&names, options, name_l);
+	print_tree(&names, options, name_l);
 	if (!options->opt_l)
 		ft_printf("\n");
 }
@@ -84,7 +60,7 @@ void		read_all(int i, char **argv, int argc, t_opt *options)
 {
 	DIR	*directory;
 
-	if (i >= argc || !argv[i])
+	if (i >= argc || !argv[i] || options->opt_R)
 	{
 		directory = opendir(".");
 		print_asked(directory, options);

@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 15:33:50 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/03 11:54:52 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/03 13:26:53 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,40 @@
 
 int	add_elem(t_node *new_node, struct dirent *files)
 {
+	struct stat st;
+
+	stat(files->d_name, &st);
 	if (!(new_node->name = ft_strdup(files->d_name)))
 		return (0);
 	new_node->length = ft_strlen(files->d_name);
-	new_node->type = files->d_type;
+	if (st.st_nlink > 1)
+		new_node->type = 4;
+	else if ((st.st_mode & (S_IRWXU | S_IRWXG | S_IRWXO))/ 64 == 7)
+		new_node->type = 7;
+	else
+		new_node->type = 0;
 	new_node->right = NULL;
 	new_node->left = NULL;
 	return (1);
 }
 
-int	add_node(struct dirent *files, t_node **names)
+int	sort_tree(t_opt *options, t_node *new_node, t_node *tmp_tree)
+{
+	if (options->opt_r && !options->opt_t)
+	{
+		if (ft_strcmp(new_node->name, tmp_tree->name) <= 0)
+			return (1);
+		return (0);
+	}
+	else if (!options->opt_t)
+		return (ft_strcmp(new_node->name, tmp_tree->name));
+	else if (options->opt_r)
+		return (0);
+	else
+		return (0);
+}
+
+int	add_node(struct dirent *files, t_node **names, t_opt *options)
 {
 	t_node	*new_node;
 	t_node	*tmp_node;
@@ -40,7 +64,7 @@ int	add_node(struct dirent *files, t_node **names)
 	while (tmp_tree)
 	{
 		tmp_node = tmp_tree;
-		if (ft_strcmp(new_node->name, tmp_tree->name) <= 0)
+		if (sort_tree(options, new_node, tmp_tree) <= 0)
 		{
 			tmp_tree = tmp_tree->left;
 			if (!tmp_tree)
@@ -70,7 +94,7 @@ int		organize_names(t_node *names, DIR *directory, t_opt *options)
 		if (ft_strlen(files->d_name) > name_l && (files->d_name[0] != '.'
 					|| options->opt_a == 1))
 			name_l = ft_strlen(files->d_name);
-		add_node(files, &names);
+		add_node(files, &names, options);
 	}
 	return (name_l);
 }
