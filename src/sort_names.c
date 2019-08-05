@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 15:33:50 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/03 19:00:31 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/05 12:49:20 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,9 @@ int	fill_spec(struct stat st, t_node *new_node, t_length *len, t_opt *options)
 	new_node->owner = ft_strdup(user->pw_name);
 	new_node->group = ft_strdup(grp->gr_name);
 	new_node->links = st.st_nlink;
+	new_node->size = st.st_size;
+	if (!(new_node->mtime = give_time(st)))
+		return (0);
 	update_l(len, new_node, options);
 	return (1);
 }
@@ -115,6 +118,7 @@ int		organize_names(t_node *names, DIR *dir, t_opt *options, t_length *len)
 	len->link_l = 0;
 	len->user_l = 0;
 	len->group_l = 0;
+	len->size_l = 0;
 	if (!(add_elem(names, files, len, options)))
 		return (0);
 	while ((files = readdir(dir)))

@@ -6,7 +6,7 @@
 /*   By: root <snunes@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/19 15:11:41 by root              #+#    #+#             */
-/*   Updated: 2019/08/03 18:48:50 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/05 12:49:22 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <pwd.h>
 # include <grp.h>
 # include <stdio.h>
+# include <time.h>
 
 typedef struct	s_opt
 {
@@ -52,10 +53,13 @@ typedef struct	s_node
 	int				links;
 	char			*owner;
 	char			*group;
+	long long int	size;
+	char			*mtime;
 	struct s_node	*right;
 	struct s_node	*left;
 }				t_node;
 
+char	*give_time(struct stat st);
 void	update_l(t_length *len, t_node *node, t_opt *options);
 int		give_length(int length, int to_reach);
 int		organize_names(t_node *names, DIR *dir, t_opt *options, t_length *len);

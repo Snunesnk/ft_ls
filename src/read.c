@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 12:42:46 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/03 19:00:29 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/05 12:43:47 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	print_info(t_node *names, t_length *len)
 	int		link_l;
 	int		owner_l;
 	int		group_l;
+	int		size_l;
 
 	i = 0;
 	init_file_type(file_type);
@@ -48,11 +49,13 @@ void	print_info(t_node *names, t_length *len)
 	print_perms(names->u_perm);
 	print_perms(names->g_perm);
 	print_perms(names->o_perm);
-	link_l = give_length(ft_nbrlen(names->links), len->link_l + 2);
+	link_l = give_length(ft_nbrlen(names->links), len->link_l);
 	owner_l = give_length(ft_strlen(names->owner), len->user_l);
 	group_l = give_length(ft_strlen(names->group), len->group_l);
+	size_l = give_length(ft_nbrlen(names->size), len->size_l);
 	ft_printf("%*d%*s", link_l, names->links, owner_l, names->owner);
-	ft_printf("%*s", group_l, names->group);
+	ft_printf("%*s%*lld", group_l, names->group, size_l, names->size);
+	ft_printf(" %.16s ", names->mtime);
 //	print_next(names, len);
 }
 

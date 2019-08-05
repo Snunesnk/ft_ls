@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/03 16:37:42 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/03 19:00:33 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/05 12:49:15 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,25 @@ void	update_l(t_length *len, t_node *node, t_opt *options)
 		len->name_l = ft_strlen(node->name) + 1;
 	if (ft_nbrlen(node->links) > len->link_l
 			&& (node->name[0] != '.' || options->opt_a == 1))
-		len->link_l = ft_nbrlen(node->links) + 1;
+		len->link_l = ft_nbrlen(node->links) + 3;
 	if (ft_strlen(node->owner) > (size_t)len->user_l
 			&& (node->name[0] != '.' || options->opt_a == 1))
 		len->user_l = ft_strlen(node->owner) + 1;
 	if (ft_strlen(node->group) > (size_t)len->group_l
 			&& (node->name[0] != '.' || options->opt_a == 1))
 		len->group_l = ft_strlen(node->group) + 2;
+	if (ft_nbrlen(node->size) > len->size_l
+			&& (node->name[0] != '.' || options->opt_a == 1))
+		len->size_l = ft_nbrlen(node->size) + 3;
 }
 
 //void	ft_print_next(t_node *names);
 
+char	*give_time(struct stat st)
+{
+	char	*time;
+
+	time = ctime(&st.st_mtimespec.tv_sec);
+	ft_memmove(time, time + 4, 5);
+	return (time);
+}
