@@ -6,13 +6,17 @@
 #    By: root <snunes@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/07/23 14:00:05 by root              #+#    #+#              #
-#    Updated: 2019/08/05 21:29:10 by snunes           ###   ########.fr        #
+#    Updated: 2019/08/05 21:43:20 by snunes           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 To do :
 
  -	Implementer les erreurs (Pas les droits / fichier inexistant ...)
+
+ -	Proteger ce qui a besoin d'etre protege
+
+Pourquoi pas creer une fonction qui check directement les erreurs
 
  -	Pouvoir directement le lancer sur des fichiers
 
@@ -22,8 +26,6 @@ To do :
  	mois au moins
 
  -	L'option -t
-
- -	Proteger ce qui a besoin d'etre protege
 
  -	Fixer les leaks
 

@@ -6,23 +6,25 @@
 /*   By: root <snunes@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/19 15:11:41 by root              #+#    #+#             */
-/*   Updated: 2019/08/05 18:53:17 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/05 22:01:15 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_LS_H
 # define FT_LS_H
 
-# include <dirent.h>
-# include <unistd.h>
 # include "libft.h"
 # include "ft_printf.h"
+# include <dirent.h>
+# include <unistd.h>
 # include <sys/stat.h>
 # include <pwd.h>
 # include <grp.h>
 # include <stdio.h>
 # include <time.h>
 # include <stdlib.h>
+# include <errno.h>
+# include <string.h>
 
 typedef struct	s_opt
 {
