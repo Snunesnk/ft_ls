@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 15:33:50 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/05 12:49:20 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/05 17:35:12 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ int	fill_spec(struct stat st, t_node *new_node, t_length *len, t_opt *options)
 	new_node->group = ft_strdup(grp->gr_name);
 	new_node->links = st.st_nlink;
 	new_node->size = st.st_size;
-	if (!(new_node->mtime = give_time(st)))
+	new_node->blocks = st.st_blocks;
+	if (!(new_node->mtime = ft_strdup(give_time(st))))
 		return (0);
 	update_l(len, new_node, options);
 	return (1);
@@ -76,13 +77,21 @@ int	sort_tree(t_opt *options, t_node *new_node, t_node *tmp_tree)
 		return (0);
 }
 
-int	add_node(struct dirent *files, t_node **names, t_opt *option, t_length *len)
+t_node *place_node(t_node *names, t_node *new_node, t_opt *options)
+{
+	if (!names)
+		return (new_node);
+	if (sort_tree(options, new_node, names) <= 0)
+		names->left = place_node(names->left, new_node, options);
+	else
+		names->right = place_node(names->right, new_node, options);
+	return (names);
+}
+
+int	add_node(struct dirent *files, t_node *names, t_opt *option, t_length *len)
 {
 	t_node	*new_node;
-	t_node	*tmp_node;
-	t_node	*tmp_tree;
 
-	tmp_tree = *names;
 	if (!(new_node = (t_node *)ft_memalloc(sizeof(t_node))))
 			return (0);
 	if (!(add_elem(new_node, files, len, option)))
@@ -90,38 +99,6 @@ int	add_node(struct dirent *files, t_node **names, t_opt *option, t_length *len)
 		free(new_node);
 		return (0);
 	}
-	while (tmp_tree)
-	{
-		tmp_node = tmp_tree;
-		if (sort_tree(option, new_node, tmp_tree) <= 0)
-		{
-			tmp_tree = tmp_tree->left;
-			if (!tmp_tree)
-				tmp_node->left = new_node;
-		}
-		else
-		{
-			tmp_tree = tmp_tree->right;
-			if (!tmp_tree)
-				tmp_node->right = new_node;
-		}
-	}
-	return (1);
-}
-
-int		organize_names(t_node *names, DIR *dir, t_opt *options, t_length *len)
-{
-	struct dirent	*files;
-
-	files = readdir(dir);
-	len->name_l = 0;
-	len->link_l = 0;
-	len->user_l = 0;
-	len->group_l = 0;
-	len->size_l = 0;
-	if (!(add_elem(names, files, len, options)))
-		return (0);
-	while ((files = readdir(dir)))
-		add_node(files, &names, options, len);
+	names = place_node(names, new_node, option);
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 12:14:46 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/02 15:33:26 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/05 18:56:00 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,42 @@ int		get_options(int argc, char **argv, t_opt *options)
 	return (i);
 }
 
+void	read_all(int i, char **argv, int argc, t_opt *option)
+{
+	DIR	*directory;
+
+	if (i >= argc || !argv[i])
+	{
+		directory = opendir(".");
+		option->path = ft_strjoin_free(&(option->path), argv[i], 1);
+		option->path = ft_strjoin_free(&(option->path), "/\0", 1);
+		print_asked(directory, option);
+	}
+	while (i < argc && argv[i])
+	{
+		option->path = ft_strjoin_free(&(option->path), argv[i], 1);
+		option->path = ft_strjoin_free(&(option->path), "/\0", 1);
+		if (i + 1 < argc)
+			option->multi_dir = 1;
+		if (option->multi_dir == 1)
+			ft_printf("%s:\n", argv[i]);
+		directory = opendir(option->path);
+		ft_printf("ouverture de %s\n", option->path);
+		print_asked(directory, option);
+		if (option->multi_dir == 1 && i + 1 < argc)
+			ft_printf("\n");
+		i++;
+	}
+	closedir(directory);
+}
+
 int		main(int argc, char **argv)
 {
 	t_opt			options;
 	int				arg;
 
+	if (!(options.path = (char *)ft_memalloc(sizeof(char))))
+		return (0);
 	init_options(&options);	
 	arg = get_options(argc, argv, &options);
 	read_all(arg, argv, argc, &options);

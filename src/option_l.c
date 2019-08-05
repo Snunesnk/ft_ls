@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/03 16:37:42 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/05 12:49:15 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/05 17:57:05 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,30 +45,31 @@ int		give_length(int length, int to_reach)
 
 void	update_l(t_length *len, t_node *node, t_opt *options)
 {
-	if (ft_strlen(node->name) > (size_t)len->name_l
+	if (ft_strlen(node->name) + 1 > (size_t)len->name_l
 			&& (node->name[0] != '.' || options->opt_a == 1))
 		len->name_l = ft_strlen(node->name) + 1;
-	if (ft_nbrlen(node->links) > len->link_l
+	if (ft_nbrlen(node->links) + 2 > len->link_l
 			&& (node->name[0] != '.' || options->opt_a == 1))
-		len->link_l = ft_nbrlen(node->links) + 3;
-	if (ft_strlen(node->owner) > (size_t)len->user_l
+		len->link_l = ft_nbrlen(node->links) + 2;
+	if (ft_strlen(node->owner) + 1 > (size_t)len->user_l
 			&& (node->name[0] != '.' || options->opt_a == 1))
 		len->user_l = ft_strlen(node->owner) + 1;
-	if (ft_strlen(node->group) > (size_t)len->group_l
+	if (ft_strlen(node->group) + 2 > (size_t)len->group_l
 			&& (node->name[0] != '.' || options->opt_a == 1))
 		len->group_l = ft_strlen(node->group) + 2;
-	if (ft_nbrlen(node->size) > len->size_l
+	if (ft_nbrlen(node->size) + 2 > len->size_l
 			&& (node->name[0] != '.' || options->opt_a == 1))
-		len->size_l = ft_nbrlen(node->size) + 3;
+		len->size_l = ft_nbrlen(node->size) + 2;
+	if ((node->name[0] != '.' || options->opt_a == 1))
+		len->blocks += node->blocks;
 }
-
-//void	ft_print_next(t_node *names);
 
 char	*give_time(struct stat st)
 {
-	char	*time;
+	char	*ltime;
 
-	time = ctime(&st.st_mtimespec.tv_sec);
-	ft_memmove(time, time + 4, 5);
-	return (time);
+	ltime = ctime(&st.st_mtimespec.tv_sec);
+	ft_memmove(ltime, ltime + 4, 26);
+	ltime[12] = '\0';
+	return (ltime);
 }
