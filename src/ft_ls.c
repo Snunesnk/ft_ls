@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 12:14:46 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/05 18:56:00 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/05 21:05:26 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	read_all(int i, char **argv, int argc, t_opt *option)
 	if (i >= argc || !argv[i])
 	{
 		directory = opendir(".");
-		option->path = ft_strjoin_free(&(option->path), argv[i], 1);
+		option->path = ft_strjoin_free(&(option->path), ".\0", 1);
 		option->path = ft_strjoin_free(&(option->path), "/\0", 1);
 		print_asked(directory, option);
 	}
@@ -59,7 +59,8 @@ void	read_all(int i, char **argv, int argc, t_opt *option)
 		if (option->multi_dir == 1)
 			ft_printf("%s:\n", argv[i]);
 		directory = opendir(option->path);
-		ft_printf("ouverture de %s\n", option->path);
+		if (option->opt_R)
+			ft_printf("\n%.*s:\n", ft_strlen(option->path) - 1, option->path);
 		print_asked(directory, option);
 		if (option->multi_dir == 1 && i + 1 < argc)
 			ft_printf("\n");

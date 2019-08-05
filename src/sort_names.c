@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 15:33:50 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/05 17:35:12 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/05 21:08:51 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,11 @@ int	fill_spec(struct stat st, t_node *new_node, t_length *len, t_opt *options)
 
 int	add_elem(t_node *new_node, struct dirent *files, t_length *len, t_opt *opt)
 {
-	struct stat st;
+	struct	stat st;
+	char	*path;
 
-	stat(files->d_name, &st);
+	path = ft_strjoin(opt->path, files->d_name);
+	stat(path, &st);
 	if (!(new_node->name = ft_strdup(files->d_name)))
 		return (0);
 	new_node->length = ft_strlen(files->d_name);
@@ -54,10 +56,11 @@ int	add_elem(t_node *new_node, struct dirent *files, t_length *len, t_opt *opt)
 		new_node->type = 7;
 	else
 		new_node->type = files->d_type;
-	lstat(files->d_name, &st);
+	lstat(path, &st);
 	fill_spec(st, new_node, len, opt);
 	new_node->right = NULL;
 	new_node->left = NULL;
+	free(path);
 	return (1);
 }
 

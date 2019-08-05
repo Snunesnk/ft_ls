@@ -6,25 +6,30 @@
 #    By: root <snunes@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/07/23 14:00:05 by root              #+#    #+#              #
-#    Updated: 2019/08/02 16:50:51 by snunes           ###   ########.fr        #
+#    Updated: 2019/08/05 21:29:10 by snunes           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 To do :
 
- -	Trouver comment inserer mes elements dans mon arbre
+ -	Implementer les erreurs (Pas les droits / fichier inexistant ...)
 
- -	Une fonction que je passe au debut et qui me detecte tout mles flags passes en param,
-	et qui me rempli une struct ou alors qui me retourne une chaine avec tout les param
-	passe. Cette fonction detectera les erreur de parametres aussi.
+ -	Pouvoir directement le lancer sur des fichiers
 
- -	Une fonction / une astuce qui me permet d'afficher par ordre alphabetique 
+ -	Utiliser la variable d'environnement pour les erreurs
 
- -	Une fonction qui fera des opendir et closedir sur chaque repertoire demande, peut etre
-	en commencant avec "."
+ -	Changer l'heure par l'annee si le fichier viens du futur ou est plus ancien de 6
+ 	mois au moins
 
- -	Des fonctions qui me permettent d'afficher des informations supplementaires
+ -	L'option -t
 
- -	Une structure qui contiendra les flags demandee, mais peut etre une autre struct qui
-	contiendrai toutes les informations relative au fichier, et donc adapter la couleur en
-	fonction
+ -	Proteger ce qui a besoin d'etre protege
+
+ -	Fixer les leaks
+
+
+A voir :
+
+ -	Gestion des colonnes sans le -l
+
+ -	ACL et attributs etendus

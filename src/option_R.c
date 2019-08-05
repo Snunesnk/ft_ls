@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/05 18:21:31 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/05 18:54:02 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/05 21:03:51 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,14 @@ void	up_a_dir(char *path)
 
 	count = 0;
 	i = ft_strlen(path);
-	while (i >= 0 && count != 2)
+	while (path && i >= 0 && count != 2)
 	{
 		i--;
 		if (path[i] == '/')
 			count++;
 	}
-	path[i] = '\0';
+	if (count == 2)
+		path[i + 1] = '\0';
 }
 
 int	print_recurs(t_node *names, t_opt *options)
@@ -36,12 +37,15 @@ int	print_recurs(t_node *names, t_opt *options)
 		print_recurs(names->left, options);
 	if ((names->name[0] != '.' || options->opt_a))
 	{
+		//ft_printf("Candidat read all: %s\n", names->name);
 		if (!ft_strequ(names->name, ".\0") && !ft_strequ(names->name, "..\0")
 				&& names->type == 4)
+		{
 			read_all(0, &(names->name), 1, options);
+			up_a_dir(options->path);
+		}
 	}
 	if (names->right)
 		print_recurs(names->right, options);
-	up_a_dir(options->path);
 	return (1);
 }
