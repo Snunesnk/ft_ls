@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 12:14:46 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/06 15:44:39 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/06 17:43:26 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,25 +41,23 @@ int		get_options(int argc, char **argv, t_opt *options)
 
 void	read_all(int i, char **argv, int argc, t_opt *option)
 {
-	DIR	*directory;
+	DIR		*directory;
 
 	if (i >= argc || !argv[i])
 	{
 		directory = opendir(".");
-		option->path = ft_strjoin_free(&(option->path), ".\0", 1);
-		option->path = ft_strjoin_free(&(option->path), "/\0", 1);
 		print_asked(directory, option);
 	}
 	while (i < argc && argv[i])
 	{
-		option->path = ft_strjoin_free(&(option->path), argv[i], 1);
-		option->path = ft_strjoin_free(&(option->path), "/\0", 1);
 		if (i + 1 < argc)
 			option->multi_dir = 1;
-		if (option->multi_dir == 1)
-			ft_printf("%s:\n", argv[i]);
-		if ((directory = opendir(option->path)))
+		if ((directory = opendir(argv[i])))
 		{
+			option->path = ft_strjoin_free(&(option->path), argv[i], 1);
+			option->path = ft_strjoin_free(&(option->path), "/\0", 1);
+			if (option->multi_dir == 1 && !option->opt_R)
+				ft_printf("\n%s:\n", option->path);
 			if (option->opt_R)
 				ft_printf("\n%.*s:\n", ft_strlen(option->path) - 1, option->path);
 			print_asked(directory, option);
@@ -70,6 +68,7 @@ void	read_all(int i, char **argv, int argc, t_opt *option)
 		else
 			ft_printf("%s\n", argv[i]);
 		i++;
+		up_a_dir(option->path, 2);
 	}
 }
 
@@ -80,6 +79,8 @@ int		main(int argc, char **argv)
 
 	if (!(options.path = (char *)ft_memalloc(sizeof(char))))
 		return (0);
+	options.path = ft_strjoin_free(&(options.path), ".\0", 1);
+	options.path = ft_strjoin_free(&(options.path), "/\0", 1);
 	init_options(&options);	
 	arg = get_options(argc, argv, &options);
 	read_all(arg, argv, argc, &options);

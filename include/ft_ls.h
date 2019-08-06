@@ -6,7 +6,7 @@
 /*   By: root <snunes@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/19 15:11:41 by root              #+#    #+#             */
-/*   Updated: 2019/08/05 22:01:15 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/06 17:35:53 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ typedef struct	s_node
 	struct s_node	*left;
 }				t_node;
 
+void	up_a_dir(char *path, int nb);
 int		print_recurs(t_node *names, t_opt *options);
 void	read_all(int i, char **argv, int argc, t_opt *options);
 int		add_node(struct dirent *files, t_node *names, t_opt *options, t_length *len);
