@@ -5,78 +5,72 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/08/02 12:14:46 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/06 16:25:09 by snunes           ###   ########.fr       */
+/*   Created: 2019/08/06 17:53:15 by snunes            #+#    #+#             */
+/*   Updated: 2019/08/06 18:39:16 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-int		get_options(int argc, char **argv, t_opt *option)
+t_length	*init_len(t_lengh *len)
+{
+	if (!(len
+}
+
+void	*singleton(int nb)
+{
+	static char		*path;
+	static int		option;
+	static t_length	*len;
+
+	if (nb == 0)
+	{
+		if (!(path = ft_strdup("./\0")))
+				return (0);
+		if (!(len = init_len(len)))
+			return (0);
+	}
+	if (nb == 1)
+		return ((void *)path);
+	if (nb == 2)
+		return (&option);
+	if (nb == 3)
+		return ((void *)len);
+	return (path);
+}
+
+int		get_options(char **argv, int *option)
 {
 	int i;
-
+	
 	i = 1;
-	while (i < argc && argv[i][0] == '-')
+	while ( argv[i] && argv[i][0] == '-')
 	{
-		option->opt = ft_occur("R\0", argv[i]) ? option->opt | 16 : option->opt;
-		option->opt = ft_occur("a\0", argv[i]) ? option->opt | 8 : option->opt;
-		option->opt = ft_occur("l\0", argv[i]) ? option->opt | 4 : option->opt;
-		option->opt = ft_occur("r\0", argv[i]) ? option->opt | 2 : option->opt;
-		option->opt = ft_occur("t\0", argv[i]) ? option->opt | 1 : option->opt;
+		*option = (ft_occur(argv[i], "t\0")) ? *option & 1 : *option;
+		*option = (ft_occur(argv[i], "r\0")) ? *option & 2 : *option;
+		*option = (ft_occur(argv[i], "l\0")) ? *option & 4 : *option;
+		*option = (ft_occur(argv[i], "a\0")) ? *option & 8 : *option;
+		*option = (ft_occur(argv[i], "R\0")) ? *option & 16 : *option;
 		i++;
 	}
 	return (i);
 }
 
-t_node	*read_all(t_node *tree, char *to_add, t_opt *options, t_length *len)
-{
-	DIR				*root;
-	struct dirent	*files;
-	t_node			new_node;
-
-	root = opendir(options->path);
-	files = readdir(root);
-	while (!ft_strequ(files->d_name, to_add))
-		files = readdir(root);
-	fill_node(&new_node, files, len, options);
-	ft_printf("name = %s\n", new_node.name);
-	tree = place_node(tree, &new_node, options);
-	return (tree);
-}
-
-void	init_len(t_length *len)
-{
-	len->name_l = 0;
-	len->size_l = 0;
-	len->link_l = 0;
-	len->user_l = 0;
-	len->group_l = 0;
-	len->blocks = 0;
-}
-
 int		main(int argc, char **argv)
 {
-	t_opt			options;
-	int				arg;
-	int				i;
-	t_node			tree;
-	t_length		len;
+	int		arg;
+	t_node	*tree;
 
-	i = 1;
-	init_len(&len);
-	if (!(options.path = ft_strdup("./\0")))
-		return (0);
-	options.opt = 0;
-	arg = get_options(argc, argv, &options);
-	while (i < argc || i == 1)
+	tree = NULL;
+	(void)argc;
+	singleton(0);
+	arg = get_options(argv, (int *)singleton(2));
+	while (argv[arg])
 	{
-		if (i == 1 && !argv[i])
-			read_all(&tree, ".", &options, &len);
-		else
-			read_all(&tree, argv[i], &options, &len);
-		i++;
+		tree = creat_new_node(tree, argv[arg]);
+		arg++;
 	}
-	print_tree(&tree, &options, &len);
+	if (arg == 1)
+		tree = creat_new_node(tree, ".\0");
 	return (0);
 }
