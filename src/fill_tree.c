@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 13:55:40 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/06 13:58:23 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/06 16:21:39 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,25 +41,25 @@ int	fill_spec(struct stat st, t_node *new_node, t_length *len, t_opt *options)
 	return (1);
 }
 
-int	add_elem(t_node *new_node, struct dirent *files, t_length *len, t_opt *opt)
+int	fill_node(t_node *new, struct dirent *files, t_length *len, t_opt *opt)
 {
 	struct	stat st;
 	char	*path;
 
 	path = ft_strjoin(opt->path, files->d_name);
 	stat(path, &st);
-	if (!(new_node->name = ft_strdup(files->d_name)))
+	if (!(new->name = ft_strdup(files->d_name)))
 		return (0);
-	new_node->length = ft_strlen(files->d_name);
+	new->length = ft_strlen(files->d_name);
 	if (files->d_type == 8
 			&& (st.st_mode & (S_IRWXU | S_IRWXG | S_IRWXO)) / 64 == 7)
-		new_node->type = 7;
+		new->type = 7;
 	else
-		new_node->type = files->d_type;
+		new->type = files->d_type;
 	lstat(path, &st);
-	fill_spec(st, new_node, len, opt);
-	new_node->right = NULL;
-	new_node->left = NULL;
+	fill_spec(st, new, len, opt);
+	new->right = NULL;
+	new->left = NULL;
 	free(path);
 	return (1);
 }
@@ -94,11 +94,3 @@ t_node *place_node(t_node *tree, t_node *new_node, t_opt *options)
 		tree->right = place_node(tree->right, new_node, options);
 	return (tree);
 }
-
-void	fill_tree_spec(t_node *tree, char *root)
-{
-	DIR				*directory;
-	struct dirent	*files;
-
-	files = readdir(root);
-}	

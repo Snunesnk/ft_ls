@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 12:42:46 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/06 13:55:02 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/06 16:26:38 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void	print_info(t_node *names, t_length *len)
 
 void	print_name(t_node *names, t_opt *options, t_length *len)
 {
+	ft_printf("tentative de print %s\n", names->name);
 	if (options->opt & 4)
 		print_info(names, len);
 	if (names->type == 4)
@@ -76,42 +77,14 @@ void	print_name(t_node *names, t_opt *options, t_length *len)
 		write(1, "\n", 1);
 }
 
-int	print_tree(t_node *names, t_opt *options, t_length *len)
+int	print_tree(t_node *tree, t_opt *options, t_length *len)
 {
-	if (!names)
+	if (!tree)
 		return (0);
-	if (names->left)
-		print_tree(names->left, options, len);
-	if ((names->name[0] != '.' || options->opt & 8))
-		print_name(names, options, len);
-	if (names->right)
-		print_tree(names->right, options, len);
-	return (1);
-}
-
-int	print_asked(DIR *directory, t_opt *options)
-{
-	struct dirent	*files;
-	t_node			names;
-	t_length		len;
-
-	files = readdir(directory);
-	len.name_l = 0;
-	len.link_l = 0;
-	len.user_l = 0;
-	len.group_l = 0;
-	len.size_l = 0;
-	len.blocks = 0;
-	if (!(add_elem(&names, files, &len, options)))
-		return (0);
-	while ((files = readdir(directory)))
-		add_node(files, &names, options, &len);
-	if (options->opt & 4)
-		ft_printf("total %lld\n", len.blocks);
-	print_tree(&names, options, &len);
-	if (!(options->opt & 4))
-		ft_printf("\n");
-	if (options->opt & 16)
-		print_recurs(&names, options);
+	if (tree->left)
+		print_tree(tree->left, options, len);
+	print_name(tree, options, len);
+	if (tree->right)
+		print_tree(tree->right, options, len);
 	return (1);
 }

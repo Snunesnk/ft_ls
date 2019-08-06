@@ -6,7 +6,7 @@
 /*   By: root <snunes@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/19 15:11:41 by root              #+#    #+#             */
-/*   Updated: 2019/08/06 12:38:57 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/06 16:12:13 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,14 +62,15 @@ typedef struct	s_node
 }				t_node;
 
 int		print_recurs(t_node *names, t_opt *options);
-void	read_all(int i, char **argv, int argc, t_opt *options);
+t_node	*read_all(t_node *tree, char *to_add, t_opt *options, t_length *len);
 int		add_node(struct dirent *files, t_node *names, t_opt *options, t_length *len);
-int		add_elem(t_node *new_node, struct dirent *files, t_length *lem, 
+int		fill_node(t_node *new_node, struct dirent *files, t_length *lem, 
 															t_opt *options);
 char	*give_time(struct stat st);
 void	update_l(t_length *len, t_node *node, t_opt *options);
+t_node	*place_node(t_node *tree, t_node *new_node, t_opt *options);
 int		give_length(int length, int to_reach);
-int		print_asked(DIR *directory, t_opt *options);
 void	init_file_type(char file_type[20]);
+int		print_tree(t_node *tree, t_opt *options, t_length *len);
 
 #endif
