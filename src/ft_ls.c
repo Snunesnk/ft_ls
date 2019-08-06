@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 12:14:46 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/06 15:33:10 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/06 15:43:50 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ t_node	*read_all(t_node *tree, char *to_add, t_opt *options)
 	DIR				*directory;
 	t_length		len;
 
-
 	len.name_l = 0;
 	len.link_l = 0;
 	len.user_l = 0;
@@ -43,7 +42,7 @@ t_node	*read_all(t_node *tree, char *to_add, t_opt *options)
 	len.blocks = 0;
 	if ((directory = opendir(to_add)))
 	{
-		tree = create_tree(directory, tree, options);
+		tree = add_node(tree, options, 4);
 		closedir(directory);
 	}
 	else
