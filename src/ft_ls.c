@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 12:14:46 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/06 15:37:42 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/06 15:44:39 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,12 @@ void	read_all(int i, char **argv, int argc, t_opt *option)
 			print_asked(directory, option);
 			if (option->multi_dir == 1 && i + 1 < argc)
 				ft_printf("\n");
+			closedir(directory);
 		}
 		else
 			ft_printf("%s\n", argv[i]);
 		i++;
 	}
-	closedir(directory);
 }
 
 int		main(int argc, char **argv)
