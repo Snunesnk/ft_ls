@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/03 16:37:42 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/05 17:57:05 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/06 12:08:30 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,21 +46,21 @@ int		give_length(int length, int to_reach)
 void	update_l(t_length *len, t_node *node, t_opt *options)
 {
 	if (ft_strlen(node->name) + 1 > (size_t)len->name_l
-			&& (node->name[0] != '.' || options->opt_a == 1))
+			&& (node->name[0] != '.' || options->opt & 8))
 		len->name_l = ft_strlen(node->name) + 1;
 	if (ft_nbrlen(node->links) + 2 > len->link_l
-			&& (node->name[0] != '.' || options->opt_a == 1))
+			&& (node->name[0] != '.' || options->opt & 8))
 		len->link_l = ft_nbrlen(node->links) + 2;
 	if (ft_strlen(node->owner) + 1 > (size_t)len->user_l
-			&& (node->name[0] != '.' || options->opt_a == 1))
+			&& (node->name[0] != '.' || options->opt & 8))
 		len->user_l = ft_strlen(node->owner) + 1;
 	if (ft_strlen(node->group) + 2 > (size_t)len->group_l
-			&& (node->name[0] != '.' || options->opt_a == 1))
+			&& (node->name[0] != '.' || options->opt & 8))
 		len->group_l = ft_strlen(node->group) + 2;
 	if (ft_nbrlen(node->size) + 2 > len->size_l
-			&& (node->name[0] != '.' || options->opt_a == 1))
+			&& (node->name[0] != '.' || options->opt & 8))
 		len->size_l = ft_nbrlen(node->size) + 2;
-	if ((node->name[0] != '.' || options->opt_a == 1))
+	if ((node->name[0] != '.' || options->opt & 8))
 		len->blocks += node->blocks;
 }
 

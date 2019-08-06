@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/03 12:41:16 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/05 13:53:09 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/06 11:45:34 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
 	struct group *grpnam;
 	time_t	ltime;
 
-
+	printf("sizeof(int) = %zu\n", sizeof(int));
 	printf("test time : %ld\n", time(&ltime));
 	printf("test ctime: %s\n", ctime(&ltime));
 	if (argc < 2)

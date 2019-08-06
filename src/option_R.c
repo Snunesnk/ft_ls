@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/05 18:21:31 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/05 21:03:51 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/06 12:38:32 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,8 @@ int	print_recurs(t_node *names, t_opt *options)
 		return (0);
 	if (names->left)
 		print_recurs(names->left, options);
-	if ((names->name[0] != '.' || options->opt_a))
+	if ((names->name[0] != '.' || options->opt & 8))
 	{
-		//ft_printf("Candidat read all: %s\n", names->name);
 		if (!ft_strequ(names->name, ".\0") && !ft_strequ(names->name, "..\0")
 				&& names->type == 4)
 		{

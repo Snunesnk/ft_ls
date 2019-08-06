@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sort_names.c                                       :+:      :+:    :+:   */
+/*   fill_tree.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/08/02 15:33:50 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/05 21:08:51 by snunes           ###   ########.fr       */
+/*   Created: 2019/08/06 13:55:40 by snunes            #+#    #+#             */
+/*   Updated: 2019/08/06 13:58:23 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,44 +64,41 @@ int	add_elem(t_node *new_node, struct dirent *files, t_length *len, t_opt *opt)
 	return (1);
 }
 
-int	sort_tree(t_opt *options, t_node *new_node, t_node *tmp_tree)
+int	sort_tree(t_opt *options, t_node *new_node, t_node *tree)
 {
-	if (options->opt_r && !options->opt_t)
+	if (new_node->type > tree->type)
+		return (1);
+	else if (new_node->type < tree->type)
+		return (0);
+	if (options->opt & 2 && !(options->opt & 1))
 	{
-		if (ft_strcmp(new_node->name, tmp_tree->name) <= 0)
+		if (ft_strcmp(new_node->name, tree->name) <= 0)
 			return (1);
 		return (0);
 	}
-	else if (!options->opt_t)
-		return (ft_strcmp(new_node->name, tmp_tree->name));
-	else if (options->opt_r)
+	else if (!(options->opt & 1))
+		return (ft_strcmp(new_node->name, tree->name));
+	else if (options->opt & 2)
 		return (0);
 	else
 		return (0);
 }
 
-t_node *place_node(t_node *names, t_node *new_node, t_opt *options)
+t_node *place_node(t_node *tree, t_node *new_node, t_opt *options)
 {
-	if (!names)
+	if (!tree)
 		return (new_node);
-	if (sort_tree(options, new_node, names) <= 0)
-		names->left = place_node(names->left, new_node, options);
+	if (sort_tree(options, new_node, tree) <= 0)
+		tree->left = place_node(tree->left, new_node, options);
 	else
-		names->right = place_node(names->right, new_node, options);
-	return (names);
+		tree->right = place_node(tree->right, new_node, options);
+	return (tree);
 }
 
-int	add_node(struct dirent *files, t_node *names, t_opt *option, t_length *len)
+void	fill_tree_spec(t_node *tree, char *root)
 {
-	t_node	*new_node;
+	DIR				*directory;
+	struct dirent	*files;
 
-	if (!(new_node = (t_node *)ft_memalloc(sizeof(t_node))))
-			return (0);
-	if (!(add_elem(new_node, files, len, option)))
-	{
-		free(new_node);
-		return (0);
-	}
-	names = place_node(names, new_node, option);
-	return (1);
-}
+	files = readdir(root);
+}	

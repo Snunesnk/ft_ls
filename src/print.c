@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 12:42:46 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/05 20:50:12 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/06 13:55:02 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	print_info(t_node *names, t_length *len)
 
 void	print_name(t_node *names, t_opt *options, t_length *len)
 {
-	if (options->opt_l)
+	if (options->opt & 4)
 		print_info(names, len);
 	if (names->type == 4)
 		ft_printf("{B_cyan}%s", names->name);
@@ -70,9 +70,9 @@ void	print_name(t_node *names, t_opt *options, t_length *len)
 		ft_printf("{purple}%s", names->name);
 	else
 		ft_printf("%s", names->name);
-	while (len->name_l > names->length++ && !options->opt_l)
+	while (len->name_l > names->length++ && !(options->opt & 4))
 		write(1, " ", 1);
-	if (options->opt_l)
+	if (options->opt & 4)
 		write(1, "\n", 1);
 }
 
@@ -82,7 +82,7 @@ int	print_tree(t_node *names, t_opt *options, t_length *len)
 		return (0);
 	if (names->left)
 		print_tree(names->left, options, len);
-	if ((names->name[0] != '.' || options->opt_a == 1))
+	if ((names->name[0] != '.' || options->opt & 8))
 		print_name(names, options, len);
 	if (names->right)
 		print_tree(names->right, options, len);
@@ -106,12 +106,12 @@ int	print_asked(DIR *directory, t_opt *options)
 		return (0);
 	while ((files = readdir(directory)))
 		add_node(files, &names, options, &len);
-	if (options->opt_l)
+	if (options->opt & 4)
 		ft_printf("total %lld\n", len.blocks);
 	print_tree(&names, options, &len);
-	if (!options->opt_l)
+	if (!(options->opt & 4))
 		ft_printf("\n");
-	if (options->opt_R)
+	if (options->opt & 16)
 		print_recurs(&names, options);
 	return (1);
 }
