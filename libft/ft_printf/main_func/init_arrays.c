@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/28 10:22:13 by snunes            #+#    #+#             */
-/*   Updated: 2019/06/28 12:54:17 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/07 18:18:13 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,23 +36,25 @@ void	init_dispatcher(int (*func[17])(t_flags *flag, va_list *ap))
 void	init_hcolor(char **colours)
 {
 	colours[0] = "H_black\0";
-	colours[1] = "\033[7;30m\0";
+	colours[1] = "\033[40m\0";
 	colours[2] = "H_red\0";
-	colours[3] = "\033[7;31m\0";
+	colours[3] = "\033[41m\0";
 	colours[4] = "H_green\0";
-	colours[5] = "\033[7;32m\0";
+	colours[5] = "\033[42m\0";
 	colours[6] = "H_yellow\0";
-	colours[7] = "\033[7;33m\0";
+	colours[7] = "\033[43m\0";
 	colours[8] = "H_blue\0";
-	colours[9] = "\033[7;34m\0";
+	colours[9] = "\033[44m\0";
 	colours[10] = "H_purple\0";
-	colours[11] = "\033[7;35m\0";
+	colours[11] = "\033[45m\0";
 	colours[12] = "H_cyan\0";
-	colours[13] = "\033[7;36m\0";
+	colours[13] = "\033[46m\0";
 	colours[14] = "H_gray\0";
-	colours[15] = "\033[7;37m\0";
+	colours[15] = "\033[47m\0";
 	colours[16] = "eoc\0";
 	colours[17] = "\033[0m\0";
+	colours[18] = "H_brown\0";
+	colours[19] = "\033[0;43m\0";
 }
 
 void	init_ucolor(char **colours)
@@ -119,4 +121,6 @@ void	init_color(char **colours)
 	colours[15] = "\033[37m\0";
 	colours[16] = "eoc\0";
 	colours[17] = "\033[0m\0";
+	colours[18] = "brown\0";
+	colours[17] = "\033[0;33m\0";
 }

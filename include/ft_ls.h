@@ -6,7 +6,7 @@
 /*   By: root <snunes@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/19 15:11:41 by root              #+#    #+#             */
-/*   Updated: 2019/08/06 18:39:20 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/07 19:06:03 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef struct	s_node
 	int				u_perm;
 	int				g_perm;
 	int				o_perm;
+	int				sp_bit;
 	int				length;
 	int				links;
 	char			*owner;
@@ -55,5 +56,12 @@ typedef struct	s_node
 }				t_node;
 
 void	*singleton(int nb);
+t_node	*add_node(t_node *tree, char *file, DIR *directory);
+void	print_tree(t_node *tree);
+char	*give_time(struct stat st);
+void	update_l(t_node *node);
+void	init_file_type(char file_type[20]);
+int		give_length(int length, int to_reach);
+int		is_writeable(int perm);
 
 #endif

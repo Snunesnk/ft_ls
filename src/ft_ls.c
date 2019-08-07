@@ -6,15 +6,22 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 17:53:15 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/06 18:39:16 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/07 20:18:54 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-t_length	*init_len(t_lengh *len)
+t_length	*init_len(t_length *len)
 {
-	if (!(len
+	len = (t_length *)ft_memalloc(sizeof(t_length));
+	len->name_l = 0;
+	len->size_l = 0;
+	len->link_l = 0;
+	len->group_l = 0;
+	len->user_l = 0;
+	len->blocks = 0;
+	return (len);
 }
 
 void	*singleton(int nb)
@@ -36,7 +43,7 @@ void	*singleton(int nb)
 		return (&option);
 	if (nb == 3)
 		return ((void *)len);
-	return (path);
+	return ((void *)3);
 }
 
 int		get_options(char **argv, int *option)
@@ -44,7 +51,7 @@ int		get_options(char **argv, int *option)
 	int i;
 	
 	i = 1;
-	while ( argv[i] && argv[i][0] == '-')
+	while (argv[i] && argv[i][0] == '-')
 	{
 		*option = (ft_occur(argv[i], "t\0")) ? *option & 1 : *option;
 		*option = (ft_occur(argv[i], "r\0")) ? *option & 2 : *option;
@@ -58,19 +65,33 @@ int		get_options(char **argv, int *option)
 
 int		main(int argc, char **argv)
 {
-	int		arg;
-	t_node	*tree;
+	int				arg;
+	t_node			*tree;
+	DIR				*directory;
+	int				*option;
 
 	tree = NULL;
 	(void)argc;
-	singleton(0);
+	if (!(singleton(0)))
+		return (0);
 	arg = get_options(argv, (int *)singleton(2));
+	option = (int *)singleton(2);
 	while (argv[arg])
 	{
-		tree = creat_new_node(tree, argv[arg]);
+		directory = opendir(".");
+		tree = add_node(tree, argv[arg], directory);
+	//	ft_printf("argv = %s\n", argv[arg]);
 		arg++;
+		closedir(directory);
 	}
 	if (arg == 1)
-		tree = creat_new_node(tree, ".\0");
+	{
+		directory = opendir(".");
+		tree = add_node(tree, ".\0", directory);
+		closedir(directory);
+	}
+	print_tree(tree);
+	if (!(*option & 4))
+		ft_printf("\n");
 	return (0);
 }

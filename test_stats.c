@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/03 12:41:16 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/06 11:45:34 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/07 17:10:01 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ int main(int argc, char *argv[])
 	struct group *grpnam;
 	time_t	ltime;
 
+	printf("lscolor : %s\n", getenv("LSCOLORS"));
 	printf("sizeof(int) = %zu\n", sizeof(int));
 	printf("test time : %ld\n", time(&ltime));
 	printf("test ctime: %s\n", ctime(&ltime));
@@ -76,7 +77,8 @@ int main(int argc, char *argv[])
 			printf("\tinode: %llu\n", sb.st_ino);
 			printf("\towner: %u (%s)\n", sb.st_uid, pwuser->pw_name);
 			printf("\tgroup: %u (%s)\n", sb.st_gid, grpnam->gr_name);
-			printf("\tperms: %o\n", sb.st_mode);//(S_IRWXU | S_IRWXG | S_IRWXO)));
+			printf("\tperms: %o\n", sb.st_mode);
+			printf("\tbit sp: %d\n", (sb.st_mode / 512 % 8));
 			printf("\tlinks: %d\n", sb.st_nlink);
 			printf("\tsize: %lld\n", sb.st_size); /* you may use %lld */
 			printf("\tatime: %s", ctime(&sb.st_atimespec.tv_sec));

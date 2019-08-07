@@ -6,7 +6,7 @@
 #    By: snunes <snunes@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/05 12:37:58 by snunes            #+#    #+#              #
-#    Updated: 2019/08/06 18:07:35 by snunes           ###   ########.fr        #
+#    Updated: 2019/08/07 18:30:00 by snunes           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,10 @@ CC = gcc
 NAME = ft_ls
 VPATH = .:include:src
 
-SRC = 		ft_ls.c
+SRC = 		ft_ls.c \
+			fill_tree.c \
+			option.c \
+			print.c
 
 LDFLAG = -Llibft
 LDLIB = -lft
