@@ -6,11 +6,13 @@
 #    By: root <snunes@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/07/23 14:00:05 by root              #+#    #+#              #
-#    Updated: 2019/08/05 21:43:20 by snunes           ###   ########.fr        #
+#    Updated: 2019/08/07 20:23:55 by snunes           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 To do :
+
+ -	Implementer l'affichage du contenu des dossiers plutot que juste le nom
 
  -	Implementer les erreurs (Pas les droits / fichier inexistant ...)
 

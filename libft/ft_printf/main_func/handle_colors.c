@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/27 13:28:40 by snunes            #+#    #+#             */
-/*   Updated: 2019/06/28 12:54:15 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/08 13:01:27 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 int	put_h_color(char color[10], t_flags *flag)
 {
-	char	*colours[18];
+	char	*colours[20];
 	int		i;
 
 	init_hcolor(colours);
 	i = 0;
-	while (i < 18 && !ft_strequ(color, colours[i]))
+	while (i < 20 && !ft_strequ(color, colours[i]))
 		i += 2;
-	if (i < 17)
+	if (i < 18)
 		return (write(flag->fd, colours[i + 1], sizeof(colours[i + 1]) - 1));
 	return (-1);
 }
@@ -56,14 +56,14 @@ int	put_b_color(char color[10], t_flags *flag)
 
 int	put_color(char color[10], t_flags *flag)
 {
-	char		*colours[18];
+	char		*colours[20];
 	int			i;
 
 	init_color(colours);
 	i = 0;
-	while (i < 18 && !ft_strequ(color, colours[i]))
+	while (i < 20 && !ft_strequ(color, colours[i]))
 		i += 2;
-	if (i < 17)
+	if (i < 19)
 		return (write(flag->fd, colours[i + 1], sizeof(colours[i + 1]) - 2));
 	return (-1);
 }

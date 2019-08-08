@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/04 04:53:01 by snunes            #+#    #+#             */
-/*   Updated: 2019/06/28 12:04:26 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/07 17:50:19 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,22 @@ int	print_percent(t_flags *flag)
 int	get_next_percent(const char *str, t_flags *flag)
 {
 	int		len;
+	int		ret;
 
+	ret = 0;
 	len = 0;
 	if (flag->color == 1)
 		write(1, "\033[0m", 5);
 	ft_reset_flags(flag, 0);
 	while (str[flag->spos] && str[flag->spos] != '%')
 	{
-		if (str[flag->spos] == '{')
+		while (str[flag->spos] == '{')
+		{
 			flag->spos = handle_colors(flag, str);
+			if (ret == flag->spos)
+				flag->spos += write(1, &str[flag->spos], 1);
+			ret = flag->spos;
+		}
 		len += (str[flag->spos] != '%') ? write(1, &str[flag->spos], 1) : 0;
 		flag->spos += (str[flag->spos] == '%') ? 0 : 1;
 	}

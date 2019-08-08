@@ -1,16 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   option_l.c                                         :+:      :+:    :+:   */
+/*   option.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/08/03 16:37:42 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/05 17:57:05 by snunes           ###   ########.fr       */
+/*   Created: 2019/08/07 13:10:13 by snunes            #+#    #+#             */
+/*   Updated: 2019/08/08 15:48:17 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <ft_ls.h>
+#include "ft_ls.h"
+
+void	update_l(t_node *node)
+{
+	int			*option;
+	t_length	*len;
+
+	len = (t_length *)singleton(3);
+	option = (int *)singleton(2);
+	if (ft_strlen(node->name) + 1 > (size_t)len->name_l
+			&& (node->name[0] != '.' || *option & 8))
+			len->name_l = ft_strlen(node->name) + 1;
+	if (ft_nbrlen(node->links) + 2 > len->link_l
+					&& (node->name[0] != '.' || *option & 8))
+			len->link_l = ft_nbrlen(node->links) + 2;
+	if (ft_strlen(node->owner) + 1 > (size_t)len->user_l
+					&& (node->name[0] != '.' || *option & 8))
+			len->user_l = ft_strlen(node->owner) + 1;
+	if (ft_strlen(node->group) + 2 > (size_t)len->group_l
+					&& (node->name[0] != '.' || *option & 8))
+			len->group_l = ft_strlen(node->group) + 2;
+	if (ft_nbrlen(node->size) + 2 > len->size_l
+					&& (node->name[0] != '.' || *option & 8))
+			len->size_l = ft_nbrlen(node->size) + 2;
+	if ((node->name[0] != '.' || *option & 8))
+			len->blocks += node->blocks;
+}
 
 void	init_file_type(char file_type[20])
 {
@@ -21,7 +47,7 @@ void	init_file_type(char file_type[20])
 	file_type[8] = 7;
 	file_type[10] = 8;
 	file_type[12] = 10;
-	file_type[14] = 12;
+	file_type[14] = 12;	
 	file_type[16] = 14;
 	file_type[18] = 0;
 	file_type[1] = 'p';
@@ -43,25 +69,9 @@ int		give_length(int length, int to_reach)
 	return (length);
 }
 
-void	update_l(t_length *len, t_node *node, t_opt *options)
+int		is_writeable(int perm)
 {
-	if (ft_strlen(node->name) + 1 > (size_t)len->name_l
-			&& (node->name[0] != '.' || options->opt_a == 1))
-		len->name_l = ft_strlen(node->name) + 1;
-	if (ft_nbrlen(node->links) + 2 > len->link_l
-			&& (node->name[0] != '.' || options->opt_a == 1))
-		len->link_l = ft_nbrlen(node->links) + 2;
-	if (ft_strlen(node->owner) + 1 > (size_t)len->user_l
-			&& (node->name[0] != '.' || options->opt_a == 1))
-		len->user_l = ft_strlen(node->owner) + 1;
-	if (ft_strlen(node->group) + 2 > (size_t)len->group_l
-			&& (node->name[0] != '.' || options->opt_a == 1))
-		len->group_l = ft_strlen(node->group) + 2;
-	if (ft_nbrlen(node->size) + 2 > len->size_l
-			&& (node->name[0] != '.' || options->opt_a == 1))
-		len->size_l = ft_nbrlen(node->size) + 2;
-	if ((node->name[0] != '.' || options->opt_a == 1))
-		len->blocks += node->blocks;
+	return ((perm == 7 || perm == 6 || perm == 3 || perm == 2));
 }
 
 char	*give_time(struct stat st)
