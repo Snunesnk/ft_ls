@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 18:17:45 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/07 20:22:11 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/08 17:51:54 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,34 +46,36 @@ t_node	*init_node(t_node *node, DIR *directory)
 {
 	struct	stat	st;
 	struct dirent	*files;
-	char			*path;
+	char			**path;
 
-	path = (char *)singleton(1);
+	path = sing_path(node->name);
+//	ft_printf("path = %s, name = %s\n", *path, node->name);
 	files = readdir(directory);
-	while (!ft_strequ(files->d_name, node->name) && files)
+	while (!ft_strequ(files->d_name, node->name))
 		files = readdir(directory);
-	stat(ft_strjoin(path, node->name), &st);
+	stat(*path, &st);
 	node->length = ft_strlen(node->name);
 	if (files->d_type == 8
 			&& (st.st_mode & (S_IRWXU | S_IRWXG | S_IRWXO)) / 64 == 7)
 		node->type = 7;
 	else
 		node->type = files->d_type;
-	lstat(ft_strjoin(singleton(1), node->name), &st);
+	lstat(*path, &st);
 	fill_spec(st, node);
 	node->right = NULL;
 	node->left = NULL;
+	path = sing_path("\0");
 	return (node);
 }
 
-int		ft_node_cmp(t_node *tree, t_node *new_node)
+int		ft_node_cmp(t_node *tree, t_node *new_node, int mode)
 {
 	int	*option;
 
 	option = (int *)singleton(2);
-	if (new_node->type == 4 && tree->type != 4)
+	if (mode == 1 && new_node->type == 4 && tree->type != 4)
 		return (1);
-	else if (new_node->type != 4 && tree->type == 4)
+	else if (mode == 1 && new_node->type != 4 && tree->type == 4)
 		return (0);
 	else if (*option & 2 && !(*option & 1))
 		return (ft_strcmp(new_node->name, tree->name) <= 0);
@@ -82,27 +84,34 @@ int		ft_node_cmp(t_node *tree, t_node *new_node)
 	return (0);
 }
 
-t_node	*place_node(t_node *tree, t_node *new_node)
+t_node	*place_node(t_node *tree, t_node *new_node, int mode)
 {
 	if (!tree)
 		return (new_node);
-	if (ft_node_cmp(tree, new_node) <= 0)
-		tree->left = place_node(tree->left, new_node);
+	if (ft_node_cmp(tree, new_node, mode) <= 0)
+		tree->left = place_node(tree->left, new_node, mode);
 	else
-		tree->right =  place_node(tree->right, new_node);
+		tree->right =  place_node(tree->right, new_node, mode);
 	return (tree);
 }
 
-t_node	*add_node(t_node *tree, char *file, DIR *directory)
+t_node	*add_node(t_node *tree, char *file, DIR *directory, int mode)
 {
 	t_node	*new_node;
+	int		i;
+	DIR		*dir;
 
 	if (!(new_node = (t_node *)ft_memalloc(sizeof(t_node))))
 		return (NULL);
 	if (!(new_node->name = ft_strdup(file)))
 		return (NULL);
-	if (!(new_node = init_node(new_node, directory)))
+	i = ft_strlen(new_node->name) - 1;
+	while (i >= 0 && new_node->name[i] == '/')
+		new_node->name[i--] = '\0';
+	if (mode == 1 && (dir = opendir(new_node->name)))
+		new_node->type = 4;
+	else if (!(new_node = init_node(new_node, directory)))
 		return (NULL);
-	tree = place_node(tree, new_node);
+	tree = place_node(tree, new_node, mode);
 	return (tree);
 }

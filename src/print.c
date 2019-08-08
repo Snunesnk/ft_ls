@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/07 13:17:17 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/07 20:26:21 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/08 18:04:14 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,21 +19,21 @@ void	print_perms(int perm)
 	i = 100;
 	while (i > 0)
 	{
-		if (perm / i == 7)
+		if ((perm / i) % 10 == 7)
 			ft_printf("rwx");
-		else if (perm / i == 6)
+		else if ((perm / i) % 10 == 6)
 			ft_printf("rw-");
-		else if (perm / i == 5)
+		else if ((perm / i) % 10 == 5)
 			ft_printf("r-x");
-		else if (perm / i == 4)
+		else if ((perm / i) % 10 == 4)
 			ft_printf("r--");
-		else if (perm / i == 3)
+		else if ((perm / i) % 10 == 3)
 			ft_printf("-wx");
-		else if (perm / i == 2)
+		else if ((perm / i) % 10 == 2)
 			ft_printf("-w-");
-		else if (perm / i == 1)
+		else if ((perm / i) % 10 == 1)
 			ft_printf("--x");
-		else if (perm / i == 0)
+		else if ((perm / i) % 10 == 0)
 			ft_printf("---");
 		i /= 10;
 	}
@@ -72,7 +72,7 @@ void	print_name(t_node *node)
 	else if (node->type == 4 && is_writeable(node->o_perm) && node->sp_bit == 1)
 		ft_printf("{black}{H_green}%s", node->name);
 	else if (node->type == 4 && is_writeable(node->o_perm) && node->sp_bit != 1)
-		ft_printf("{black}{H_brown}%s", node->name);
+		ft_printf("{black}{H_yellow}%s", node->name);
 	else if (node->type == 10)
 		ft_printf("{purple}%s", node->name);
 	else if (node->type == 7 && node->sp_bit == 0)
@@ -80,9 +80,9 @@ void	print_name(t_node *node)
 	else if (node->type == 12)
 		ft_printf("{green}%s", node->name);
 	else if (node->type == 1)
-		ft_printf("{brown}%s", node->name);
+		ft_printf("{yellow}%s", node->name);
 	else if (node->type == 1)
-		ft_printf("{blue}{H_brown}%s", node->name);
+		ft_printf("{blue}{H_yellow}%s", node->name);
 	else if (node->type == 6)
 		ft_printf("{blue}{H_cyan}%s", node->name);
 	else if (node->type == 7 && node->sp_bit == 4)
@@ -100,26 +100,42 @@ void	print_node(t_node *node)
 
 	len = (t_length *)singleton(3);
 	option = (int *)singleton(2);
-	if (*option & 4)
+	if (*option & 4 && (node->name[0] != '.' || *option & 8))
 		print_info(node);
-	print_name(node);
-	while (len->name_l > node->length++ && !(*option & 4))
-		write(1, " ", 1);
-	if (*option & 4)
-		write(1, "\n", 1);
+	if (node->name[0] != '.' || *option & 8)
+	{
+		print_name(node);
+		while (len->name_l > node->length++ && !(*option & 4))
+			write(1, " ", 1);
+		if (*option & 4)
+			write(1, "\n", 1);
+	}
 }
 
-void	print_tree(t_node *tree)
+void	print_tree(t_node *tree, int mode)
 {
+	DIR		*directory;
+	int		*option;
+	char	**path;
+
 	if (!tree)
 		return ;
 	if (tree->left)
-		print_tree(tree->left);
-	if (node->type == 4)
-		print_file(tree);
-	else
+		print_tree(tree->left, mode);
+	path = sing_path(tree->name);
+	option = (int *)singleton(2);
+	if ((mode == 1 || mode == 3) && (directory = opendir(*path)))
+	{
+		if ((*option & 32) || (*option & 16))
+			ft_printf("\n\n%s:\n", *path);
+		print_files(directory, path);
+		closedir(directory);
+	}
+	else if (mode != 3)
 		print_node(tree);
+	//ft_printf("path ouvert = %s, tree->name = %s, mode = %d\n", path, tree->name, mode);
+	path = sing_path("\0");
+//	ft_printf("new path = %s\n", path);
 	if (tree->right)
-		print_tree(tree->right);
-	return ;
+		print_tree(tree->right, mode);
 }

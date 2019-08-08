@@ -6,7 +6,7 @@
 /*   By: root <snunes@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/19 15:11:41 by root              #+#    #+#             */
-/*   Updated: 2019/08/07 19:06:03 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/08 17:28:05 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,16 @@ typedef struct	s_node
 	struct s_node	*left;
 }				t_node;
 
+char	**sing_path(char *to_add);
+void	print_files(DIR *directory, char **path);
 void	*singleton(int nb);
-t_node	*add_node(t_node *tree, char *file, DIR *directory);
-void	print_tree(t_node *tree);
+t_node	*add_node(t_node *tree, char *file, DIR *directory, int mode);
+void	print_tree(t_node *tree, int mode);
 char	*give_time(struct stat st);
 void	update_l(t_node *node);
 void	init_file_type(char file_type[20]);
 int		give_length(int length, int to_reach);
 int		is_writeable(int perm);
+char	*path(char *to_add);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/07 13:10:13 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/07 18:53:27 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/08 15:48:17 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	update_l(t_node *node)
 					&& (node->name[0] != '.' || *option & 8))
 			len->size_l = ft_nbrlen(node->size) + 2;
 	if ((node->name[0] != '.' || *option & 8))
-			len->blocks += node->blocks;	
+			len->blocks += node->blocks;
 }
 
 void	init_file_type(char file_type[20])
