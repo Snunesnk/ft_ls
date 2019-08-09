@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/07 13:10:13 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/08 15:48:17 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/09 16:08:14 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,28 @@
 
 void	update_l(t_node *node)
 {
-	int			*option;
-	t_length	*len;
+	int			**option;
+	t_length	**len;
 
-	len = (t_length *)singleton(3);
-	option = (int *)singleton(2);
-	if (ft_strlen(node->name) + 1 > (size_t)len->name_l
-			&& (node->name[0] != '.' || *option & 8))
-			len->name_l = ft_strlen(node->name) + 1;
-	if (ft_nbrlen(node->links) + 2 > len->link_l
-					&& (node->name[0] != '.' || *option & 8))
-			len->link_l = ft_nbrlen(node->links) + 2;
-	if (ft_strlen(node->owner) + 1 > (size_t)len->user_l
-					&& (node->name[0] != '.' || *option & 8))
-			len->user_l = ft_strlen(node->owner) + 1;
-	if (ft_strlen(node->group) + 2 > (size_t)len->group_l
-					&& (node->name[0] != '.' || *option & 8))
-			len->group_l = ft_strlen(node->group) + 2;
-	if (ft_nbrlen(node->size) + 2 > len->size_l
-					&& (node->name[0] != '.' || *option & 8))
-			len->size_l = ft_nbrlen(node->size) + 2;
-	if ((node->name[0] != '.' || *option & 8))
-			len->blocks += node->blocks;
+	len = (t_length **)singleton(3);
+	option = (int **)singleton(2);
+	if (ft_strlen(node->name) + 1 > (size_t)(*len)->name_l
+			&& (node->name[0] != '.' || **option & 8))
+			(*len)->name_l = ft_strlen(node->name) + 1;
+	if (ft_nbrlen(node->links) + 2 > (*len)->link_l
+					&& (node->name[0] != '.' || **option & 8))
+			(*len)->link_l = ft_nbrlen(node->links) + 2;
+	if (ft_strlen(node->owner) + 1 > (size_t)(*len)->user_l
+					&& (node->name[0] != '.' || **option & 8))
+			(*len)->user_l = ft_strlen(node->owner);
+	if (ft_strlen(node->group) + 2 > (size_t)(*len)->group_l
+					&& (node->name[0] != '.' || **option & 8))
+			(*len)->group_l = ft_strlen(node->group);
+	if (ft_nbrlen(node->size) + 2 > (*len)->size_l
+					&& (node->name[0] != '.' || **option & 8))
+			(*len)->size_l = ft_nbrlen(node->size) + 2;
+	if ((node->name[0] != '.' || **option & 8))
+			(*len)->blocks += node->blocks;
 }
 
 void	init_file_type(char file_type[20])
