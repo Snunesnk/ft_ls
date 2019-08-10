@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/07 13:17:17 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/09 16:50:09 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/10 18:04:43 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,6 @@ void	print_node(t_node *node)
 	len = (t_length **)singleton(3);
 	(*len)->blocks = 0;
 	option = (int **)singleton(2);
-	**option = **option ^ 64;
 	if (**option & 4 && (node->name[0] != '.' || **option & 8))
 		print_info(node);
 	if (node->name[0] != '.' || **option & 8)
@@ -124,22 +123,20 @@ void	print_tree(t_node *tree, int mode)
 		return ;
 	if (tree->left)
 		print_tree(tree->left, mode);
-	if (mode != 1 && ft_printf("let it sing!\n"))
-		path = sing_path(tree->name);
-	else
-		path = &tree->name;
-	ft_printf("path = %s, name =  %s\n", *path, tree->name);
+	path = sing_path(tree->name);
+//	ft_printf("path = %s, mode = %d, tree->name = %s\n", *path, mode, tree->name);
 	option = (int **)singleton(2);
 	if ((mode == 1 || mode == 3) && (directory = opendir(*path)))
 	{
 		if (((**option & 32) || (**option & 16)) && !(**option & 64))
 			ft_printf("\n");
+		**option = **option ^ 64;
 		if ((**option & 32) || (**option & 16))
 			ft_printf("%s:\n", *path);
-		print_files(directory, path);
+		print_files(tree, directory, path);
 		closedir(directory);
 	}
-	else if (mode != 3)
+	else if (mode != 3)// && ft_printf("pas un dossier\n"))
 		print_node(tree);
 	path = sing_path("\0");
 	if (tree->right)

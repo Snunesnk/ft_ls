@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 18:17:45 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/09 16:50:07 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/10 17:50:23 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,9 @@ t_node	*init_node(t_node *node)
 	struct	stat	st;
 	char			**path;
 
+//	ft_printf("test du path: %s\n", *sing_path(NULL));
 	path = sing_path(node->name);
-	ft_printf("path init = %s\n", *path);
+//	ft_printf("resultat de fusion: %s\n", *path);
 	stat(*path, &st);
 	node->length = ft_strlen(node->name);
 	if (node->type == 8
@@ -59,6 +60,7 @@ t_node	*init_node(t_node *node)
 	node->right = NULL;
 	node->left = NULL;
 	path = sing_path("\0");
+	node->heigth = 1;
 	return (node);
 }
 
@@ -80,13 +82,18 @@ int		ft_node_cmp(t_node *tree, t_node *new_node, int mode)
 
 t_node	*place_node(t_node *tree, t_node *new_node, int mode)
 {
+	int balanced;
+
 	if (!tree)
 		return (new_node);
 	if (ft_node_cmp(tree, new_node, mode) <= 0)
 		tree->left = place_node(tree->left, new_node, mode);
 	else
 		tree->right =  place_node(tree->right, new_node, mode);
-	return (tree);
+	tree->heigth = 1 + MAX(heigth(tree->left), heigth(tree->right));
+	balanced = check_balance(tree);
+//	ft_printf("balanced = %d, tree->left heigth = %d, tree->right heigth = %d\n", balanced, heigth(tree->left), heigth(tree->right));
+	return (balance(balanced, tree, new_node, mode));
 }
 
 t_node	*add_node(t_node *tree, struct dirent *files, int mode, char *root)
@@ -95,10 +102,12 @@ t_node	*add_node(t_node *tree, struct dirent *files, int mode, char *root)
 	int		i;
 	DIR		*dir;
 
+	sing_path(root);
 	if (!(new_node = (t_node *)ft_memalloc(sizeof(t_node))))
 		return (NULL);
-	if (!(new_node->name = ft_strdup(ft_strjoin(root, files->d_name))))
+	if (!(new_node->name = ft_strdup(files->d_name)))
 		return (NULL);
+	//ft_printf("name node: %s\n", new_node->name);
 	new_node->type = files->d_type;
 	i = ft_strlen(new_node->name) - 1;
 	while (i >= 0 && new_node->name[i] == '/')

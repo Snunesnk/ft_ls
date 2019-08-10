@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 17:53:15 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/09 16:50:05 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/10 16:07:18 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,23 +31,33 @@ char	**sing_path(char *to_add)
 
 	if (!to_add)
 	{
-		if (!(path = ft_memalloc(sizeof(char))))
+		if (!path && !(path = ft_memalloc(sizeof(char))))
 			return (0);
+		else
+			return (&path);
 	}
 	else if (!*to_add)
 	{
+//		ft_printf("path before up = %s\n", path);
 		i = ft_strlen(path) - 1;
+		while (path[i] != '/' && i >= 0)
+			path[i--] = '\0';
 		while (path[i] == '/' && i > 0)
 			path[i--] = '\0';
-		while (path[i] != '/' && i > 0)
-			path[i--] = '\0';
+//		ft_printf("path after  up = %s\n", path);
 	}
 	else if (!ft_strequ(path, to_add))
 	{
-		ft_printf("path sing = %s\n", path);
-		if (*path && path[ft_strlen(path) - 1] != '/')
+//		ft_printf("join de %s et %s\n", path, to_add);
+		if (*path)
 			path = ft_strjoin_free(&path, "/\0", 1);
 		path = ft_strjoin_free(&path, to_add, 1);
+//		ft_printf("path n-epur = %s\n", path);
+		while (ft_occur(".//\0", path))
+			ft_memmove(path, path + 3, sizeof(path));
+		while (ft_occur("./\0", path))
+			ft_memmove(path, path + 2, sizeof(path));
+//		ft_printf("path y-epur = %s\n", path);
 	}
 	return (&path);
 }
@@ -108,6 +118,7 @@ int		main(int argc, char **argv)
 	while (argc > arg)
 	{
 		root = find_root(root, argv[arg]);
+		sing_path(root);
 		tree = start_tree(tree, root, argv[arg]);
 		arg++;
 	}

@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/08 11:13:08 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/09 16:50:10 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/10 18:20:13 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	print_recurs(t_node *tree, int **option)
 {
 	DIR		*test;
 	char	**path;
+	int		errno;
 
 	if (!tree)
 		return ;
@@ -29,10 +30,11 @@ void	print_recurs(t_node *tree, int **option)
 		{
 			if (((**option & 32) || (**option & 16)) && !(**option & 64))
 				ft_printf("\n");
-			if (*path[0] != '/')
-				ft_printf("./");
+	/*		if (*path[0] != '/')
+				ft_printf("./");*/
 			ft_printf("%s:\n", *path);
-			print_files(test, path);
+			print_files(tree, test, path);
+			closedir(test);
 		}
 	}
 	sing_path("\0");
@@ -40,9 +42,8 @@ void	print_recurs(t_node *tree, int **option)
 		print_recurs(tree->right, option);
 }
 
-void	print_files(DIR *directory, char **path)
+void	print_files(t_node *tree, DIR *directory, char **path)
 {
-	t_node			*tree;
 	struct dirent	*files;
 	int				**option;
 	t_length		**len;
@@ -50,14 +51,12 @@ void	print_files(DIR *directory, char **path)
 
 	str = ft_strdup(*path);
 	option = (int **)singleton(2);
-	**option = **option ^ 64;
 	len = (t_length **)singleton(3);
-	tree = NULL;
-	while ((files = readdir(directory)))
-		tree = add_node(tree, files, 2, "\0");
-	if (**option & 4)
+	ft_printf("tree->name = %s\n", tree->name);
+	while ((files = readdir(directory)) && ft_printf("fichier act = %s\n", files->d_name))
+		tree = add_node(tree, files, 2, *path);
+	if ((**option & 4) && tree)
 		ft_printf("total %d\n", (*len)->blocks);
-	ft_printf("path print dir = %s\n", *path);
 	print_tree(tree, 2);
 	*len = init_len(len);
 	if (**option & 16)
@@ -96,6 +95,7 @@ char	*find_root(char *root, char *file)
 		ft_memmove(file, file + i + 1, j - i);
 /*	if (ft_strequ(file, "/\0"))
 		file[0] = '.';*/
+	file[j - i] = '\0';
 	if (i < 0)
 		return (".\0");
 	return (root);

@@ -6,7 +6,7 @@
 /*   By: root <snunes@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/19 15:11:41 by root              #+#    #+#             */
-/*   Updated: 2019/08/09 15:58:58 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/10 18:05:12 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@
 # include <stdlib.h>
 # include <errno.h>
 # include <string.h>
+
+# define MAX(x, y) (x > y ? x : y)
 
 typedef struct	s_length
 {
@@ -51,13 +53,18 @@ typedef struct	s_node
 	long long int	size;
 	long long int	blocks;
 	char			*mtime;
+	int				heigth;
 	struct s_node	*right;
 	struct s_node	*left;
 }				t_node;
 
+int			ft_node_cmp(t_node *tree, t_node *new_node, int mode);
+int			heigth(t_node *node);
+int			check_balance(t_node *node);
+t_node		*balance(int balanced, t_node *node, t_node *new_node, int mode);
 t_length	*init_len(t_length **len);
 char		**sing_path(char *to_add);
-void		print_files(DIR *directory, char **path);
+void		print_files(t_node *tree, DIR *directory, char **path);
 void		**singleton(int nb);
 t_node		*add_node(t_node *tree, struct dirent *files, int mode, char *root);
 void		print_tree(t_node *tree, int mode);
