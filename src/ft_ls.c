@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 17:53:15 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/10 16:07:18 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/12 13:54:41 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ int		main(int argc, char **argv)
 	while (argc > arg)
 	{
 		root = find_root(root, argv[arg]);
-		sing_path(root);
+//		sing_path(root);
 		tree = start_tree(tree, root, argv[arg]);
 		arg++;
 	}

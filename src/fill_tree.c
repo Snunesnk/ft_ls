@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 18:17:45 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/10 17:50:23 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/12 13:54:37 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ t_node	*add_node(t_node *tree, struct dirent *files, int mode, char *root)
 	DIR		*dir;
 
 	sing_path(root);
+	ft_printf("root = %s\n", root);
 	if (!(new_node = (t_node *)ft_memalloc(sizeof(t_node))))
 		return (NULL);
 	if (!(new_node->name = ft_strdup(files->d_name)))

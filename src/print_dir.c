@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/08 11:13:08 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/10 18:20:13 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/12 13:54:43 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	print_files(t_node *tree, DIR *directory, char **path)
 	str = ft_strdup(*path);
 	option = (int **)singleton(2);
 	len = (t_length **)singleton(3);
-	ft_printf("tree->name = %s\n", tree->name);
+	ft_printf("tree->name = %s, path = %s\n", tree->name, *path);
 	while ((files = readdir(directory)) && ft_printf("fichier act = %s\n", files->d_name))
 		tree = add_node(tree, files, 2, *path);
 	if ((**option & 4) && tree)
