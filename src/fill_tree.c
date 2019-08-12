@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 18:17:45 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/12 13:54:37 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/12 16:45:29 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,78 +45,78 @@ int	fill_spec(struct stat st, t_node *new_node)
 t_node	*init_node(t_node *node)
 {
 	struct	stat	st;
-	char			**path;
 
-//	ft_printf("test du path: %s\n", *sing_path(NULL));
-	path = sing_path(node->name);
-//	ft_printf("resultat de fusion: %s\n", *path);
-	stat(*path, &st);
-	node->length = ft_strlen(node->name);
+	stat(node->name, &st);
+	node->length = ft_strlen(extract_name(node->name));
 	if (node->type == 8
 			&& (st.st_mode & (S_IRWXU | S_IRWXG | S_IRWXO)) / 64 == 7)
 		node->type = 7;
-	lstat(*path, &st);
+	lstat(node->name, &st);
 	fill_spec(st, node);
 	node->right = NULL;
 	node->left = NULL;
-	path = sing_path("\0");
 	node->heigth = 1;
 	return (node);
 }
 
-int		ft_node_cmp(t_node *tree, t_node *new_node, int mode)
-{
-	int	**option;
-
-	option = (int **)singleton(2);
-	if (mode == 1 && new_node->type == 4 && tree->type != 4)
-		return (1);
-	else if (mode == 1 && new_node->type != 4 && tree->type == 4)
-		return (0);
-	else if (**option & 2 && !(**option & 1))
-		return (ft_strcmp(new_node->name, tree->name) <= 0);
-	else if (!(**option & 1))
-		return (ft_strcmp(new_node->name, tree->name));
-	return (0);
-}
-
-t_node	*place_node(t_node *tree, t_node *new_node, int mode)
+t_node	*place_node(t_node *tree, t_node *new_node)
 {
 	int balanced;
 
 	if (!tree)
 		return (new_node);
-	if (ft_node_cmp(tree, new_node, mode) <= 0)
-		tree->left = place_node(tree->left, new_node, mode);
+	if (ft_node_cmp(tree, new_node) <= 0)
+		tree->left = place_node(tree->left, new_node);
 	else
-		tree->right =  place_node(tree->right, new_node, mode);
+		tree->right =  place_node(tree->right, new_node);
 	tree->heigth = 1 + MAX(heigth(tree->left), heigth(tree->right));
 	balanced = check_balance(tree);
-//	ft_printf("balanced = %d, tree->left heigth = %d, tree->right heigth = %d\n", balanced, heigth(tree->left), heigth(tree->right));
-	return (balance(balanced, tree, new_node, mode));
+	return (balance(balanced, tree, new_node));
 }
 
-t_node	*add_node(t_node *tree, struct dirent *files, int mode, char *root)
+t_node	*add_node(t_node *tree, struct dirent *files, char *root)
 {
-	t_node	*new_node;
+	t_node	*node;
 	int		i;
-	DIR		*dir;
+	char 	*name;
 
-	sing_path(root);
-	ft_printf("root = %s\n", root);
-	if (!(new_node = (t_node *)ft_memalloc(sizeof(t_node))))
+	if (!ft_strequ(root, ".\0"))
+	{
+		if (!(name = ft_strdup(root))) 
+			return (NULL);
+		if (!(name = ft_strjoin_free(&name, "/\0", 1)))
+			return (NULL);
+	}
+	else
+	{
+		if (!(name = ft_strdup(files->d_name)))
+			return (NULL);
+	}
+	ft_printf("root = %s, name = %s\n", root, name);
+	if (!(node = (t_node *)ft_memalloc(sizeof(t_node))))
 		return (NULL);
-	if (!(new_node->name = ft_strdup(files->d_name)))
+	if(!(node->name = ft_strjoin_free(&name, files->d_name, 1)))
 		return (NULL);
-	//ft_printf("name node: %s\n", new_node->name);
-	new_node->type = files->d_type;
-	i = ft_strlen(new_node->name) - 1;
-	while (i >= 0 && new_node->name[i] == '/')
-		new_node->name[i--] = '\0';
-	if (mode == 1 && (dir = opendir(new_node->name)))
-		new_node->type = 4;
-	else if (!(new_node = init_node(new_node)))
+	node->type = files->d_type;
+	i = ft_strlen(node->name) - 1;
+	if (!(node = init_node(node)))
 		return (NULL);
-	tree = place_node(tree, new_node, mode);
+	tree = place_node(tree, node);
 	return (tree);
+}
+
+int		ft_node_cmp(t_node *tree, t_node *new_node)
+{
+	int	**option;
+	int	result;
+
+	result = path_cmp(new_node->name, tree->name);
+	option = (int **)singleton(2);
+	if (result < 0 || result > 0)
+		return (result);
+	else if (**option & 2 && !(**option & 1))
+		result = (ft_strcmp(new_node->name, tree->name) <= 0);
+	else if (!(**option & 1))
+		result = ft_strcmp(new_node->name, tree->name);
+	return (result);
 }

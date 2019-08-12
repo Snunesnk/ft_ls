@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 17:53:15 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/12 13:54:41 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/12 16:09:08 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,6 @@ int		main(int argc, char **argv)
 	int		arg;
 	t_node	*tree;
 	int		**option;
-	char	*root;
 
 	tree = NULL;
 	if (!singleton(0) || !sing_path(NULL))
@@ -114,15 +113,14 @@ int		main(int argc, char **argv)
 	if (argc - arg > 1 || **option & 16)
 		**option = **option | 32;
 	if (argc - arg == 0)
-		tree = start_tree(tree, "./\0", ".\0");
+		tree = add_content(tree, ".\0");
 	while (argc > arg)
 	{
-		root = find_root(root, argv[arg]);
-//		sing_path(root);
-		tree = start_tree(tree, root, argv[arg]);
+		tree = add_content(tree, argv[arg]);
 		arg++;
 	}
-	print_tree(tree, 1);
+	ft_printf("content added, preparation for print\n");
+	print_tree(tree, "\0");
 	if (!(**option & 4))
 		ft_printf("\n");
 	return (0);
