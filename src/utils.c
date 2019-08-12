@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/08 11:13:08 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/12 16:43:33 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/12 18:34:27 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int		path_cmp(char *path1, char *path2)
 			depth2--;
 		i++;
 	}
-	if (depth1 == 0 && depth2 > 0)
+	if ((depth1 == 0 && depth2) > 0 || (path1[0] == '/' && path2[0] != '/'))
 		return (-1);
 	else if ((depth1 && depth2) || (!depth1 && !depth2))
 		return (0);
@@ -63,7 +63,7 @@ char	*extract_name(char *path)
 	while (path[i])
 	{
 		if (path[i] == '/')
-			j = i;
+			j = i + 1;
 		i++;
 	}
 	if (!(name = (char *)ft_memalloc(sizeof(char) * (i - j + 1))))
@@ -81,21 +81,16 @@ char	*find_root(char *root, char *file)
 
 	if (!(root = ft_strdup(file)))
 		return (NULL);
-	i = ft_strlen(root) - 1;
-	j = i;
-	while (i > 0 && file[i] == '/')
-		file[i--] = '\0';
-	while (i >= 0 && root[i] != '/')
-		root[i--] = '\0';
-	while (i >= 0 && file[i] != '/')
-		i--;
-	if (i > 0)
+	i = 0;
+	j = 0;
+	while (root[i])
 	{
-		ft_memmove(file, file + i + 1, j - i);
-		file[j - i] = '\0';
+		if (root[i] == '/')
+			j = i + 1;
+		i++;
 	}
-	if (i < 0)
-		return (".\0");
+	if (j != 0)
+		root[j] = '\0';
 	return (root);
 }
 

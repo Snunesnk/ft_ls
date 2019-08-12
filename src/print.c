@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/07 13:17:17 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/12 15:58:58 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/12 18:19:58 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void	print_info(t_node *node)
 	ft_printf("%c", file_type[i + 1]);
 	print_perms((node->u_perm * 10 + node->g_perm) * 10 + node->o_perm);
 	link_l = give_length(ft_nbrlen(node->links), (*len)->link_l);
+//	ft_printf("link_l = %d, len->link_l = %d\n", link_l, (*len)->link_l);
 	owner_l = give_length(ft_strlen(node->owner), (*len)->user_l);
 	group_l = give_length(ft_strlen(node->group), (*len)->group_l);
 	size_l = give_length(ft_nbrlen(node->size), (*len)->size_l);
@@ -68,29 +69,29 @@ void	print_info(t_node *node)
 void	print_name(t_node *node)
 {
 	if (node->type == 4 && !is_writeable(node->o_perm))
-		ft_printf("{B_cyan}%s", node->name);
+		ft_printf("{B_cyan}%s", extract_name(node->name));
 	else if (node->type == 4 && is_writeable(node->o_perm) && node->sp_bit == 1)
-		ft_printf("{black}{H_green}%s", node->name);
+		ft_printf("{black}{H_green}%s", extract_name(node->name));
 	else if (node->type == 4 && is_writeable(node->o_perm) && node->sp_bit != 1)
-		ft_printf("{black}{H_yellow}%s", node->name);
+		ft_printf("{black}{H_yellow}%s", extract_name(node->name));
 	else if (node->type == 10)
-		ft_printf("{purple}%s", node->name);
+		ft_printf("{purple}%s", extract_name(node->name));
 	else if (node->type == 7 && node->sp_bit == 0)
-		ft_printf("{red}%s", node->name);
+		ft_printf("{red}%s", extract_name(node->name));
 	else if (node->type == 12)
-		ft_printf("{green}%s", node->name);
+		ft_printf("{green}%s", extract_name(node->name));
 	else if (node->type == 1)
-		ft_printf("{yellow}%s", node->name);
+		ft_printf("{yellow}%s", extract_name(node->name));
 	else if (node->type == 1)
-		ft_printf("{blue}{H_yellow}%s", node->name);
+		ft_printf("{blue}{H_yellow}%s", extract_name(node->name));
 	else if (node->type == 6)
-		ft_printf("{blue}{H_cyan}%s", node->name);
+		ft_printf("{blue}{H_cyan}%s", extract_name(node->name));
 	else if (node->type == 7 && node->sp_bit == 4)
-		ft_printf("{black}{h_red}%s", node->name);
+		ft_printf("{black}{h_red}%s", extract_name(node->name));
 	else if (node->type == 7 && node->sp_bit == 2)
-		ft_printf("{black}{H_cyan}%s", node->name);
+		ft_printf("{black}{H_cyan}%s", extract_name(node->name));
 	else
-		ft_printf("%s", node->name);
+		ft_printf("%s", extract_name(node->name));
 }
 
 void	print_node(t_node *node)
@@ -101,9 +102,9 @@ void	print_node(t_node *node)
 	len = (t_length **)singleton(3);
 	(*len)->blocks = 0;
 	option = (int **)singleton(2);
-	if (**option & 4 && (node->name[0] != '.' || **option & 8))
+	if (**option & 4 && (extract_name(node->name)[0] != '.' || **option & 8))
 		print_info(node);
-	if (node->name[0] != '.' || **option & 8)
+	if (extract_name(node->name)[0] != '.' || **option & 8)
 	{
 		print_name(node);
 		while ((*len)->name_l > node->length++ && !(**option & 4))
@@ -113,24 +114,26 @@ void	print_node(t_node *node)
 	}
 }
 
-void	print_tree(t_node *tree, char *path)
+void	print_tree(t_node *tree, char **path)
 {
 	int		**option;
+	char	*test;
 
+	test = NULL;
+	test = find_root(test, tree->name);
 	option = (int **)singleton(2);
 	if (!tree)
 		return ;
 	if (tree->left)
 		print_tree(tree->left, path);
-	if (!path && !(path = find_root(path, tree->name)))
-		return;
-	if (((**option & 32) || (**option & 16)) && !(**option & 64))
-		ft_printf("\n");
-	if (path_cmp(path, tree->name))
+	**option = (**option & 64) ? **option ^ 64 : **option;
+	if (!ft_strequ(*path, test))
 	{
-		path = find_root(path, tree->name);
+		if (((**option & 32) || (**option & 16)) && !(**option & 64))
+			ft_printf("\n");
+		*path = find_root(*path, tree->name);
 		if ((**option & 32) || (**option & 16))
-			ft_printf("%s:\n", path);
+			ft_printf("%.*s:\ntotal %d\n", ft_strlen(*path) - 1, *path, tree->blocks);
 	}
 	print_node(tree);
 	if (tree->right)

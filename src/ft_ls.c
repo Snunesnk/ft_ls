@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 17:53:15 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/12 16:09:08 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/12 18:26:43 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,44 +22,6 @@ t_length	*init_len(t_length **len)
 	(*len)->user_l = 0;
 	(*len)->blocks = 0;
 	return (*len);
-}
-
-char	**sing_path(char *to_add)
-{
-	int			i;
-	static char *path;
-
-	if (!to_add)
-	{
-		if (!path && !(path = ft_memalloc(sizeof(char))))
-			return (0);
-		else
-			return (&path);
-	}
-	else if (!*to_add)
-	{
-//		ft_printf("path before up = %s\n", path);
-		i = ft_strlen(path) - 1;
-		while (path[i] != '/' && i >= 0)
-			path[i--] = '\0';
-		while (path[i] == '/' && i > 0)
-			path[i--] = '\0';
-//		ft_printf("path after  up = %s\n", path);
-	}
-	else if (!ft_strequ(path, to_add))
-	{
-//		ft_printf("join de %s et %s\n", path, to_add);
-		if (*path)
-			path = ft_strjoin_free(&path, "/\0", 1);
-		path = ft_strjoin_free(&path, to_add, 1);
-//		ft_printf("path n-epur = %s\n", path);
-		while (ft_occur(".//\0", path))
-			ft_memmove(path, path + 3, sizeof(path));
-		while (ft_occur("./\0", path))
-			ft_memmove(path, path + 2, sizeof(path));
-//		ft_printf("path y-epur = %s\n", path);
-	}
-	return (&path);
 }
 
 void	**singleton(int nb)
@@ -106,7 +68,7 @@ int		main(int argc, char **argv)
 	int		**option;
 
 	tree = NULL;
-	if (!singleton(0) || !sing_path(NULL))
+	if (!singleton(0))
 		return (0);
 	option = (int **)singleton(2);
 	arg = get_options(argv, option);
@@ -120,7 +82,8 @@ int		main(int argc, char **argv)
 		arg++;
 	}
 	ft_printf("content added, preparation for print\n");
-	print_tree(tree, "\0");
+	ft_printf("premiere node: %s, heigth = %d\n", tree->name, tree->heigth);
+	print_tree(tree, argv);
 	if (!(**option & 4))
 		ft_printf("\n");
 	return (0);

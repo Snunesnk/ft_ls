@@ -6,7 +6,7 @@
 /*   By: root <snunes@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/19 15:11:41 by root              #+#    #+#             */
-/*   Updated: 2019/08/12 16:04:14 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/12 17:28:13 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ t_length	*init_len(t_length **len);
 char		**sing_path(char *to_add);
 void		**singleton(int nb);
 t_node		*add_node(t_node *tree, struct dirent *files, char *root);
-void		print_tree(t_node *tree, char *name);
+void		print_tree(t_node *tree, char **name);
 char		*give_time(struct stat st);
 void		update_l(t_node *node);
 void		init_file_type(char file_type[20]);

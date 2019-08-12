@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 18:17:45 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/12 16:45:29 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/12 18:52:40 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,19 +80,10 @@ t_node	*add_node(t_node *tree, struct dirent *files, char *root)
 	int		i;
 	char 	*name;
 
-	if (!ft_strequ(root, ".\0"))
-	{
-		if (!(name = ft_strdup(root))) 
-			return (NULL);
-		if (!(name = ft_strjoin_free(&name, "/\0", 1)))
-			return (NULL);
-	}
-	else
-	{
-		if (!(name = ft_strdup(files->d_name)))
-			return (NULL);
-	}
-	ft_printf("root = %s, name = %s\n", root, name);
+	if (!(name = ft_strdup(root))) 
+		return (NULL);
+	if (!(name = ft_strjoin_free(&name, "/\0", 1)))
+		return (NULL);
 	if (!(node = (t_node *)ft_memalloc(sizeof(t_node))))
 		return (NULL);
 	if(!(node->name = ft_strjoin_free(&name, files->d_name, 1)))
@@ -110,6 +101,10 @@ int		ft_node_cmp(t_node *tree, t_node *new_node)
 	int	**option;
 	int	result;
 
+	if (!tree)
+		return (-1);
+	if (!new_node)
+		return (1);
 	result = path_cmp(new_node->name, tree->name);
 	option = (int **)singleton(2);
 	if (result < 0 || result > 0)
