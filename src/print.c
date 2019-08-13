@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/07 13:17:17 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/12 18:19:58 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/13 19:33:45 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,20 +47,22 @@ void	print_info(t_node *node)
 	int			owner_l;
 	int			group_l;
 	int			size_l;
-	t_length	**len;
+	t_length	*len;
+	char		*root;
 
-	len = (t_length **)singleton(3);
+	root = find_root(node->name);
+	len = *singleton(root);
+	free(root);
 	i = 0;
 	init_file_type(file_type);
 	while (node->type != file_type[i] && file_type[i])
 		i += 2;
 	ft_printf("%c", file_type[i + 1]);
 	print_perms((node->u_perm * 10 + node->g_perm) * 10 + node->o_perm);
-	link_l = give_length(ft_nbrlen(node->links), (*len)->link_l);
-//	ft_printf("link_l = %d, len->link_l = %d\n", link_l, (*len)->link_l);
-	owner_l = give_length(ft_strlen(node->owner), (*len)->user_l);
-	group_l = give_length(ft_strlen(node->group), (*len)->group_l);
-	size_l = give_length(ft_nbrlen(node->size), (*len)->size_l);
+	link_l = give_length(ft_nbrlen(node->links), len->link_l);
+	owner_l = give_length(ft_strlen(node->owner), len->user_l);
+	group_l = give_length(ft_strlen(node->group), len->group_l);
+	size_l = give_length(ft_nbrlen(node->size), len->size_l);
 	ft_printf("%*d %-*s", link_l, node->links, owner_l, node->owner);
 	ft_printf("  %-*s%*lld", group_l, node->group, size_l, node->size);
 	ft_printf(" %s ", node->mtime);
@@ -68,74 +70,87 @@ void	print_info(t_node *node)
 
 void	print_name(t_node *node)
 {
-	if (node->type == 4 && !is_writeable(node->o_perm))
-		ft_printf("{B_cyan}%s", extract_name(node->name));
-	else if (node->type == 4 && is_writeable(node->o_perm) && node->sp_bit == 1)
-		ft_printf("{black}{H_green}%s", extract_name(node->name));
-	else if (node->type == 4 && is_writeable(node->o_perm) && node->sp_bit != 1)
-		ft_printf("{black}{H_yellow}%s", extract_name(node->name));
+	char	*name;
+
+	name = extract_name(node->name);
+	if (node->type == 4 && !IS_WRITEABLE(node->o_perm))
+		ft_printf("{B_cyan}%s", name);
+	else if (node->type == 4 && IS_WRITEABLE(node->o_perm) && node->sp_bit == 1)
+		ft_printf("{black}{H_green}%s", name);
+	else if (node->type == 4 && IS_WRITEABLE(node->o_perm) && node->sp_bit != 1)
+		ft_printf("{black}{H_yellow}%s", name);
 	else if (node->type == 10)
-		ft_printf("{purple}%s", extract_name(node->name));
+		ft_printf("{purple}%s", name);
 	else if (node->type == 7 && node->sp_bit == 0)
-		ft_printf("{red}%s", extract_name(node->name));
+		ft_printf("{red}%s", name);
 	else if (node->type == 12)
-		ft_printf("{green}%s", extract_name(node->name));
+		ft_printf("{green}%s", name);
 	else if (node->type == 1)
-		ft_printf("{yellow}%s", extract_name(node->name));
+		ft_printf("{yellow}%s", name);
 	else if (node->type == 1)
-		ft_printf("{blue}{H_yellow}%s", extract_name(node->name));
+		ft_printf("{blue}{H_yellow}%s", name);
 	else if (node->type == 6)
-		ft_printf("{blue}{H_cyan}%s", extract_name(node->name));
+		ft_printf("{blue}{H_cyan}%s", name);
 	else if (node->type == 7 && node->sp_bit == 4)
-		ft_printf("{black}{h_red}%s", extract_name(node->name));
+		ft_printf("{black}{h_red}%s", name);
 	else if (node->type == 7 && node->sp_bit == 2)
-		ft_printf("{black}{H_cyan}%s", extract_name(node->name));
+		ft_printf("{black}{H_cyan}%s", name);
 	else
-		ft_printf("%s", extract_name(node->name));
+		ft_printf("%s", name);
+	free(name);
 }
 
 void	print_node(t_node *node)
 {
-	int			**option;
-	t_length	**len;
+	t_length	*len;
+	char		*root;
+	char		*name;
 
-	len = (t_length **)singleton(3);
-	(*len)->blocks = 0;
-	option = (int **)singleton(2);
-	if (**option & 4 && (extract_name(node->name)[0] != '.' || **option & 8))
+	root = find_root(node->name);
+	len = *singleton(root);
+	free(root);
+	name = extract_name(node->name);
+	if (len->option & 4 && (name[0] != '.' || len->option & 8))
 		print_info(node);
-	if (extract_name(node->name)[0] != '.' || **option & 8)
+	if (name[0] != '.' || len->option & 8)
 	{
 		print_name(node);
-		while ((*len)->name_l > node->length++ && !(**option & 4))
+		while (len->name_l > node->length++ && !(len->option & 4))
 			write(1, " ", 1);
-		if (**option & 4)
+		if (len->option & 4)
 			write(1, "\n", 1);
 	}
+	free(name);
 }
 
 void	print_tree(t_node *tree, char **path)
 {
-	int		**option;
-	char	*test;
+	t_length	**len;
+	char		*test;
 
 	test = NULL;
-	test = find_root(test, tree->name);
-	option = (int **)singleton(2);
+	test = find_root(tree->name);
+	len = singleton(*path);
 	if (!tree)
 		return ;
 	if (tree->left)
 		print_tree(tree->left, path);
-	**option = (**option & 64) ? **option ^ 64 : **option;
 	if (!ft_strequ(*path, test))
 	{
-		if (((**option & 32) || (**option & 16)) && !(**option & 64))
+		if (((*len)->option & 48) && !((*len)->option & 64))
 			ft_printf("\n");
-		*path = find_root(*path, tree->name);
-		if ((**option & 32) || (**option & 16))
-			ft_printf("%.*s:\ntotal %d\n", ft_strlen(*path) - 1, *path, tree->blocks);
+		free(*path);
+		*path = find_root(tree->name);
+		len = singleton(*path);
+		if (((*len)->option & 48))
+			ft_printf("%.*s:\n", ft_strlen(*path) - 1, *path);
+		if (((*len)->option & 4))
+			ft_printf("total %d\n", (*len)->blocks);
+		(((*len)->option) & 64) ? singleton("\0") : 0;
 	}
 	print_node(tree);
 	if (tree->right)
 		print_tree(tree->right, path);
+	free_node(tree);
+	free(test);
 }

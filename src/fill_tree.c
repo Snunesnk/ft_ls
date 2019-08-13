@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 18:17:45 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/12 18:52:40 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/13 20:23:16 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,12 @@ int	fill_spec(struct stat st, t_node *new_node)
 t_node	*init_node(t_node *node)
 {
 	struct	stat	st;
+	char			*name;
 
 	stat(node->name, &st);
-	node->length = ft_strlen(extract_name(node->name));
+	name = extract_name(node->name);
+	node->length = ft_strlen(name);
+	free(name);
 	if (node->type == 8
 			&& (st.st_mode & (S_IRWXU | S_IRWXG | S_IRWXO)) / 64 == 7)
 		node->type = 7;
@@ -71,7 +74,9 @@ t_node	*place_node(t_node *tree, t_node *new_node)
 		tree->right =  place_node(tree->right, new_node);
 	tree->heigth = 1 + MAX(heigth(tree->left), heigth(tree->right));
 	balanced = check_balance(tree);
-	return (balance(balanced, tree, new_node));
+	if (balanced < -1 || balanced > 1)
+		tree = balance(balanced, tree, new_node);
+	return (tree);
 }
 
 t_node	*add_node(t_node *tree, struct dirent *files, char *root)
@@ -98,20 +103,23 @@ t_node	*add_node(t_node *tree, struct dirent *files, char *root)
 
 int		ft_node_cmp(t_node *tree, t_node *new_node)
 {
-	int	**option;
-	int	result;
+	int			result;
+	t_length	*len;
+	char		*root;
 
+	root = find_root(tree->name);
+	len = *singleton(root);
+	free(root);
 	if (!tree)
 		return (-1);
 	if (!new_node)
 		return (1);
 	result = path_cmp(new_node->name, tree->name);
-	option = (int **)singleton(2);
 	if (result < 0 || result > 0)
 		return (result);
-	else if (**option & 2 && !(**option & 1))
+	else if (len->option & 2 && !(len->option & 1))
 		result = (ft_strcmp(new_node->name, tree->name) <= 0);
-	else if (!(**option & 1))
+	else if (!(len->option & 1))
 		result = ft_strcmp(new_node->name, tree->name);
 	return (result);
 }

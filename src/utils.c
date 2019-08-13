@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/08 11:13:08 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/12 18:34:27 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/13 18:44:05 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,23 +74,29 @@ char	*extract_name(char *path)
 	return (name);
 }
 
-char	*find_root(char *root, char *file)
+char	*find_root(char *file)
 {
-	int i;
-	int j;
+	int 	i;
+	int 	j;
+	char	*root;
 
 	if (!(root = ft_strdup(file)))
 		return (NULL);
 	i = 0;
-	j = 0;
+	j = -1;
 	while (root[i])
 	{
 		if (root[i] == '/')
 			j = i + 1;
 		i++;
 	}
-	if (j != 0)
+	if (j > 0)
 		root[j] = '\0';
+	if (j == -1)
+	{
+		root[0] = '.';
+		root[1] = 0;
+	}
 	return (root);
 }
 
@@ -101,27 +107,20 @@ t_node *add_content(t_node *tree, char *name)
 	struct dirent	*file;
 
 	root = NULL;
-	if (!(root = find_root(root, name)))
+	if (!(root = find_root(name)))
 		return (NULL);
-	if (ft_strequ(root, ".\0"))
-		root = ft_strdup(name);
-	ft_printf("root = %s, name = %s\n", root, name);
 	if ((directory = opendir(name)))
-	{
-		ft_printf("C'est un repertoire\n");
-		while ((file = readdir(directory)))
-			tree = add_node(tree, file, root);
-	}
+		tree = add_recurs(tree, name);
 	else
 	{
 		directory = opendir(root);
 		name = extract_name(name);
-		ft_printf("%s est un fichier\n", name);
 		file = readdir(directory);
 		while (!ft_strequ(name, file->d_name))
 			file = readdir(directory);
 		tree = add_node(tree, file, root);
 	}
 	closedir(directory);
+	free(root);
 	return (tree);
 }
