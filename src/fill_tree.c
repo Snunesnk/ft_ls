@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 18:17:45 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/13 20:23:16 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/14 17:46:08 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ int	fill_spec(struct stat st, t_node *new_node)
 	new_node->blocks = st.st_blocks;
 	if (!(new_node->mtime = ft_strdup(give_time(st))))
 		return (0);
-	update_l(new_node);
 	return (1);
 }
 
@@ -62,24 +61,24 @@ t_node	*init_node(t_node *node)
 	return (node);
 }
 
-t_node	*place_node(t_node *tree, t_node *new_node)
+t_node	*place_node(t_node *tree, t_node *new_node, t_length *len)
 {
 	int balanced;
 
 	if (!tree)
 		return (new_node);
-	if (ft_node_cmp(tree, new_node) <= 0)
-		tree->left = place_node(tree->left, new_node);
+	if (ft_node_cmp(tree, new_node, len) <= 0)
+		tree->left = place_node(tree->left, new_node, len);
 	else
-		tree->right =  place_node(tree->right, new_node);
+		tree->right =  place_node(tree->right, new_node, len);
 	tree->heigth = 1 + MAX(heigth(tree->left), heigth(tree->right));
 	balanced = check_balance(tree);
 	if (balanced < -1 || balanced > 1)
-		tree = balance(balanced, tree, new_node);
+		tree = balance(balanced, tree, new_node, len);
 	return (tree);
 }
 
-t_node	*add_node(t_node *tree, struct dirent *files, char *root)
+t_node	*add_node(t_node *tree, struct dirent *files, char *root, t_length *len)
 {
 	t_node	*node;
 	int		i;
@@ -97,27 +96,24 @@ t_node	*add_node(t_node *tree, struct dirent *files, char *root)
 	i = ft_strlen(node->name) - 1;
 	if (!(node = init_node(node)))
 		return (NULL);
-	tree = place_node(tree, node);
+	update_l(node, len);
+	tree = place_node(tree, node, len);
 	return (tree);
 }
 
-int		ft_node_cmp(t_node *tree, t_node *new_node)
+int		ft_node_cmp(t_node *tree, t_node *new_node, t_length *len)
 {
 	int			result;
-	t_length	*len;
-	char		*root;
 
-	root = find_root(tree->name);
-	len = *singleton(root);
-	free(root);
+	result = 0;
 	if (!tree)
 		return (-1);
 	if (!new_node)
 		return (1);
-	result = path_cmp(new_node->name, tree->name);
-	if (result < 0 || result > 0)
-		return (result);
-	else if (len->option & 2 && !(len->option & 1))
+//	result = path_cmp(new_node->name, tree->name);
+//	if (result < 0 || result > 0)
+//		return (result);
+	if (len->option & 2 && !(len->option & 1))
 		result = (ft_strcmp(new_node->name, tree->name) <= 0);
 	else if (!(len->option & 1))
 		result = ft_strcmp(new_node->name, tree->name);

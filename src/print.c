@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/07 13:17:17 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/13 19:33:45 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/14 17:46:04 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	print_perms(int perm)
 	}
 }
 
-void	print_info(t_node *node)
+void	print_info(t_node *node, t_length *len)
 {
 	char		file_type[20];
 	int			i;
@@ -47,12 +47,7 @@ void	print_info(t_node *node)
 	int			owner_l;
 	int			group_l;
 	int			size_l;
-	t_length	*len;
-	char		*root;
 
-	root = find_root(node->name);
-	len = *singleton(root);
-	free(root);
 	i = 0;
 	init_file_type(file_type);
 	while (node->type != file_type[i] && file_type[i])
@@ -100,18 +95,13 @@ void	print_name(t_node *node)
 	free(name);
 }
 
-void	print_node(t_node *node)
+void	print_node(t_node *node, t_length *len)
 {
-	t_length	*len;
-	char		*root;
 	char		*name;
 
-	root = find_root(node->name);
-	len = *singleton(root);
-	free(root);
 	name = extract_name(node->name);
 	if (len->option & 4 && (name[0] != '.' || len->option & 8))
-		print_info(node);
+		print_info(node, len);
 	if (name[0] != '.' || len->option & 8)
 	{
 		print_name(node);
@@ -123,34 +113,30 @@ void	print_node(t_node *node)
 	free(name);
 }
 
-void	print_tree(t_node *tree, char **path)
+void	print_tree(t_node *tree, char **path, t_length *len)
 {
-	t_length	**len;
-	char		*test;
+	char	*test;
 
-	test = NULL;
-	test = find_root(tree->name);
-	len = singleton(*path);
 	if (!tree)
 		return ;
 	if (tree->left)
-		print_tree(tree->left, path);
+		print_tree(tree->left, path, len);
+	test = NULL;
+	test = find_root(tree->name);
 	if (!ft_strequ(*path, test))
 	{
-		if (((*len)->option & 48) && !((*len)->option & 64))
+		if ((len->option & 48) && !(len->option & 64))
 			ft_printf("\n");
+		len->option = (len->option & 64) ? len->option ^ 64 : len->option;
 		free(*path);
 		*path = find_root(tree->name);
-		len = singleton(*path);
-		if (((*len)->option & 48))
+		if (len->multi > 1 || (len->multi == 1 && tree->type == 4))
 			ft_printf("%.*s:\n", ft_strlen(*path) - 1, *path);
-		if (((*len)->option & 4))
-			ft_printf("total %d\n", (*len)->blocks);
-		(((*len)->option) & 64) ? singleton("\0") : 0;
+		if ((tree->links > 2) || (tree->type == 4 && (len->option & 8)))
+			ft_printf("total %d\n", len->blocks);
 	}
-	print_node(tree);
+	print_node(tree, len);
 	if (tree->right)
-		print_tree(tree->right, path);
-	free_node(tree);
+		print_tree(tree->right, path, len);
 	free(test);
 }

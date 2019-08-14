@@ -6,39 +6,34 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/07 13:10:13 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/13 20:23:18 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/14 16:56:35 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-void	update_l(t_node *node)
+void	update_l(t_node *node, t_length *len)
 {
-	t_length	**len;
 	char		*name;
-	char		*root;
 
 	name = extract_name(node->name);
-	root = find_root(node->name);
-	len = singleton(root);
-	free(root);
-	if (ft_strlen(name) + 1 > (size_t)(*len)->name_l
-			&& (name[0] != '.' || (*len)->option & 8))
-		(*len)->name_l = ft_strlen(name) + 1;
-	if (ft_nbrlen(node->links) + 2 > (*len)->link_l
-					&& (name[0] != '.' || (*len)->option & 8))
-		(*len)->link_l = ft_nbrlen(node->links) + 2;
-	if (ft_strlen(node->owner) + 1 > (size_t)(*len)->user_l
-					&& (name[0] != '.' || (*len)->option & 8))
-		(*len)->user_l = ft_strlen(node->owner);
-	if (ft_strlen(node->group) + 2 > (size_t)(*len)->group_l
-					&& (name[0] != '.' || (*len)->option & 8))
-		(*len)->group_l = ft_strlen(node->group);
-	if (ft_nbrlen(node->size) + 2 > (*len)->size_l
-					&& (name[0] != '.' || (*len)->option & 8))
-		(*len)->size_l = ft_nbrlen(node->size) + 2;
-	if ((name[0] != '.' || (*len)->option & 8))
-		(*len)->blocks += node->blocks;
+	if (ft_strlen(name) + 1 > (size_t)len->name_l
+			&& (name[0] != '.' || len->option & 8))
+		len->name_l = ft_strlen(name) + 1;
+	if (ft_nbrlen(node->links) + 2 > len->link_l
+					&& (name[0] != '.' || len->option & 8))
+		len->link_l = ft_nbrlen(node->links) + 2;
+	if (ft_strlen(node->owner) + 1 > (size_t)len->user_l
+					&& (name[0] != '.' || len->option & 8))
+		len->user_l = ft_strlen(node->owner);
+	if (ft_strlen(node->group) + 2 > (size_t)len->group_l
+					&& (name[0] != '.' || len->option & 8))
+		len->group_l = ft_strlen(node->group);
+	if (ft_nbrlen(node->size) + 2 > len->size_l
+					&& (name[0] != '.' || len->option & 8))
+		len->size_l = ft_nbrlen(node->size) + 2;
+	if ((name[0] != '.' || len->option & 8))
+		len->blocks += node->blocks;
 	free(name);
 }
 
@@ -83,53 +78,52 @@ char	*give_time(struct stat st)
 	return (ltime);
 }
 
-int		requi(t_length *len, char *name)
+int		requi(t_length *len, char *root)
 {
+	char	*name;
+
+	name = extract_name(root);
 	if (ft_strequ(name, ".\0") || ft_strequ(name, "..\0"))
+	{
+		free(name);
 		return (0);
+	}
 	if (name[0] != '.')
+	{
+		free(name);
 		return (1);
+	}
 	if (name[0] == '.' && len->option & 8)
+	{
+		free(name);
 		return (1);
+	}
+	free(name);
 	return (0);
 }
 
-t_node	*add_recurs(t_node *tree, char *name)
+void	print_recurs(t_node *tree, t_length *len)
 {
-	DIR				*dir;
-	struct dirent	*file;
-	t_length		*len;
-	char			*root;
+	t_node		*directory;
+	t_length	*new_len;
 
-	ft_printf("ouverture de %s\n", name);
-	root = ft_strdup(name);
-	if (ft_strequ(root, ".\0"))
+	new_len = NULL;
+	directory = NULL;
+	if (!tree)
+		return;
+	if (tree->left)
+		print_recurs(tree->left, len);
+	if (tree->type == 4 && requi(len, tree->name))
 	{
-		free(root);
-		root = ft_strdup(name);
+		if (!(new_len = init_len(len)))
+			return ;
+		directory = recurs(directory, tree->name, new_len);
+		print_tree(directory, &tree->name, new_len);
+		free(new_len);
+		if (tree->links > 2 || (len->option & 8))
+		print_recurs(directory, len);
 	}
-	len = *singleton(name);
-	dir = opendir(name);
-	while ((file = readdir(dir)))
-	{
-		if (len->option & 16 && file->d_type == 4 && requi(len, file->d_name))
-		{
-			root = ft_strjoin_free(&root, "/\0", 1);
-			root = ft_strjoin_free(&root, file->d_name, 1);
-			tree = add_recurs(tree, root);
-			if (tree->heigth >= 11)
-			{
-				print_tree(tree, &root);
-				tree = add_content(tree, root);
-		ft_printf("print du tree effectue, root = %s\n", root);
-			}
-			free(root);
-			root = ft_strdup(name);
-		}
-		tree = add_node(tree, file, root);
-		//ft_printf("tree->heigth = %d\n", tree->heigth);
-	}
-	closedir(dir);
-	free(root);
-	return (tree);
+	if (tree->right)
+		print_recurs(tree->right, len);
+	free_node(tree);
 }

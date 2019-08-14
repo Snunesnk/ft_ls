@@ -6,7 +6,7 @@
 #    By: snunes <snunes@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/05 12:37:58 by snunes            #+#    #+#              #
-#    Updated: 2019/08/13 19:02:55 by snunes           ###   ########.fr        #
+#    Updated: 2019/08/14 12:53:46 by snunes           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,8 @@ SRC = 		ft_ls.c \
 			print.c \
 			utils.c \
 			avl_tree.c \
-			free.c
+			free.c \
+			option_R.c
 
 LDFLAG = -Llibft
 LDLIB = -lft

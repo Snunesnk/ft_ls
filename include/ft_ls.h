@@ -6,7 +6,7 @@
 /*   By: root <snunes@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/19 15:11:41 by root              #+#    #+#             */
-/*   Updated: 2019/08/13 19:06:50 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/14 17:46:14 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 
 typedef struct	s_length
 {
-	char			*path;
+	int				multi;
 	int				option;
 	int				name_l;
 	int				link_l;
@@ -39,8 +39,6 @@ typedef struct	s_length
 	int				group_l;
 	int				size_l;
 	long long int	blocks;
-	struct s_length	*next;
-	struct s_length *prev;
 }				t_length;
 
 typedef struct	s_node
@@ -63,23 +61,24 @@ typedef struct	s_node
 	struct s_node	*left;
 }				t_node;
 
-void		free_len(t_length *len);
+t_node		*recurs(t_node *tree, char *path, t_length *len);
+int			requi(t_length *len, char *root);
 void		free_node(t_node *node);
-t_node		*add_recurs(t_node *tree, char *name);
-int			ft_node_cmp(t_node *node, t_node *new_node);
+void		print_recurs(t_node *tree, t_length *len);
+int			ft_node_cmp(t_node *node, t_node *new_node, t_length *len);
 int			path_cmp(char *path1, char *path2);
 char		*extract_name(char *path);
-t_node		*add_content(t_node *tree, char *name);
+t_node		*add_content(t_node *tree, char *name, t_length *len);
 int			heigth(t_node *node);
 int			check_balance(t_node *node);
-t_node		*balance(int balanced, t_node *node, t_node *new_node);
-t_length	*init_len(t_length *len, char *path);
-char		**sing_path(char *to_add);
-t_length	**singleton(char *path);
-t_node		*add_node(t_node *tree, struct dirent *files, char *root);
-void		print_tree(t_node *tree, char **name);
+t_node		*balance(int balanced, t_node *node, t_node *new_node, t_length \
+																		*len);
+t_length	*init_len(t_length *len);
+t_node		*add_node(t_node *tree, struct dirent *files, char *root, t_length \
+																		*len);
+void		print_tree(t_node *tree, char **name, t_length *len);
 char		*give_time(struct stat st);
-void		update_l(t_node *node);
+void		update_l(t_node *node, t_length *len);
 void		init_file_type(char file_type[20]);
 int			give_length(int length, int to_reach);
 t_node		*start_tree(t_node *tree, char *root, char *to_find);

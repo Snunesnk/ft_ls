@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/10 16:46:53 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/13 12:32:21 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/14 16:37:01 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,18 +54,18 @@ t_node	*left_rotate(t_node *node)
 	return (x);
 }
 
-t_node	*balance(int balanced, t_node *node, t_node *new_node)
+t_node	*balance(int balanced, t_node *node, t_node *new_node, t_length *len)
 {
-	if (balanced > 1 && ft_node_cmp(node->left, new_node) <= 0)
+	if (balanced > 1 && ft_node_cmp(node->left, new_node, len) <= 0)
 		return (right_rotate(node));
-	if (balanced < -1 && ft_node_cmp(node->right, new_node) > 0)
+	if (balanced < -1 && ft_node_cmp(node->right, new_node, len) > 0)
 		return (left_rotate(node));
-	if (balanced < -1 && ft_node_cmp(node->right, new_node) <= 0)
+	if (balanced < -1 && ft_node_cmp(node->right, new_node, len) <= 0)
 	{
 		node->right = right_rotate(node->right);
 		return (left_rotate(node));
 	}
-	if (balanced > 1 && ft_node_cmp(node->left, new_node) > 0)
+	if (balanced > 1 && ft_node_cmp(node->left, new_node, len) > 0)
 	{
 		node->left = left_rotate(node->left);
 		return (right_rotate(node));

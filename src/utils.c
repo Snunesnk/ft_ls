@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/08 11:13:08 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/13 18:44:05 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/14 17:46:11 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ char	*find_root(char *file)
 	return (root);
 }
 
-t_node *add_content(t_node *tree, char *name)
+t_node *add_content(t_node *tree, char *name, t_length *len)
 {
 	DIR				*directory;
 	char			*root;
@@ -110,7 +110,16 @@ t_node *add_content(t_node *tree, char *name)
 	if (!(root = find_root(name)))
 		return (NULL);
 	if ((directory = opendir(name)))
-		tree = add_recurs(tree, name);
+	{
+		len->multi += 1;
+		if (ft_strequ(root, ".\0"))
+		{
+			free(root);
+			root = ft_strdup(name);
+		}
+		while ((file = readdir(directory)))
+			tree = add_node(tree, file, root, len);
+	}
 	else
 	{
 		directory = opendir(root);
@@ -118,7 +127,7 @@ t_node *add_content(t_node *tree, char *name)
 		file = readdir(directory);
 		while (!ft_strequ(name, file->d_name))
 			file = readdir(directory);
-		tree = add_node(tree, file, root);
+		tree = add_node(tree, file, root, len);
 	}
 	closedir(directory);
 	free(root);
