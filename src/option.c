@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/07 13:10:13 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/14 16:56:35 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/15 18:26:22 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ char	*give_time(struct stat st)
 	char	*ltime;
 
 	ltime = ctime(&st.st_mtimespec.tv_sec);
+	ft_printf("ltime: %s\n", ltime);
 	ft_memmove(ltime, ltime + 4, 26);
 	ltime[12] = '\0';
 	return (ltime);
@@ -117,8 +118,8 @@ void	print_recurs(t_node *tree, t_length *len)
 	{
 		if (!(new_len = init_len(len)))
 			return ;
-		directory = recurs(directory, tree->name, new_len);
-		print_tree(directory, &tree->name, new_len);
+		if ((directory = recurs(directory, tree->name, new_len)))
+			print_tree(directory, &tree->name, new_len);
 		free(new_len);
 		if (tree->links > 2 || (len->option & 8))
 		print_recurs(directory, len);

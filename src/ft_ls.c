@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 17:53:15 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/15 12:47:58 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/15 18:26:20 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int		main(int argc, char **argv)
 	len = NULL;
 	tree = NULL;
 	if (!(len = init_len(len)))
-		return ((int)ft_error("Init len dans le main n'a pas fonctionne"));
+		return (0);
 	arg = get_options(argv, &(len->option));
 	if (argc - arg > 1 || len->option & 16)
 		len->option = len->option | 32;
@@ -79,7 +79,7 @@ int		main(int argc, char **argv)
 		arg++;
 	}
 	if (!(name = ft_strdup(*argv)))
-		return ((int)ft_error("strdup dans le main a echoue"));
+		return (0);
 	print_tree(tree, &name, len);
 	if (len->option & 16)
 		print_recurs(tree, len);
