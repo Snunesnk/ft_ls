@@ -6,7 +6,7 @@
 /*   By: root <snunes@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/19 15:11:41 by root              #+#    #+#             */
-/*   Updated: 2019/08/14 17:46:14 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/15 12:48:06 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 # include <string.h>
 
 # define MAX(x, y) (x > y ? x : y)
-# define IS_WRITEABLE(x) (x == 7 || x == 6 || x == 3 || x == 2)
+# define IS_WRITEABLE(x) ((x) == 7 || (x) == 6 || (x) == 3 || (x) == 2)
 
 typedef struct	s_length
 {
@@ -61,6 +61,7 @@ typedef struct	s_node
 	struct s_node	*left;
 }				t_node;
 
+void		*ft_error(char *desc);
 t_node		*recurs(t_node *tree, char *path, t_length *len);
 int			requi(t_length *len, char *root);
 void		free_node(t_node *node);

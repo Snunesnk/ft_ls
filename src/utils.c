@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/08 11:13:08 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/14 17:46:11 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/15 12:48:02 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,27 +107,32 @@ t_node *add_content(t_node *tree, char *name, t_length *len)
 	struct dirent	*file;
 
 	root = NULL;
-	if (!(root = find_root(name)))
-		return (NULL);
 	if ((directory = opendir(name)))
 	{
 		len->multi += 1;
-		if (ft_strequ(root, ".\0"))
-		{
-			free(root);
-			root = ft_strdup(name);
-		}
+		if (!(root = ft_strdup(name)))
+			return ((t_node *)ft_error(name));
 		while ((file = readdir(directory)))
-			tree = add_node(tree, file, root, len);
+		{
+			if (!(tree = add_node(tree, file, root, len)))
+				return ((t_node *)ft_error(name));
+		}
 	}
 	else
 	{
-		directory = opendir(root);
-		name = extract_name(name);
+		if (!(root = find_root(name)))
+			return ((t_node *)ft_error(name));
+		if (!(directory = opendir(root)))
+			return ((t_node *)ft_error(root));
+		if (!(name = extract_name(name)))
+			return ((t_node *)ft_error(name));
 		file = readdir(directory);
-		while (!ft_strequ(name, file->d_name))
+		while (file && !ft_strequ(name, file->d_name))
 			file = readdir(directory);
-		tree = add_node(tree, file, root, len);
+		if (!file)
+			return ((t_node *)ft_error(ft_strjoin_free(&root, name, 3)));
+		if (file && !(tree = add_node(tree, file, root, len)))
+			return ((t_node *)ft_error(ft_strjoin_free(&root, name, 3)));
 	}
 	closedir(directory);
 	free(root);

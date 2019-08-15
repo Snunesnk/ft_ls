@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 17:53:15 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/14 17:46:02 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/15 12:47:58 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ t_length	*init_len(t_length *len)
 {
 	t_length	*new_len;
 
-	new_len = (t_length *)ft_memalloc(sizeof(t_length));	
+	if (!(new_len = (t_length *)ft_memalloc(sizeof(t_length))))
+		return (NULL);	
 	if (!len)
 	{
 		new_len->option = 0;
@@ -64,21 +65,25 @@ int		main(int argc, char **argv)
 	len = NULL;
 	tree = NULL;
 	if (!(len = init_len(len)))
-		return (0);
+		return ((int)ft_error("Init len dans le main n'a pas fonctionne"));
 	arg = get_options(argv, &(len->option));
 	if (argc - arg > 1 || len->option & 16)
 		len->option = len->option | 32;
 	if (argc - arg == 0)
-		tree = add_content(tree, ".\0", len);
+		if (!(tree = add_content(tree, ".\0", len)))
+			return (0);
 	while (argc > arg)
 	{
-		tree = add_content(tree, argv[arg], len);
+		if (!(tree = add_content(tree, argv[arg], len)))
+			return (0);
 		arg++;
 	}
-	name = ft_strdup(*argv);
+	if (!(name = ft_strdup(*argv)))
+		return ((int)ft_error("strdup dans le main a echoue"));
 	print_tree(tree, &name, len);
 	if (len->option & 16)
 		print_recurs(tree, len);
+	(len->option & 4) ? 0 : ft_printf("\n");
 	free(name);
 	free(len);
 	return (0);

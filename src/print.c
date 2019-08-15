@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/07 13:17:17 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/14 17:46:04 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/15 12:00:15 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,9 @@ void	print_name(t_node *node)
 {
 	char	*name;
 
-	name = extract_name(node->name);
-	if (node->type == 4 && !IS_WRITEABLE(node->o_perm))
+	if (!(name = extract_name(node->name)))
+		return ((void)ft_error("extract_name dans print_name a echoue"));
+	if ((node->type == 4 && !IS_WRITEABLE(node->o_perm)))
 		ft_printf("{B_cyan}%s", name);
 	else if (node->type == 4 && IS_WRITEABLE(node->o_perm) && node->sp_bit == 1)
 		ft_printf("{black}{H_green}%s", name);
@@ -82,7 +83,7 @@ void	print_name(t_node *node)
 		ft_printf("{green}%s", name);
 	else if (node->type == 1)
 		ft_printf("{yellow}%s", name);
-	else if (node->type == 1)
+	else if (node->type == 2 || node->type == 0)
 		ft_printf("{blue}{H_yellow}%s", name);
 	else if (node->type == 6)
 		ft_printf("{blue}{H_cyan}%s", name);
@@ -99,7 +100,8 @@ void	print_node(t_node *node, t_length *len)
 {
 	char		*name;
 
-	name = extract_name(node->name);
+	if (!(name = extract_name(node->name)))
+		return ((void)ft_error("extract name dans print node a echoue"));
 	if (len->option & 4 && (name[0] != '.' || len->option & 8))
 		print_info(node, len);
 	if (name[0] != '.' || len->option & 8)
