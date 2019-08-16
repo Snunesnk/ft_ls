@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/15 17:55:02 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/15 18:26:18 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/16 12:35:34 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	init_buff(char *buff[13])
 {
-	buff[0] = "Jan\0"
+	buff[0] = "Jan\0";
 	buff[1] = "Feb\0";
 	buff[2] = "Mar\0";
 	buff[3] = "Apr\0";
@@ -45,29 +45,24 @@ int		cmp_month(char *node_month, char *tree_month)
 	i = 0;
 	while (!ft_strequ(tree_month, buff[i]) && buff[i])
 		i++;
-	return (result - i);
-}
-
-int		cmp_hour(char *node->time, char *tree->time)
-{
-
+	node_month[3] = ' ';
+	tree_month[3] = ' ';
+	return (i - result);
 }
 
 int		ft_tmpcmp(char *node_time, char *tree_time)
 {
 	int result;
 
-	if ((result = ft_atoi(node_time + 20) - ft_atoi(tree_time + 20)))
+	result = 0;
+	if ((result = ft_atoi(tree_time + 16) - ft_atoi(node_time + 16)))
 		return (result);
-	if ((result = cmp_month(node_time + 4, tree_time + 4)))
+	if ((result = cmp_month(node_time, tree_time)))
 		return (result);
-	node_time[11] = '\0';
-	tree_time[11] = '\0';
-	if ((result = ft_atoi(node_time + 8) - ft_atoi(tree_time + 8)))
-		return (result);
-	node_time[20] = '\0';
-	tree_time[20] = '\0';
-	if (result = cmp_hour(node_time + 12, tree_time + 12))
-		return (result);
-	return (0);
+	node_time[15] = '\0';
+	tree_time[15] = '\0';
+	result = ft_strcmp(tree_time + 4, node_time + 4);
+	node_time[15] = ' ';
+	tree_time[15] = ' ';
+	return (result);
 }

@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 18:17:45 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/15 18:26:23 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/16 12:37:08 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,11 @@ int	fill_spec(struct stat st, t_node *new_node)
 	new_node->links = st.st_nlink;
 	new_node->size = st.st_size;
 	new_node->blocks = st.st_blocks;
-	if (!(new_node->mtime = ft_strdup(give_time(st))))
-		return (0);
+	if (!(new_node->mtime = give_time(st)))
+		return ((int)ft_error(new_node->name));
+	new_node->mtime = ft_memmove(new_node->mtime, new_node->mtime + 4, 20);
+	new_node->mtime[20] = '\0';
+	new_node->mtime[22] = '\0';
 	return (1);
 }
 
@@ -108,13 +111,11 @@ int		ft_node_cmp(t_node *tree, t_node *new_node, t_length *len)
 		return (-1);
 	if (!new_node)
 		return (1);
-	if (len->option & 2 && !(len->option & 1))
-		result = (ft_strcmp(new_node->name, tree->name) <= 0);
-	else if ((len->option & 1) && !(len->option & 2))
-		result = ft_tmpcmp(new_node->mtime, tree->mtime);
-	else if ((len->option & 1) && (len->option & 2))
-		result = (ft_tmpcmp(new_node->mtime, tree->mtime) < 0);
-	if (result == 0 && !(len->option & 1))
+	if ((len->option & 1))
+		result = (ft_tmpcmp(new_node->mtime, tree->mtime));
+	if (result == 0)
 		result = ft_strcmp(new_node->name, tree->name);
+	if (len->option & 2)
+		result = -result;
 	return (result);
 }

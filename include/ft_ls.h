@@ -6,7 +6,7 @@
 /*   By: root <snunes@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/19 15:11:41 by root              #+#    #+#             */
-/*   Updated: 2019/08/15 12:48:06 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/16 12:18:52 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ typedef struct	s_node
 	struct s_node	*left;
 }				t_node;
 
+int			ft_tmpcmp(char *node_time, char *tree_time);
 void		*ft_error(char *desc);
 t_node		*recurs(t_node *tree, char *path, t_length *len);
 int			requi(t_length *len, char *root);

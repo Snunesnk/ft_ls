@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/07 13:10:13 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/15 18:26:22 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/16 12:27:52 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,7 @@ char	*give_time(struct stat st)
 {
 	char	*ltime;
 
-	ltime = ctime(&st.st_mtimespec.tv_sec);
-	ft_printf("ltime: %s\n", ltime);
-	ft_memmove(ltime, ltime + 4, 26);
-	ltime[12] = '\0';
+	ltime = ft_strdup(ctime(&st.st_mtimespec.tv_sec));
 	return (ltime);
 }
 
