@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 17:53:15 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/15 18:26:20 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/16 14:12:37 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ int		main(int argc, char **argv)
 	int			arg;
 	t_node		*tree;
 	t_length	*len;
-	char		*name;
 
 	len = NULL;
 	tree = NULL;
@@ -78,13 +77,11 @@ int		main(int argc, char **argv)
 			return (0);
 		arg++;
 	}
-	if (!(name = ft_strdup(*argv)))
-		return (0);
-	print_tree(tree, &name, len);
+	print_dir(tree, len, 0);
+	print_tree(tree, len);
 	if (len->option & 16)
 		print_recurs(tree, len);
 	(len->option & 4) ? 0 : ft_printf("\n");
-	free(name);
 	free(len);
 	return (0);
 }

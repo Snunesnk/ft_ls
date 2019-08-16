@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 18:17:45 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/16 12:37:08 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/16 13:09:27 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ int	fill_spec(struct stat st, t_node *new_node)
 	struct group	*grp;
 
 	if (!(user = getpwuid(st.st_uid)))
-		return ((int)ft_error("getpwuid()"));
+		return ((int)ft_error(ft_strdup(new_node->name)));
 	if (!(grp = getgrgid(st.st_gid)))
-		return ((int)ft_error("getgrgid()"));
+		return ((int)ft_error(ft_strdup(new_node->name)));
 	new_node->sp_bit = ((st.st_mode) / 512) % 8;
 	new_node->u_perm = (st.st_mode & S_IRWXU) / 64;
 	new_node->g_perm = (st.st_mode & S_IRWXG) % 64 / 8;

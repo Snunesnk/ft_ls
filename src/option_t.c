@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/15 17:55:02 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/16 12:35:34 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/16 16:32:01 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,4 +65,48 @@ int		ft_tmpcmp(char *node_time, char *tree_time)
 	node_time[15] = ' ';
 	tree_time[15] = ' ';
 	return (result);
+}
+
+long int	calc_time(char *time)
+{
+	long int	seconds;
+	int			i;
+	char		*jan;
+
+	seconds = 0;
+	jan = ft_strdup("Jan\0");
+	i = cmp_month(time, jan) * -1;
+	seconds += 86400 * 30 * i + ((i - 1) / 2) * 86400;
+	if (i >= 2)
+		seconds -= 86400;
+	free(jan);
+	seconds += (ft_atoi(time + 16) - 1970) * 31536000;
+	seconds += ((ft_atoi(time + 16) - 1969) / 4) * 86400 - 86400;
+	time[6] = '\0';
+	time[9] = '\0';
+	time[12] = '\0';
+	time[15] = '\0';
+	seconds += ft_atoi(time + 4) * 86400;
+	seconds += ft_atoi(time + 7) * 3600 + ft_atoi(time + 10) * 60 - 7200;
+	seconds += ft_atoi(time + 13);
+	time[6] = ' ';
+	time[9] = ':';
+	time[12] = ':';
+	time[15] = ':';
+	return (seconds);
+}
+
+void	print_time(char	*node_time)
+{
+	time_t		seconds;
+	long int	node_sec;
+
+	seconds = time(NULL);
+	node_sec = calc_time(node_time);
+	if (seconds - node_sec > 30 * 86400 * 6 + 3 * 86400 || node_sec > seconds)
+	{
+		ft_memmove(node_time + 8, node_time + 16, 4);
+		node_time[7] = ' ';
+	}
+	ft_printf(" %.*s ", 12, node_time);
 }

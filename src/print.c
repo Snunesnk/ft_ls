@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/07 13:17:17 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/15 12:00:15 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/16 14:33:26 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	print_info(t_node *node, t_length *len)
 	size_l = give_length(ft_nbrlen(node->size), len->size_l);
 	ft_printf("%*d %-*s", link_l, node->links, owner_l, node->owner);
 	ft_printf("  %-*s%*lld", group_l, node->group, size_l, node->size);
-	ft_printf(" %s ", node->mtime);
+	print_time(node->mtime);
 }
 
 void	print_name(t_node *node)
@@ -96,49 +96,27 @@ void	print_name(t_node *node)
 	free(name);
 }
 
-void	print_node(t_node *node, t_length *len)
+void	print_tree(t_node *tree, t_length *len)
 {
-	char		*name;
+	char	*name;
 
-	if (!(name = extract_name(node->name)))
+	if (!tree)
+		return ;
+	if (tree->left)
+		print_tree(tree->left, len);
+	if (!(name = extract_name(tree->name)))
 		return ((void)ft_error("extract name dans print node a echoue"));
 	if (len->option & 4 && (name[0] != '.' || len->option & 8))
-		print_info(node, len);
+		print_info(tree, len);
 	if (name[0] != '.' || len->option & 8)
 	{
-		print_name(node);
-		while (len->name_l > node->length++ && !(len->option & 4))
+		print_name(tree);
+		while (len->name_l > tree->length++ && !(len->option & 4))
 			write(1, " ", 1);
 		if (len->option & 4)
 			write(1, "\n", 1);
 	}
 	free(name);
-}
-
-void	print_tree(t_node *tree, char **path, t_length *len)
-{
-	char	*test;
-
-	if (!tree)
-		return ;
-	if (tree->left)
-		print_tree(tree->left, path, len);
-	test = NULL;
-	test = find_root(tree->name);
-	if (!ft_strequ(*path, test))
-	{
-		if ((len->option & 48) && !(len->option & 64))
-			ft_printf("\n");
-		len->option = (len->option & 64) ? len->option ^ 64 : len->option;
-		free(*path);
-		*path = find_root(tree->name);
-		if (len->multi > 1 || (len->multi == 1 && tree->type == 4))
-			ft_printf("%.*s:\n", ft_strlen(*path) - 1, *path);
-		if ((tree->links > 2) || (tree->type == 4 && (len->option & 8)))
-			ft_printf("total %d\n", len->blocks);
-	}
-	print_node(tree, len);
 	if (tree->right)
-		print_tree(tree->right, path, len);
-	free(test);
+		print_tree(tree->right, len);
 }

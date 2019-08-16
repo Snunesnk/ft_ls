@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/07 13:10:13 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/16 12:27:52 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/16 15:22:51 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,12 +76,12 @@ char	*give_time(struct stat st)
 	return (ltime);
 }
 
-int		requi(t_length *len, char *root)
+int		requi(t_length *len, char *root, int mode)
 {
 	char	*name;
 
 	name = extract_name(root);
-	if (ft_strequ(name, ".\0") || ft_strequ(name, "..\0"))
+	if ((ft_strequ(name, ".\0") || ft_strequ(name, "..\0")) && !mode)
 	{
 		free(name);
 		return (0);
@@ -98,30 +98,4 @@ int		requi(t_length *len, char *root)
 	}
 	free(name);
 	return (0);
-}
-
-void	print_recurs(t_node *tree, t_length *len)
-{
-	t_node		*directory;
-	t_length	*new_len;
-
-	new_len = NULL;
-	directory = NULL;
-	if (!tree)
-		return;
-	if (tree->left)
-		print_recurs(tree->left, len);
-	if (tree->type == 4 && requi(len, tree->name))
-	{
-		if (!(new_len = init_len(len)))
-			return ;
-		if ((directory = recurs(directory, tree->name, new_len)))
-			print_tree(directory, &tree->name, new_len);
-		free(new_len);
-		if (tree->links > 2 || (len->option & 8))
-		print_recurs(directory, len);
-	}
-	if (tree->right)
-		print_recurs(tree->right, len);
-	free_node(tree);
 }
