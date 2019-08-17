@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 17:53:15 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/16 14:12:37 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/17 14:12:10 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_length	*init_len(t_length *len)
 	t_length	*new_len;
 
 	if (!(new_len = (t_length *)ft_memalloc(sizeof(t_length))))
-		return (NULL);	
+		return (NULL);
 	if (!len)
 	{
 		new_len->option = 0;
@@ -37,10 +37,10 @@ t_length	*init_len(t_length *len)
 	return (new_len);
 }
 
-int		get_options(char **argv, int *option)
+int			get_options(char **argv, int *option)
 {
 	int i;
-	
+
 	i = 1;
 	while (argv[i] && argv[i][0] == '-')
 	{
@@ -55,7 +55,7 @@ int		get_options(char **argv, int *option)
 	return (i);
 }
 
-int		main(int argc, char **argv)
+int			main(int argc, char **argv)
 {
 	int			arg;
 	t_node		*tree;
@@ -66,11 +66,9 @@ int		main(int argc, char **argv)
 	if (!(len = init_len(len)))
 		return (0);
 	arg = get_options(argv, &(len->option));
-	if (argc - arg > 1 || len->option & 16)
-		len->option = len->option | 32;
-	if (argc - arg == 0)
-		if (!(tree = add_content(tree, ".\0", len)))
-			return (0);
+	len->option |= (argc - arg > 1 || len->option & 16) ? 32 : 0;
+	if (argc - arg == 0 && !(tree = add_content(tree, ".\0", len)))
+		return (0);
 	while (argc > arg)
 	{
 		if (!(tree = add_content(tree, argv[arg], len)))

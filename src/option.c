@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/07 13:10:13 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/16 15:22:51 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/17 13:30:03 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	init_file_type(char file_type[20])
 	file_type[8] = 7;
 	file_type[10] = 8;
 	file_type[12] = 10;
-	file_type[14] = 12;	
+	file_type[14] = 12;
 	file_type[16] = 14;
 	file_type[18] = 0;
 	file_type[1] = 'p';
@@ -76,26 +76,14 @@ char	*give_time(struct stat st)
 	return (ltime);
 }
 
-int		requi(t_length *len, char *root, int mode)
+int		print_link(t_node *tree)
 {
-	char	*name;
+	char	buff[500];
+	size_t	size;
 
-	name = extract_name(root);
-	if ((ft_strequ(name, ".\0") || ft_strequ(name, "..\0")) && !mode)
-	{
-		free(name);
-		return (0);
-	}
-	if (name[0] != '.')
-	{
-		free(name);
-		return (1);
-	}
-	if (name[0] == '.' && len->option & 8)
-	{
-		free(name);
-		return (1);
-	}
-	free(name);
-	return (0);
+	if (!(size = readlink(tree->name, buff, 500)))
+		return ((int)ft_error(extract_name(tree->name)));
+	buff[size] = '\0';
+	ft_printf(" -> %s", buff);
+	return (1);
 }

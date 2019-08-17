@@ -6,7 +6,7 @@
 #    By: snunes <snunes@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/05 12:37:58 by snunes            #+#    #+#              #
-#    Updated: 2019/08/16 16:21:01 by snunes           ###   ########.fr        #
+#    Updated: 2019/08/17 12:39:49 by snunes           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ SRC = 		ft_ls.c \
 			utils.c \
 			avl_tree.c \
 			free.c \
-			option_R.c \
+			option_recurs.c \
 			error.c \
 			option_t.c
 

@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/07 13:17:17 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/16 14:33:26 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/17 13:56:47 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ void	print_info(t_node *node, t_length *len)
 	char		file_type[20];
 	int			i;
 	int			link_l;
-	int			owner_l;
 	int			group_l;
 	int			size_l;
 
@@ -55,20 +54,16 @@ void	print_info(t_node *node, t_length *len)
 	ft_printf("%c", file_type[i + 1]);
 	print_perms((node->u_perm * 10 + node->g_perm) * 10 + node->o_perm);
 	link_l = give_length(ft_nbrlen(node->links), len->link_l);
-	owner_l = give_length(ft_strlen(node->owner), len->user_l);
+	i = give_length(ft_strlen(node->owner), len->user_l);
 	group_l = give_length(ft_strlen(node->group), len->group_l);
 	size_l = give_length(ft_nbrlen(node->size), len->size_l);
-	ft_printf("%*d %-*s", link_l, node->links, owner_l, node->owner);
+	ft_printf("%*d %-*s", link_l, node->links, i, node->owner);
 	ft_printf("  %-*s%*lld", group_l, node->group, size_l, node->size);
 	print_time(node->mtime);
 }
 
-void	print_name(t_node *node)
+int		print_sp(t_node *node, char *name)
 {
-	char	*name;
-
-	if (!(name = extract_name(node->name)))
-		return ((void)ft_error("extract_name dans print_name a echoue"));
 	if ((node->type == 4 && !IS_WRITEABLE(node->o_perm)))
 		ft_printf("{B_cyan}%s", name);
 	else if (node->type == 4 && IS_WRITEABLE(node->o_perm) && node->sp_bit == 1)
@@ -79,6 +74,22 @@ void	print_name(t_node *node)
 		ft_printf("{purple}%s", name);
 	else if (node->type == 7 && node->sp_bit == 0)
 		ft_printf("{red}%s", name);
+	else
+		return (0);
+	return (1);
+}
+
+void	print_name(t_node *node)
+{
+	char	*name;
+
+	if (!(name = extract_name(node->name)))
+		return ((void)ft_error("extract_name dans print_name a echoue"));
+	if (print_sp(node, name))
+	{
+		free(name);
+		return ;
+	}
 	else if (node->type == 12)
 		ft_printf("{green}%s", name);
 	else if (node->type == 1)
@@ -111,6 +122,8 @@ void	print_tree(t_node *tree, t_length *len)
 	if (name[0] != '.' || len->option & 8)
 	{
 		print_name(tree);
+		if ((len->option & 4) && tree->type == 10)
+			print_link(tree);
 		while (len->name_l > tree->length++ && !(len->option & 4))
 			write(1, " ", 1);
 		if (len->option & 4)

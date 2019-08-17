@@ -6,20 +6,20 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/10 16:46:53 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/14 16:37:01 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/17 12:37:58 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-int	heigth(t_node *node)
+int		heigth(t_node *node)
 {
 	if (node == NULL)
 		return (0);
 	return (node->heigth);
 }
 
-int	check_balance(t_node *node)
+int		check_balance(t_node *node)
 {
 	if (!node)
 		return (0);

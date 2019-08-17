@@ -6,13 +6,13 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 18:17:45 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/16 13:09:27 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/17 12:44:28 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-int	fill_spec(struct stat st, t_node *new_node)
+int		fill_spec(struct stat st, t_node *new_node)
 {
 	struct passwd	*user;
 	struct group	*grp;
@@ -28,7 +28,7 @@ int	fill_spec(struct stat st, t_node *new_node)
 	if (!(new_node->owner = ft_strdup(user->pw_name)))
 		return (0);
 	if (!(new_node->group = ft_strdup(grp->gr_name)))
-				return (0);
+		return (0);
 	new_node->links = st.st_nlink;
 	new_node->size = st.st_size;
 	new_node->blocks = st.st_blocks;
@@ -42,8 +42,8 @@ int	fill_spec(struct stat st, t_node *new_node)
 
 t_node	*init_node(t_node *node)
 {
-	struct	stat	st;
-	char			*name;
+	struct stat	st;
+	char		*name;
 
 	stat(node->name, &st);
 	if (!(name = extract_name(node->name)))
@@ -71,7 +71,7 @@ t_node	*place_node(t_node *tree, t_node *new_node, t_length *len)
 	if (ft_node_cmp(tree, new_node, len) <= 0)
 		tree->left = place_node(tree->left, new_node, len);
 	else
-		tree->right =  place_node(tree->right, new_node, len);
+		tree->right = place_node(tree->right, new_node, len);
 	tree->heigth = 1 + MAX(heigth(tree->left), heigth(tree->right));
 	balanced = check_balance(tree);
 	if (balanced < -1 || balanced > 1)
@@ -83,15 +83,15 @@ t_node	*add_node(t_node *tree, struct dirent *files, char *root, t_length *len)
 {
 	t_node	*node;
 	int		i;
-	char 	*name;
+	char	*name;
 
-	if (!(name = ft_strdup(root))) 
+	if (!(name = ft_strdup(root)))
 		return (NULL);
 	if (!(name = ft_strjoin_free(&name, "/\0", 1)))
 		return (NULL);
 	if (!(node = (t_node *)ft_memalloc(sizeof(t_node))))
 		return (NULL);
-	if(!(node->name = ft_strjoin_free(&name, files->d_name, 1)))
+	if (!(node->name = ft_strjoin_free(&name, files->d_name, 1)))
 		return (NULL);
 	node->type = files->d_type;
 	i = ft_strlen(node->name) - 1;

@@ -6,13 +6,13 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/15 17:55:02 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/16 16:32:01 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/17 12:45:26 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-void	init_buff(char *buff[13])
+void		init_buff(char *buff[13])
 {
 	buff[0] = "Jan\0";
 	buff[1] = "Feb\0";
@@ -29,7 +29,7 @@ void	init_buff(char *buff[13])
 	buff[12] = "\0";
 }
 
-int		cmp_month(char *node_month, char *tree_month)
+int			cmp_month(char *node_month, char *tree_month)
 {
 	char	*buff[13];
 	int		i;
@@ -50,7 +50,7 @@ int		cmp_month(char *node_month, char *tree_month)
 	return (i - result);
 }
 
-int		ft_tmpcmp(char *node_time, char *tree_time)
+int			ft_tmpcmp(char *node_time, char *tree_time)
 {
 	int result;
 
@@ -96,7 +96,7 @@ long int	calc_time(char *time)
 	return (seconds);
 }
 
-void	print_time(char	*node_time)
+void		print_time(char *node_time)
 {
 	time_t		seconds;
 	long int	node_sec;

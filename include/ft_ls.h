@@ -6,7 +6,7 @@
 /*   By: root <snunes@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/19 15:11:41 by root              #+#    #+#             */
-/*   Updated: 2019/08/16 14:34:26 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/17 13:23:44 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ typedef struct	s_node
 	struct s_node	*left;
 }				t_node;
 
+int			print_link(t_node *tree);
 void		print_time(char *time);
 void		print_dir(t_node *tree, t_length *len, int mode);
 int			ft_tmpcmp(char *node_time, char *tree_time);
@@ -70,7 +71,6 @@ int			requi(t_length *len, char *root, int mode);
 void		free_node(t_node *node);
 void		print_recurs(t_node *tree, t_length *len);
 int			ft_node_cmp(t_node *node, t_node *new_node, t_length *len);
-int			path_cmp(char *path1, char *path2);
 char		*extract_name(char *path);
 t_node		*add_content(t_node *tree, char *name, t_length *len);
 int			heigth(t_node *node);
