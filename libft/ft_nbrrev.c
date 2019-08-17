@@ -6,11 +6,11 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/29 17:44:26 by snunes            #+#    #+#             */
-/*   Updated: 2019/05/29 18:08:37 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/17 14:22:24 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int ft_nbrrev(int nbr)
+int	ft_nbrrev(int nbr)
 {
 	int len;
 	int ret;
