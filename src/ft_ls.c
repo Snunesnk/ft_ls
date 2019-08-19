@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 17:53:15 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/19 13:01:34 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/19 14:01:28 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 
 t_length	*init_len(t_length *len)
 {
+	struct winsize size;
 	t_length	*new_len;
 
+	ioctl(0, TIOCGWINSZ, &size);
 	if (!(new_len = (t_length *)ft_memalloc(sizeof(t_length))))
 		return (NULL);
 	if (!len)
@@ -28,6 +30,7 @@ t_length	*init_len(t_length *len)
 		new_len->option = len->option;
 		new_len->multi = len->multi;
 	}
+	new_len->column = size.ws_col;
 	new_len->name_l = 0;
 	new_len->size_l = 0;
 	new_len->link_l = 0;
@@ -87,7 +90,7 @@ int			main(int argc, char **argv)
 			return (0);
 		arg++;
 	}
-	print_dir(tree, len, 0);
+	print_dir(tree, len, 3);
 	print_tree(tree, len);
 	if (len->option & 16)
 		print_recurs(tree, len);

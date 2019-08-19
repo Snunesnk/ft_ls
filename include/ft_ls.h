@@ -6,7 +6,7 @@
 /*   By: root <snunes@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/19 15:11:41 by root              #+#    #+#             */
-/*   Updated: 2019/08/17 14:24:04 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/19 13:54:29 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include <stdlib.h>
 # include <errno.h>
 # include <string.h>
+# include <sys/ioctl.h>
 
 # define MAX(x, y) (x > y ? x : y)
 # define IS_WRITEABLE(x) ((x) == 7 || (x) == 6 || (x) == 3 || (x) == 2)
@@ -39,6 +40,8 @@ typedef struct	s_length
 	int				group_l;
 	int				size_l;
 	long long int	blocks;
+	int				column;
+	int				written;
 }				t_length;
 
 typedef struct	s_node

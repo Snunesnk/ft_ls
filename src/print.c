@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/07 13:17:17 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/17 13:56:47 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/19 14:04:49 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,10 @@ void	print_tree(t_node *tree, t_length *len)
 		print_info(tree, len);
 	if (name[0] != '.' || len->option & 8)
 	{
+		if (len->written + len->name_l > len->column)
+			len->written = write(1, "\n", 1) - 1;
 		print_name(tree);
+		len->written += len->name_l;
 		if ((len->option & 4) && tree->type == 10)
 			print_link(tree);
 		while (len->name_l > tree->length++ && !(len->option & 4))

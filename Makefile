@@ -6,7 +6,7 @@
 #    By: snunes <snunes@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/05 12:37:58 by snunes            #+#    #+#              #
-#    Updated: 2019/08/17 12:39:49 by snunes           ###   ########.fr        #
+#    Updated: 2019/08/19 13:59:53 by snunes           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ VPATH = .:include:src
 
 SRC = 		ft_ls.c \
 			fill_tree.c \
-			option.c \
+			option_l.c \
 			print.c \
 			utils.c \
 			avl_tree.c \
