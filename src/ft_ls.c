@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 17:53:15 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/17 14:12:10 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/19 13:01:34 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,16 +39,28 @@ t_length	*init_len(t_length *len)
 
 int			get_options(char **argv, int *option)
 {
-	int i;
+	int		i;
+	int		j;
+	char	*arg;
+	char	ret;
 
+	if (!(arg = ft_strdup("tr l   a       R\0")))
+		return (-1);
 	i = 1;
 	while (argv[i] && argv[i][0] == '-')
 	{
-		*option = (ft_occur("t\0", argv[i])) ? *option | 1 : *option;
-		*option = (ft_occur("r\0", argv[i])) ? *option | 2 : *option;
-		*option = (ft_occur("l\0", argv[i])) ? *option | 4 : *option;
-		*option = (ft_occur("a\0", argv[i])) ? *option | 8 : *option;
-		*option = (ft_occur("R\0", argv[i])) ? *option | 16 : *option;
+		j = 1;
+		while (argv[i][j])
+		{
+			ret = argv[i][j + 1];
+			argv[i][j + 1] = '\0';
+			if (ft_occur(argv[i] + j, arg))
+				*option |= ft_occur(argv[i] + j, arg);
+			else
+				return(-ft_printf("ls: illegal option -- %c\n", argv[i][j]));
+			argv[i][j + 1] = ret;
+			j++;
+		}
 		i++;
 	}
 	*option = *option | 64;
@@ -61,11 +73,11 @@ int			main(int argc, char **argv)
 	t_node		*tree;
 	t_length	*len;
 
-	len = NULL;
 	tree = NULL;
-	if (!(len = init_len(len)))
+	if (!(len = init_len(NULL)))
 		return (0);
-	arg = get_options(argv, &(len->option));
+	if ((arg = get_options(argv, &(len->option))) < 0)
+		return (ft_printf("usage: ls [-Ralrt] [file ...]\n"));
 	len->option |= (argc - arg > 1 || len->option & 16) ? 32 : 0;
 	if (argc - arg == 0 && !(tree = add_content(tree, ".\0", len)))
 		return (0);

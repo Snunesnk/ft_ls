@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 12:22:36 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/08 12:29:59 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/19 13:01:31 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,6 @@ int	ft_occur(char *to_find, char *str)
 		j++;
 	}
 	if (!to_find[j])
-		return (1);
+		return (i);
 	return (0);
 }
