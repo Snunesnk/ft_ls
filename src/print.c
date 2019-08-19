@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/07 13:17:17 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/19 14:04:49 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/19 14:20:22 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,12 +116,12 @@ void	print_tree(t_node *tree, t_length *len)
 	if (tree->left)
 		print_tree(tree->left, len);
 	if (!(name = extract_name(tree->name)))
-		return ((void)ft_error("extract name dans print node a echoue"));
+		return ;
 	if (len->option & 4 && (name[0] != '.' || len->option & 8))
 		print_info(tree, len);
 	if (name[0] != '.' || len->option & 8)
 	{
-		if (len->written + len->name_l > len->column)
+		if (!(len->option & 4) && len->written + len->name_l > len->column)
 			len->written = write(1, "\n", 1) - 1;
 		print_name(tree);
 		len->written += len->name_l;
