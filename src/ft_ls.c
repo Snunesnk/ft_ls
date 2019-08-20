@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 17:53:15 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/20 18:50:13 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/20 20:37:34 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ int			get_options(char **argv, int *option)
 		}
 		i++;
 	}
+	free(arg);
 	*option = *option | 64;
 	return (i);
 }

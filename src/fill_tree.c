@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 18:17:45 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/20 19:08:30 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/20 20:37:36 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int		fill_spec(struct stat st, t_node *new_node)
 	new_node->g_perm = (st.st_mode & S_IRWXG) % 64 / 8;
 	new_node->o_perm = (st.st_mode & S_IRWXO) % 8;
 	new_node->owner = (user) ? ft_strdup(user->pw_name) : ft_strdup("4389\0");
-	new_node->group = (grp) ? ft_strdup(grp->gr_name) : ft_strdup("4389\0");
+	new_node->group = (grp) ? ft_strdup(grp->gr_name) : ft_strdup("daemon\0");
 	if (!new_node->group || !new_node->group)
 		return (0);
 	new_node->links = st.st_nlink;
@@ -91,6 +91,7 @@ t_node	*add_node(t_node *tree, struct dirent *files, char *root, t_length *len)
 		return (NULL);
 	if (!(node->name = ft_strjoin_free(&name, files->d_name, 1)))
 		return (NULL);
+	ft_printf("node->name: %s\n", node->name);
 	node->type = files->d_type;
 	i = ft_strlen(node->name) - 1;
 	if (!(node = init_node(node)))

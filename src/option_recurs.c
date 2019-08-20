@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 12:39:35 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/20 19:12:29 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/20 20:37:40 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,25 +88,22 @@ void	print_recurs(t_node *tree, t_length *len)
 	directory = NULL;
 	if (!tree)
 		return ;
-	if (tree->left && ft_printf("a gauche\n"))
+	if (tree->left)
 		print_recurs(tree->left, len);
 	if (tree->type == 4 && requi(len, tree->name, 0))
 	{
-		ft_printf("tree->name: %s\n", tree->name);
 		if (!(new_len = init_len(len)))
 			return ;
-		ft_printf("ca va print des infos\n");
 		print_dir(tree, new_len, 1);
-		ft_printf("ca va faire la recurs\n");
 		directory = recurs(directory, tree->name, new_len);
 		if (directory)
 			print_tree(directory, new_len);
 		free(new_len);
-		if ((tree->links > 2 || (len->option & 8)) && ft_printf("ca va aller dans un fichier\n"))
-			print_recurs(directory, len);
+		if ((tree->links > 2 || (len->option & 8)) && ft_printf("nouvel arbre\n"))
+			print_recurs(directory, new_len);
 	}
-	if (tree->right && ft_printf("virage a droite\n"))
+	if (tree->right)
 		print_recurs(tree->right, len);
-	//free_node(directory);
+	free_node(directory);
 	ft_printf("sortie\n");
 }
