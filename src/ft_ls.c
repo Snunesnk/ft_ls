@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 17:53:15 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/19 14:12:59 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/20 18:50:13 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ t_length	*init_len(t_length *len)
 	else
 	{
 		new_len->option = len->option;
+		if (new_len->option & 64)
+			new_len->option -= 64;
 		new_len->multi = len->multi;
 	}
 	new_len->column = 0;
@@ -88,8 +90,7 @@ int			main(int argc, char **argv)
 			return (0);
 		arg++;
 	}
-	print_dir(tree, len, 3);
-	print_tree(tree, len);
+	print_first(tree, len);
 	if (len->option & 16)
 		print_recurs(tree, len);
 	(len->option & 4) ? 0 : ft_printf("\n");

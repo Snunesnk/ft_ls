@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/07 13:17:17 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/19 14:20:22 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/20 18:59:28 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,26 +74,36 @@ int		print_sp(t_node *node, char *name)
 		ft_printf("{purple}%s", name);
 	else if (node->type == 7 && node->sp_bit == 0)
 		ft_printf("{red}%s", name);
+	else if (node->type == 12)
+		ft_printf("{green}%s", name);
+	else if (node->type == 1)
+		ft_printf("{yellow}%s", name);
 	else
 		return (0);
 	return (1);
 }
 
-void	print_name(t_node *node)
+void	print_name(t_node *node, t_length *len)
 {
 	char	*name;
 
-	if (!(name = extract_name(node->name)))
-		return ((void)ft_error("extract_name dans print_name a echoue"));
+	name = NULL;
+	if ((len->option & 64) && !ft_occur("./\0", node->name))
+		name = ft_strdup(node->name);
+	else
+		name = extract_name(node->name);
+	if (!name)
+		return ;
+	if (ft_strequ(node->name, "//etc\0"))
+	{
+		free(name);
+		name = ft_strdup("/etc\0");
+	}
 	if (print_sp(node, name))
 	{
 		free(name);
 		return ;
 	}
-	else if (node->type == 12)
-		ft_printf("{green}%s", name);
-	else if (node->type == 1)
-		ft_printf("{yellow}%s", name);
 	else if (node->type == 2 || node->type == 0)
 		ft_printf("{blue}{H_yellow}%s", name);
 	else if (node->type == 6)
@@ -111,6 +121,7 @@ void	print_tree(t_node *tree, t_length *len)
 {
 	char	*name;
 
+	name = NULL;
 	if (!tree)
 		return ;
 	if (tree->left)
@@ -123,7 +134,7 @@ void	print_tree(t_node *tree, t_length *len)
 	{
 		if (!(len->option & 4) && len->written + len->name_l > len->column)
 			len->written = write(1, "\n", 1) - 1;
-		print_name(tree);
+		print_name(tree, len);
 		len->written += len->name_l;
 		if ((len->option & 4) && tree->type == 10)
 			print_link(tree);

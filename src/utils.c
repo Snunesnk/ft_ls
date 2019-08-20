@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/08 11:13:08 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/19 13:52:28 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/20 18:33:45 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*extract_name(char *path)
 
 	j = 0;
 	i = 0;
-	while (path[i])
+	while (path[i] && i + 1 < (int)ft_strlen(path))
 	{
 		if (path[i] == '/')
 			j = i + 1;
@@ -29,8 +29,10 @@ char	*extract_name(char *path)
 	if (!(name = (char *)ft_memalloc(sizeof(char) * (i - j + 1))))
 		return (NULL);
 	i = 0;
-	while (path[j])
+	while (path[j] && path[j] != '/')
 		name[i++] = path[j++];
+	if (i > 0)
+		name[i] = '\0';
 	return (name);
 }
 
@@ -44,7 +46,7 @@ char	*find_root(char *file)
 		return (NULL);
 	i = 0;
 	j = -1;
-	while (root[i])
+	while (root[i] && i + 1 < (int)ft_strlen(root))
 	{
 		if (root[i] == '/')
 			j = i + 1;
@@ -61,18 +63,20 @@ char	*find_root(char *file)
 	return (root);
 }
 
-t_node	*add_file(t_node *tree, char *name, t_length *len)
+t_node	*add_content(t_node *tree, char *path, t_length *len)
 {
 	DIR				*directory;
 	char			*root;
+	char			*name;
 	struct dirent	*file;
 
-	if (!(root = find_root(name)))
-		return ((t_node *)ft_error(name));
+	root = NULL;
+	if (!(root = find_root(path)))
+		return ((t_node *)ft_error(ft_strdup(name)));
 	if (!(directory = opendir(root)))
 		return ((t_node *)ft_error(root));
-	if (!(name = extract_name(name)))
-		return ((t_node *)ft_error(name));
+	if (!(name = extract_name(path)))
+		return ((t_node *)ft_error(ft_strdup(name)));
 	file = readdir(directory);
 	while (file && !ft_strequ(name, file->d_name))
 		file = readdir(directory);
@@ -81,34 +85,55 @@ t_node	*add_file(t_node *tree, char *name, t_length *len)
 	if (file && !(tree = add_node(tree, file, root, len)))
 		return ((t_node *)ft_error(ft_strjoin_free(&root, name, 3)));
 	free(root);
+	free(name);
 	closedir(directory);
 	return (tree);
 }
 
-t_node	*add_content(t_node *tree, char *name, t_length *len)
+void	print_content(t_node *tree, t_length *len)
 {
-	DIR				*directory;
-	char			*root;
-	struct dirent	*file;
+	t_node		*new_tree;
+	t_length	*new_len;
 
-	root = NULL;
-	if ((directory = opendir(name)))
+	new_tree = NULL;
+	if (!(new_len = init_len(len)))
+		return ;
+	print_dir(tree, new_len, 1);
+	if (!(new_tree = recurs(new_tree, tree->name, new_len)))
+		return ;
+	print_dir(tree, new_len, 3);
+	print_tree(new_tree, new_len);
+	free_node(tree);
+	free(new_len);
+}
+
+void	print_first(t_node *tree, t_length *len)
+{
+	if (!tree)
+		return ;
+	if (tree->left && (tree->left->type != 4 || !(len->option & 16)))
+		print_first(tree->left, len);
+	if (tree->type == 4 && (len->option & 16))
+		return ;
+	else if (tree->type == 4)
 	{
-		len->multi += 1;
-		if (!(root = ft_strdup(name)))
-			return ((t_node *)ft_error(name));
-		while ((file = readdir(directory)))
-		{
-			if (!(tree = add_node(tree, file, root, len)))
-				return ((t_node *)ft_error(name));
-		}
-		free(root);
-		closedir(directory);
+		print_content(tree, len);
+		if (tree->right && (tree->right->type != 4 || !(len->option & 16)))
+			print_first(tree->right, len);	
+		return ;
 	}
-	else
-	{
-		if (!(tree = add_file(tree, name, len)))
-			return (NULL);
-	}
-	return (tree);
+	if (len->option & 4)
+		print_info(tree, len);
+	if (!(len->option & 4) && len->written + len->name_l > len->column)
+		len->written = write(1, "\n", 1) - 1;
+	print_name(tree, len);
+	len->written += len->name_l;
+	if ((len->option & 4) && tree->type == 10)
+		print_link(tree);
+	while (len->name_l > tree->length++ && !(len->option & 4))
+		write(1, " ", 1);
+	if (len->option & 4)
+		write(1, "\n", 1);
+	if (tree->right && (tree->right->type != 4 || !(len->option & 16)))
+		print_first(tree->right, len);
 }

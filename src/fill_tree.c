@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 18:17:45 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/17 12:44:28 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/20 19:08:30 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,22 +17,20 @@ int		fill_spec(struct stat st, t_node *new_node)
 	struct passwd	*user;
 	struct group	*grp;
 
-	if (!(user = getpwuid(st.st_uid)))
-		return ((int)ft_error(ft_strdup(new_node->name)));
-	if (!(grp = getgrgid(st.st_gid)))
-		return ((int)ft_error(ft_strdup(new_node->name)));
+	user = getpwuid(st.st_uid);
+	grp = getgrgid(st.st_gid);
 	new_node->sp_bit = ((st.st_mode) / 512) % 8;
 	new_node->u_perm = (st.st_mode & S_IRWXU) / 64;
 	new_node->g_perm = (st.st_mode & S_IRWXG) % 64 / 8;
 	new_node->o_perm = (st.st_mode & S_IRWXO) % 8;
-	if (!(new_node->owner = ft_strdup(user->pw_name)))
-		return (0);
-	if (!(new_node->group = ft_strdup(grp->gr_name)))
+	new_node->owner = (user) ? ft_strdup(user->pw_name) : ft_strdup("4389\0");
+	new_node->group = (grp) ? ft_strdup(grp->gr_name) : ft_strdup("4389\0");
+	if (!new_node->group || !new_node->group)
 		return (0);
 	new_node->links = st.st_nlink;
 	new_node->size = st.st_size;
 	new_node->blocks = st.st_blocks;
-	if (!(new_node->mtime = give_time(st)))
+	if (!(new_node->mtime = ft_strdup(ctime(&st.st_mtimespec.tv_sec))))
 		return ((int)ft_error(new_node->name));
 	new_node->mtime = ft_memmove(new_node->mtime, new_node->mtime + 4, 20);
 	new_node->mtime[20] = '\0';
@@ -87,7 +85,7 @@ t_node	*add_node(t_node *tree, struct dirent *files, char *root, t_length *len)
 
 	if (!(name = ft_strdup(root)))
 		return (NULL);
-	if (!(name = ft_strjoin_free(&name, "/\0", 1)))
+	if (!(len->option & 64) && !(name = ft_strjoin_free(&name, "/\0", 1)))
 		return (NULL);
 	if (!(node = (t_node *)ft_memalloc(sizeof(t_node))))
 		return (NULL);
@@ -97,6 +95,12 @@ t_node	*add_node(t_node *tree, struct dirent *files, char *root, t_length *len)
 	i = ft_strlen(node->name) - 1;
 	if (!(node = init_node(node)))
 		return (NULL);
+	if ((len->option & 64))
+	{
+		node->length = ft_strlen(node->name);
+		if (ft_occur("./\0", node->name))
+			node->length -= 2;
+	}
 	update_l(node, len);
 	tree = place_node(tree, node, len);
 	return (tree);
@@ -109,6 +113,12 @@ int		ft_node_cmp(t_node *tree, t_node *new_node, t_length *len)
 	result = 0;
 	if (!tree)
 		return (-1);
+	if (len->option & 64)
+	{
+		if ((tree->type == 4 && new_node->type != 4)
+				|| (tree->type != 4 && new_node->type == 4))
+			return (new_node->type == 4);
+	}
 	if (!new_node)
 		return (1);
 	if ((len->option & 1))

@@ -6,9 +6,10 @@
 #    By: snunes <snunes@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/05 12:37:58 by snunes            #+#    #+#              #
-#    Updated: 2019/08/19 13:59:53 by snunes           ###   ########.fr        #
+#    Updated: 2019/08/19 17:22:39 by snunes           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
 
 CC = gcc
 NAME = ft_ls
@@ -44,9 +45,9 @@ RED = \033[31m
 
 ## all		: compile et cree l'executable
 all : $(NAME)
-
+	
 $(NAME) : $(OBJ)
-	@make -C libft
+	@cd libft && $(MAKE)
 	@echo "$(BYELLOW)Generating $(RED)$@$(CLEAR)"
 	@$(CC) $(CCFLAGS) -o $@ $^ -I $(I_PATH) $(LDFLAG) $(LDLIB) 
 	@echo "$(GREEN)[DONE]$(CLEAR)"
@@ -59,7 +60,7 @@ $(OBJ_PATH)/%.o : %.c $(HEADER)
 
 ## clean		: efface tout les binaires
 clean :
-	@make clean -C libft
+	@cd libft && $(MAKE) $@
 	@echo "$(RED)Cleaning all binaries$(CLEAR)"
 	@rm -f $(OBJ)
 	@echo "$(RED)Removing binaries folder$(CLEAR)"
@@ -67,7 +68,7 @@ clean :
 
 ## fclean		: efface les binaires ainsi que l'executable
 fclean : clean
-	@make fclean -C libft
+	@cd libft && $(MAKE) $@
 	@echo "$(RED)Deleting $(NAME)$(CLEAR)"
 	@rm -f $(NAME)
 

@@ -1,32 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_occur.c                                         :+:      :+:    :+:   */
+/*   test_term.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/08/02 12:22:36 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/20 14:56:52 by snunes           ###   ########.fr       */
+/*   Created: 2019/08/19 13:32:34 by snunes            #+#    #+#             */
+/*   Updated: 2019/08/19 13:47:20 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_occur(char *to_find, char *str)
-{
-	int i;
-	int j;
+#include <sys/ioctl.h>
+#include <stdio.h>
+#include <unistd.h>
 
-	j = 0;
-	i = 0;
-	if (!to_find || !str)
-		return (0);
-	while (str[i] != to_find[0] && str[i])
-		i++;
-	while (str[i] == to_find[j] && to_find[j])
-	{
-		i++;
-		j++;
-	}
-	if (!to_find[j])
-		return (i);
-	return (0);
+int main (int argc, char **argv)
+{
+	struct winsize w;
+	ioctl(0, TIOCGWINSZ, &w);
+
+	printf ("lines %d\n", w.ws_row);
+	printf ("columns %d\n", w.ws_col);
+	return 0;  // make sure your main returns int
 }
