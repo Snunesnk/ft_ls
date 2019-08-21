@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 17:53:15 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/21 16:12:37 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/21 18:53:02 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int			get_options(char **argv, int *option)
 			argv[i][j + 1] = '\0';
 			if (ft_occur(argv[i] + j, arg))
 				*option |= ft_occur(argv[i] + j, arg);
-			else
+			else if (argv[i][j] != '-' || j < 2)
 				return(-ft_printf("ls: illegal option -- %c\n", argv[i][j]));
 			argv[i][j + 1] = ret;
 			j++;
@@ -63,6 +63,7 @@ int			get_options(char **argv, int *option)
 		i++;
 	}
 	free(arg);
+	*option += (*option & 16) ? 160 : 0;
 	*option = *option | 64;
 	return (i);
 }
@@ -80,11 +81,12 @@ int			main(int argc, char **argv)
 		return (ft_printf("usage: ls [-Ralrt] [file ...]\n"));
 	if (argc - arg == 0 && !(tree = add_content(tree, ".\0", len)))
 		return (0);
+	len->option += (argc - arg > 1) ? 128 : 0;
 	while (argc > arg)
 	{
+		len->option += (!(len->option & 32)) ? 32 : 0;
 		if (!(tree = add_content(tree, argv[arg], len)))
 			return (0);
-		len->option += (len->option & 32) ? 0 : 32;
 		arg++;
 	}
 	print_first(tree, len);
