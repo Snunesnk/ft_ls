@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 12:39:35 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/21 13:39:23 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/21 15:23:20 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,13 @@ int		requi(t_length *len, char *root, int mode)
 	name = extract_name(root);
 	if ((ft_strequ(name, ".\0") || ft_strequ(name, "..\0")) && !mode)
 	{
+		if (len->option & 64)
+		{
+			free(name);
+			return (1);
+		}
 		free(name);
-		return (len->option & 64);
+		return (0);
 	}
 	if (name[0] != '.')
 	{
@@ -66,7 +71,7 @@ t_node	*recurs(t_node *tree, char *path, t_length *len)
 
 void	print_dir(t_node *tree, t_length *len, int mode)
 {
-	if (mode && mode != 3)
+	if (mode && mode != 3 && !ft_strequ(tree->name, ".\0"))
 	{
 		if (!(len->option & 4))
 			ft_printf("\n\0");
@@ -99,7 +104,7 @@ void	print_recurs(t_node *tree, t_length *len)
 			print_tree(directory, new_len);
 			if ((tree->links > 2 || (len->option & 8)))
 				print_recurs(directory, new_len);
-			free_node(directory);
+			free_tree(directory);
 		}
 		free(new_len);
 	}

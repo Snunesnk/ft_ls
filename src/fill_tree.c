@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 18:17:45 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/21 13:38:04 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/21 15:44:29 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,11 +98,7 @@ t_node	*add_node(t_node *tree, struct dirent *files, char *root, t_length *len)
 	if (!(node = init_node(node)))
 		return (NULL);
 	if ((len->option & 64))
-	{
 		node->length = ft_strlen(node->name);
-		if (ft_occur("./\0", node->name))
-			node->length -= 2;
-	}
 	update_l(node, len);
 	tree = place_node(tree, node, len);
 	return (tree);

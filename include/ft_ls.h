@@ -6,7 +6,7 @@
 /*   By: root <snunes@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/19 15:11:41 by root              #+#    #+#             */
-/*   Updated: 2019/08/21 11:43:53 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/21 15:35:18 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int				ft_tmpcmp(char *node_time, char *tree_time);
 void			*ft_error(char *desc);
 t_node			*recurs(t_node *tree, char *path, t_length *len);
 int				requi(t_length *len, char *root, int mode);
-void			free_node(t_node *node);
+void			free_tree(t_node *tree);
 void			print_recurs(t_node *tree, t_length *len);
 int				ft_node_cmp(t_node *node, t_node *new_node, t_length *len);
 char			*extract_name(char *path);

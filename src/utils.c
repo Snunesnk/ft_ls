@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/08 11:13:08 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/21 13:36:47 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/21 15:51:40 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,23 @@ char	*extract_name(char *path)
 
 	j = 0;
 	i = 0;
-	while (path[i] && i + 1 < (int)ft_strlen(path))
+	while (path[i])
 	{
-		if (path[i] == '/')
+		if (path[i] == '/' && path[i + 1])
 			j = i + 1;
 		i++;
 	}
 	i = (path[i] == '/') ? i - 1 : i;
-	if (!(name = ft_strsub(path, j, i - j + 1)))
+	if (!(name = (char *)ft_memalloc(sizeof(char) * (i - j + 1))))
 		return (NULL);
+	i = 0;
+	while (path[j] && path[j] != '/')
+	{
+		name[i] = path[j];
+		i++;
+		j++;
+	}
+	name[i] = '\0';
 	return (name);
 }
 
@@ -97,9 +105,8 @@ void	print_content(t_node *tree, t_length *len)
 	print_dir(tree, new_len, 1);
 	if (!(new_tree = recurs(new_tree, tree->name, new_len)))
 		return ;
-	print_dir(tree, new_len, 3);
 	print_tree(new_tree, new_len);
-	free_node(new_tree);
+	free_tree(new_tree);
 	free(new_len);
 }
 
