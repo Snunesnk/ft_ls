@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 12:39:35 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/20 20:37:40 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/21 13:39:23 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,8 @@ int		requi(t_length *len, char *root, int mode)
 	name = extract_name(root);
 	if ((ft_strequ(name, ".\0") || ft_strequ(name, "..\0")) && !mode)
 	{
-		if (len->option & 64)
-			return (1);
 		free(name);
-		return (0);
+		return (len->option & 64);
 	}
 	if (name[0] != '.')
 	{
@@ -61,8 +59,8 @@ t_node	*recurs(t_node *tree, char *path, t_length *len)
 		name = NULL;
 	}
 	closedir(dir);
-	if (len->option & 64)
-		print_dir(tree, len, 3);
+	if (tree)
+		print_dir(tree, len, 0);
 	return (tree);
 }
 
@@ -94,16 +92,17 @@ void	print_recurs(t_node *tree, t_length *len)
 	{
 		if (!(new_len = init_len(len)))
 			return ;
-		print_dir(tree, new_len, 1);
+		print_dir(tree, len, 1);
 		directory = recurs(directory, tree->name, new_len);
 		if (directory)
+		{
 			print_tree(directory, new_len);
+			if ((tree->links > 2 || (len->option & 8)))
+				print_recurs(directory, new_len);
+			free_node(directory);
+		}
 		free(new_len);
-		if ((tree->links > 2 || (len->option & 8)) && ft_printf("nouvel arbre\n"))
-			print_recurs(directory, new_len);
 	}
 	if (tree->right)
 		print_recurs(tree->right, len);
-	free_node(directory);
-	ft_printf("sortie\n");
 }

@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 18:17:45 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/20 20:37:36 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/21 13:38:04 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ t_node	*init_node(t_node *node)
 	struct stat	st;
 	char		*name;
 
+	node->right = NULL;
+	node->left = NULL;
 	stat(node->name, &st);
 	if (!(name = extract_name(node->name)))
 		return (NULL);
@@ -54,8 +56,6 @@ t_node	*init_node(t_node *node)
 	lstat(node->name, &st);
 	if (!(fill_spec(st, node)))
 		return (NULL);
-	node->right = NULL;
-	node->left = NULL;
 	node->heigth = 1;
 	return (node);
 }
@@ -91,8 +91,9 @@ t_node	*add_node(t_node *tree, struct dirent *files, char *root, t_length *len)
 		return (NULL);
 	if (!(node->name = ft_strjoin_free(&name, files->d_name, 1)))
 		return (NULL);
-	ft_printf("node->name: %s\n", node->name);
 	node->type = files->d_type;
+	if (ft_occur("./\0", node->name))
+		node->name = ft_strshift(node->name, 2);
 	i = ft_strlen(node->name) - 1;
 	if (!(node = init_node(node)))
 		return (NULL);

@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 17:53:15 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/20 20:37:34 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/21 12:10:43 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,12 @@ t_length	*init_len(t_length *len)
 	if (!(new_len = (t_length *)ft_memalloc(sizeof(t_length))))
 		return (NULL);
 	if (!len)
-	{
 		new_len->option = 0;
-		new_len->multi = 0;
-	}
 	else
 	{
 		new_len->option = len->option;
 		if (new_len->option & 64)
 			new_len->option -= 64;
-		new_len->multi = len->multi;
 	}
 	new_len->column = 0;
 	new_len->name_l = 0;
@@ -82,7 +78,6 @@ int			main(int argc, char **argv)
 		return (0);
 	if ((arg = get_options(argv, &(len->option))) < 0)
 		return (ft_printf("usage: ls [-Ralrt] [file ...]\n"));
-	len->option |= (argc - arg > 1 || len->option & 16) ? 32 : 0;
 	if (argc - arg == 0 && !(tree = add_content(tree, ".\0", len)))
 		return (0);
 	while (argc > arg)
@@ -96,5 +91,6 @@ int			main(int argc, char **argv)
 		print_recurs(tree, len);
 	(len->option & 4) ? 0 : ft_printf("\n");
 	free(len);
+	free_node(tree);
 	return (0);
 }

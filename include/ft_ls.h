@@ -6,7 +6,7 @@
 /*   By: root <snunes@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/19 15:11:41 by root              #+#    #+#             */
-/*   Updated: 2019/08/20 20:37:42 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/21 11:43:53 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@
 
 typedef struct	s_length
 {
-	int				multi;
 	int				option;
 	int				name_l;
 	int				link_l;

@@ -6,7 +6,7 @@
 #    By: snunes <snunes@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/05 12:37:58 by snunes            #+#    #+#              #
-#    Updated: 2019/08/19 17:22:39 by snunes           ###   ########.fr        #
+#    Updated: 2019/08/21 11:42:33 by snunes           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,9 +45,11 @@ RED = \033[31m
 
 ## all		: compile et cree l'executable
 all : $(NAME)
-	
-$(NAME) : $(OBJ)
-	@cd libft && $(MAKE)
+
+$(NAME) ::
+	@cd libft/ && $(MAKE)
+
+$(NAME) :: $(OBJ)
 	@echo "$(BYELLOW)Generating $(RED)$@$(CLEAR)"
 	@$(CC) $(CCFLAGS) -o $@ $^ -I $(I_PATH) $(LDFLAG) $(LDLIB) 
 	@echo "$(GREEN)[DONE]$(CLEAR)"
@@ -68,7 +70,8 @@ clean :
 
 ## fclean		: efface les binaires ainsi que l'executable
 fclean : clean
-	@cd libft && $(MAKE) $@
+	@echo "$(RED)Deleting libft.a$(CLEAR)"
+	@cd libft && rm -f libft.a
 	@echo "$(RED)Deleting $(NAME)$(CLEAR)"
 	@rm -f $(NAME)
 
