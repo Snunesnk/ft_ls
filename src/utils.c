@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/08 11:13:08 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/21 15:51:40 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/21 16:14:41 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,10 +121,12 @@ void	print_first(t_node *tree, t_length *len)
 	else if (tree->type == 4)
 	{
 		print_content(tree, len);
+		len->option -= (len->option & 32) ? 32 : 0;
 		if (tree->right && (tree->right->type != 4 || !(len->option & 16)))
 			print_first(tree->right, len);	
 		return ;
 	}
+	len->option -= (len->option & 32) ? 32 : 0;
 	if (len->option & 4)
 		print_info(tree, len);
 	if (!(len->option & 4) && len->written + len->name_l > len->column)
