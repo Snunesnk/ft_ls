@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/08 11:13:08 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/21 16:48:49 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/21 17:18:06 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,6 @@ t_node	*add_content(t_node *tree, char *path, t_length *len)
 		return ((t_node *)ft_error(root));
 	if (!(name = extract_name(path)))
 		return ((t_node *)ft_error(ft_strdup(name)));
-//	ft_printf("path: %s, name: %s\n", path, name);
 	file = readdir(directory);
 	while (file && !ft_filequ(name, file->d_name))
 		file = readdir(directory);
@@ -89,6 +88,7 @@ t_node	*add_content(t_node *tree, char *path, t_length *len)
 		return ((t_node *)ft_error(ft_strjoin_free(&root, name, 3)));
 	if (file && !(tree = add_node(tree, file, root, len)))
 		return ((t_node *)ft_error(ft_strjoin_free(&root, name, 3)));
+	tree->type = (name[ft_strlen(name) - 1] == '/') ? 4 : tree->type;
 	free(root);
 	free(name);
 	closedir(directory);
@@ -119,7 +119,7 @@ void	print_first(t_node *tree, t_length *len)
 		print_first(tree->left, len);
 	if (tree->type == 4 && (len->option & 16))
 		return ;
-	else if (tree->type == 4 || (ft_strequ(tree->name, "/etc") && !(len->option & 4)))
+	else if (tree->type == 4)
 	{
 		print_content(tree, len);
 		len->option -= (len->option & 32) ? 32 : 0;
