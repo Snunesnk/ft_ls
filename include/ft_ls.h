@@ -6,7 +6,7 @@
 /*   By: root <snunes@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/19 15:11:41 by root              #+#    #+#             */
-/*   Updated: 2019/08/21 15:35:18 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/21 16:29:36 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ typedef struct	s_node
 	struct s_node	*left;
 }				t_node;
 
+int				ft_filequ(char const *s1, char const *s2);
 void			print_name(t_node *node, t_length *len);
 void			print_info(t_node *node, t_length *len);
 void			print_first(t_node *tree, t_length *len);

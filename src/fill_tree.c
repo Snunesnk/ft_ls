@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 18:17:45 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/21 15:57:43 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/21 16:48:55 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ t_node	*add_node(t_node *tree, struct dirent *files, char *root, t_length *len)
 		return (NULL);
 	if (!(len->option & 64) && !(name = ft_strjoin_free(&name, "/\0", 1)))
 		return (NULL);
+//	ft_printf("name: %s\n", name);
 	if (!(node = (t_node *)ft_memalloc(sizeof(t_node))))
 		return (NULL);
 	if (!(node->name = ft_strjoin_free(&name, files->d_name, 1)))

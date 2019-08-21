@@ -6,7 +6,7 @@
 #    By: snunes <snunes@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/05 12:37:58 by snunes            #+#    #+#              #
-#    Updated: 2019/08/21 11:42:33 by snunes           ###   ########.fr        #
+#    Updated: 2019/08/21 16:29:55 by snunes           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,8 @@ SRC = 		ft_ls.c \
 			free.c \
 			option_recurs.c \
 			error.c \
-			option_t.c
+			option_t.c \
+			ft_filequ.c
 
 LDFLAG = -Llibft
 LDLIB = -lft
