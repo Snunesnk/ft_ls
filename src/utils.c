@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/08 11:13:08 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/21 17:18:06 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/22 19:35:37 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ char	*extract_name(char *path)
 			j = i + 1;
 		i++;
 	}
+	if (!j)
+		return (ft_strdup("."));
 	i = (path[i] == '/') ? i - 1 : i;
 	if (!(name = (char *)ft_memalloc(sizeof(char) * (i - j + 1))))
 		return (NULL);
@@ -58,12 +60,6 @@ char	*find_root(char *file)
 	}
 	if (j > 0)
 		root[j] = '\0';
-	if (j == -1)
-	{
-		root[0] = '.';
-		root[1] = '/';
-		root[2] = 0;
-	}
 	return (root);
 }
 

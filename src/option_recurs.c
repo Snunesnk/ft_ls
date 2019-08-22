@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 12:39:35 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/21 18:53:12 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/22 19:38:54 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int		requi(t_length *len, char *root, int mode)
 		free(name);
 		return (1);
 	}
-	if (name[0] == '.' && len->option & 8)
+	if (name[0] == '.' && (ft_strequ(name, "./") || len->option & 8))
 	{
 		free(name);
 		return (1);
@@ -71,12 +71,14 @@ t_node	*recurs(t_node *tree, char *path, t_length *len)
 
 void	print_dir(t_node *tree, t_length *len, int mode)
 {
-	if (mode && mode != 3 && !ft_strequ(tree->name, ".\0") && len->option & 128)
+	if (mode && mode != 3 && !ft_strequ(tree->name, ".\0"))
 	{
+		ft_printf("option: %d\n", len->option);
 		if (!(len->option & 4) && !(len->option & 64) && (len->option & 32))
 			ft_printf("\n\0");
 		if (!(len->option & 64) && (len->option & 32))
 			ft_printf("\n\0");
+		if (!(len->option & 64) && !(len->option & 128))
 		ft_printf("%s:\n", tree->name);
 	}
 	if (!mode || (mode == 3 && (len->option & 4)))

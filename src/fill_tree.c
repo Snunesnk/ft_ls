@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 18:17:45 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/21 17:17:16 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/22 19:35:42 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,16 +85,18 @@ t_node	*add_node(t_node *tree, struct dirent *files, char *root, t_length *len)
 
 	if (!(name = ft_strdup(root)))
 		return (NULL);
-	if (!(len->option & 64) && !(name = ft_strjoin_free(&name, "/\0", 1)))
+	if ((root[ft_strlen(root) - 1] != '/'  || (len->option & 64))
+			&& !(name = ft_strjoin_free(&name, "/\0", 1)))
 		return (NULL);
-//	ft_printf("name: %s\n", name);
 	if (!(node = (t_node *)ft_memalloc(sizeof(t_node))))
 		return (NULL);
-	if (!(node->name = ft_strjoin_free(&name, files->d_name, 1)))
+	if (len->option & 64)
+		node->name = ft_strjoin_free(&name, "\0", 1);
+	else
+		node->name = ft_strjoin_free(&name, files->d_name, 1);
+	if (!node->name)	
 		return (NULL);
 	node->type = files->d_type;
-	if (ft_occur("./\0", node->name))
-		node->name = ft_strshift(node->name, 2);
 	i = ft_strlen(node->name) - 1;
 	if (!(node = init_node(node)))
 		return (NULL);
