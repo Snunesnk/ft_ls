@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/07 13:17:17 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/24 18:35:31 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/24 18:40:07 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ void	print_name(t_node *node, t_length *len)
 		name = extract_name(node->name);
 	if (!name)
 		return ;
+	ft_printf("%s", name);/*
 	if (ft_strequ(node->name, "//etc\0"))
 	{
 		free(name);
@@ -114,7 +115,7 @@ void	print_name(t_node *node, t_length *len)
 		ft_printf("{black}{H_cyan}%s", name);
 	else
 		ft_printf("%s", name);
-	free(name);
+	free(name);*/
 }
 
 void	print_tree(t_node *tree, t_length *len)

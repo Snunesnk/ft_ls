@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/24 14:27:38 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/24 18:36:25 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/24 19:02:33 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_node	*add_content(t_node *tree, char *path, t_length *len)
 	file = readdir(directory);
 	while (file && !ft_filequ(name, file->d_name))
 		file = readdir(directory);
-	if (!file)
+	if (!file && !(opendir(path)))
 		return ((t_node *)ft_error(name));
 	if (!(tree = add_node(tree, file, path, len)))
 		return (NULL);

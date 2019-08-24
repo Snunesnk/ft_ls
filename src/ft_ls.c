@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 17:53:15 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/24 18:34:28 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/24 19:04:26 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int			get_options(char **argv, int *option)
 	char	ret;
 
 	i = 1;
-	while (argv[i] && argv[i][0] == '-')
+	while (argv[i] && argv[i][0] == '-' && argv[i][1])
 	{
 		j = 1;
 		while (argv[i][j])
@@ -54,7 +54,7 @@ int			get_options(char **argv, int *option)
 				*option |= ft_occur(argv[i] + j, "tr 1   a       R");
 			else if (argv[i][j] == 'l' && !(*option & 256))
 				*option += (*option & 4) ? 256 : 260;
-			else if ((argv[i][j] != '-' || j < 2))
+			else if ((argv[i][j] != '-' || j > 2))
 				return (-ft_printf("ls: illegal option -- %c\n", argv[i][j]));
 			argv[i][j + 1] = ret;
 			j++;
@@ -81,10 +81,11 @@ int			main(int argc, char **argv)
 	len->option += (argc - arg > 1) ? 32 : 0;
 	while (argc > arg)
 	{
-		if (!(tree = add_content(tree, argv[arg], len)))
-			return (0);
+		tree = add_content(tree, argv[arg], len);
 		arg++;
 	}
+	if (!tree)
+		return (0);
 	print_first(tree, len);
 	if (len->option & 16)
 		print_recurs(tree, len);
