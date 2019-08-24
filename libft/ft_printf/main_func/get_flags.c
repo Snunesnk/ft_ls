@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 16:30:10 by snunes            #+#    #+#             */
-/*   Updated: 2019/06/28 12:03:21 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/24 17:04:11 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,10 @@ int	find_conv(const char *str, int pos)
 	int nb;
 
 	nb = -1;
-	if (str[pos] == 'c')
+	if (str[pos] == 'j' && (pos += 1))
+		nb = 17;
+	else if (str[pos] == 'c')
 		nb = 1;
-	else if (str[pos] == 's')
-		nb = 2;
 	else if (str[pos] == 'p')
 		nb = 3;
 	else if (str[pos] == 'd' || str[pos] == 'i')
@@ -64,7 +64,9 @@ int	find_hhll(const char *str, t_flags *flag)
 
 	order_flags(flag);
 	pos = flag->spos;
-	if (str[pos] == 'h' && str[pos + 1] == 'h' && (pos += 2) && (nb = 5))
+	if (str[pos] == 's')
+		nb = 2;
+	else if (str[pos] == 'h' && str[pos + 1] == 'h' && (pos += 2) && (nb = 5))
 		flag->conv = str[pos];
 	else if (str[pos] == 'h' && (pos += 1) && (nb = 7))
 		flag->conv = str[pos];
@@ -74,8 +76,6 @@ int	find_hhll(const char *str, t_flags *flag)
 			&& (str[pos] != 'f' && str[pos] != 'F') && (nb = 9))
 		flag->conv = str[pos];
 	else if (str[pos] == 'L' && (pos += 1) && (nb = 12))
-		flag->conv = str[pos];
-	else if (str[pos] == 'j' && (pos += 1) && (nb = 17))
 		flag->conv = str[pos];
 	else
 		nb = find_conv(str, pos);

@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 17:53:15 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/22 19:39:58 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/24 17:38:42 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_length	*init_len(t_length *len)
 	else
 	{
 		new_len->option = len->option;
-		if (new_len->option & 64)
+		if (len->option & 64)
 			new_len->option -= 64;
 	}
 	new_len->column = 0;
@@ -80,10 +80,9 @@ int			main(int argc, char **argv)
 		return (ft_printf("usage: ls [-Ralrt] [file ...]\n"));
 	if (argc - arg == 0 && !(tree = add_content(tree, ".\0", len)))
 		return (0);
-	len->option += (argc - arg > 1) ? 128 : 0;
+	len->option += (argc - arg > 1) ? 32 : 0;
 	while (argc > arg)
 	{
-		len->option += (!(len->option & 32)) ? 32 : 0;
 		if (!(tree = add_content(tree, argv[arg], len)))
 			return (0);
 		arg++;

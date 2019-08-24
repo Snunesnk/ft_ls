@@ -6,39 +6,24 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 12:39:35 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/22 19:38:54 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/24 17:25:52 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-int		requi(t_length *len, char *root, int mode)
+char	*creat_path(char *root, char *dir)
 {
-	char	*name;
+	int		length;
+	char	*path;
 
-	name = extract_name(root);
-	if ((ft_strequ(name, ".\0") || ft_strequ(name, "..\0")) && !mode)
-	{
-		if (len->option & 64)
-		{
-			free(name);
-			return (1);
-		}
-		free(name);
-		return (0);
-	}
-	if (name[0] != '.')
-	{
-		free(name);
-		return (1);
-	}
-	if (name[0] == '.' && (ft_strequ(name, "./") || len->option & 8))
-	{
-		free(name);
-		return (1);
-	}
-	free(name);
-	return (0);
+	length = ft_strlen(root) + ft_strlen(dir) + 2;
+	if (!(path = ft_memalloc(sizeof(char) * length)))
+		return (NULL);
+	path = ft_strcat(path, root);
+	path = ft_strcat(path, "/");
+	path = ft_strcat(path, dir);
+	return (path);
 }
 
 t_node	*recurs(t_node *tree, char *path, t_length *len)
@@ -53,8 +38,8 @@ t_node	*recurs(t_node *tree, char *path, t_length *len)
 		return ((t_node *)ft_error(ft_strdup(path)));
 	while ((file = readdir(dir)))
 	{
-		name = ft_strjoin(path, "/\0");
-		name = ft_strjoin_free(&name, file->d_name, 1);
+		if (!(name = creat_path(path, file->d_name)))
+			return (NULL);
 		if (requi(len, name, 1))
 		{
 			if (!(tree = add_node(tree, file, path, len)))
@@ -67,22 +52,6 @@ t_node	*recurs(t_node *tree, char *path, t_length *len)
 	if (tree)
 		print_dir(tree, len, 3);
 	return (tree);
-}
-
-void	print_dir(t_node *tree, t_length *len, int mode)
-{
-	if (mode && mode != 3 && !ft_strequ(tree->name, ".\0"))
-	{
-		ft_printf("option: %d\n", len->option);
-		if (!(len->option & 4) && !(len->option & 64) && (len->option & 32))
-			ft_printf("\n\0");
-		if (!(len->option & 64) && (len->option & 32))
-			ft_printf("\n\0");
-		if (!(len->option & 64) && !(len->option & 128))
-		ft_printf("%s:\n", tree->name);
-	}
-	if (!mode || (mode == 3 && (len->option & 4)))
-		ft_printf("total %d\n", len->blocks);
 }
 
 void	print_recurs(t_node *tree, t_length *len)
@@ -98,9 +67,9 @@ void	print_recurs(t_node *tree, t_length *len)
 		print_recurs(tree->left, len);
 	if (tree->type == 4 && requi(len, tree->name, 0))
 	{
+		print_dir(tree, len, 1);
 		if (!(new_len = init_len(len)))
 			return ;
-		print_dir(tree, len, 1);
 		directory = recurs(directory, tree->name, new_len);
 		if (directory)
 		{
