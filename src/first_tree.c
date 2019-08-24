@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/24 14:27:38 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/24 17:24:32 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/24 18:36:25 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	print_first(t_node *tree, t_length *len)
 		len->written = write(1, "\n", 1) - 1;
 	print_name(tree, len);
 	len->written += len->name_l;
-	if ((len->option & 4) && tree->type == 10)
+	if ((len->option & 256) && tree->type == 10)
 		print_link(tree);
 	while (len->name_l > tree->length++ && !(len->option & 4))
 		write(1, " ", 1);

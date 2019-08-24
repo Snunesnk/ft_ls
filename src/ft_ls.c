@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 17:53:15 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/24 17:38:42 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/24 18:34:28 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,8 @@ int			get_options(char **argv, int *option)
 {
 	int		i;
 	int		j;
-	char	*arg;
 	char	ret;
 
-	if (!(arg = ft_strdup("tr l   a       R\0")))
-		return (-1);
 	i = 1;
 	while (argv[i] && argv[i][0] == '-')
 	{
@@ -53,16 +50,17 @@ int			get_options(char **argv, int *option)
 		{
 			ret = argv[i][j + 1];
 			argv[i][j + 1] = '\0';
-			if (ft_occur(argv[i] + j, arg))
-				*option |= ft_occur(argv[i] + j, arg);
-			else if (argv[i][j] != '-' || j < 2)
-				return(-ft_printf("ls: illegal option -- %c\n", argv[i][j]));
+			if (ft_occur(argv[i] + j, "tr 1   a       R"))
+				*option |= ft_occur(argv[i] + j, "tr 1   a       R");
+			else if (argv[i][j] == 'l' && !(*option & 256))
+				*option += (*option & 4) ? 256 : 260;
+			else if ((argv[i][j] != '-' || j < 2))
+				return (-ft_printf("ls: illegal option -- %c\n", argv[i][j]));
 			argv[i][j + 1] = ret;
 			j++;
 		}
 		i++;
 	}
-	free(arg);
 	*option = *option | 64;
 	return (i);
 }
