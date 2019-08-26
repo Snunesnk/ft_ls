@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/07 13:17:17 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/26 15:26:56 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/26 16:34:51 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,18 +99,18 @@ void	print_name(t_node *node, t_length *len)
 		free(name);
 		name = ft_strdup("/etc\0");
 	}
-	if (print_sp(node, name))
+	if (len->option & 512 && print_sp(node, name))
 	{
 		free(name);
 		return ;
 	}
-	else if (node->type == 2 || node->type == 0)
+	else if (len->option & 512 && (node->type == 2 || node->type == 0))
 		ft_printf("{blue}{H_yellow}%s", name);
-	else if (node->type == 6)
+	else if (len->option & 512 && node->type == 6)
 		ft_printf("{blue}{H_cyan}%s", name);
-	else if (node->type == 7 && node->sp_bit == 4)
+	else if (len->option & 512 && node->type == 7 && node->sp_bit == 4)
 		ft_printf("{black}{h_red}%s", name);
-	else if (node->type == 7 && node->sp_bit == 2)
+	else if (len->option & 512 && node->type == 7 && node->sp_bit == 2)
 		ft_printf("{black}{H_cyan}%s", name);
 	else
 		ft_printf("%s", name);
