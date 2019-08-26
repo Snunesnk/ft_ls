@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 13:50:17 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/02 11:24:07 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/26 14:45:06 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,20 +22,20 @@
 
 typedef struct	s_flags
 {
-	int diez;
-	int	plus;
-	int	space;
-	int	minus;
-	int	zero;
-	int	width;
-	int	preci;
-	int	conv;
-	int	sign;
-	int	spos;
-	int nb;
-	int len;
-	int color;
-	int fd;
+	int		diez;
+	int		plus;
+	int		space;
+	int		minus;
+	int		zero;
+	int		width;
+	int		preci;
+	int		conv;
+	int		sign;
+	int		spos;
+	int		nb;
+	int		len;
+	int		color;
+	int		fd;
 }				t_flags;
 
 int				ft_dprintf(int fd, const char *format, ...);

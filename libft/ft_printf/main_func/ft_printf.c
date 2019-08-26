@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/04 04:53:01 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/07 17:50:19 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/26 16:10:08 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	get_next_percent(const char *str, t_flags *flag)
 	ret = 0;
 	len = 0;
 	if (flag->color == 1)
-		write(1, "\033[0m", 5);
+		write(1, "\033[0m", sizeof("\033[0m") - 1);
 	ft_reset_flags(flag, 0);
 	while (str[flag->spos] && str[flag->spos] != '%')
 	{
@@ -82,6 +82,8 @@ int	ft_printf(const char *format, ...)
 		else if (flag.len == 17)
 			len += print_percent(&flag);
 	}
+	if (flag.color == 1)
+		write(1, "\033[0m", sizeof("\033[0m") - 1);
 	va_end(ap);
 	return (len);
 }

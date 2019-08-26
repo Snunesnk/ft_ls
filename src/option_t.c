@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/15 17:55:02 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/20 19:08:33 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/26 12:49:29 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ long int	calc_time(char *time)
 	time[6] = ' ';
 	time[9] = ':';
 	time[12] = ':';
-	time[15] = ':';
+	time[15] = ' ';
 	return (seconds);
 }
 
@@ -105,8 +105,12 @@ void		print_time(char *node_time)
 	node_sec = calc_time(node_time);
 	if (seconds - node_sec > 30 * 86400 * 6 + 3 * 86400 || node_sec > seconds)
 	{
-		ft_memmove(node_time + 8, node_time + 16, 4);
+		if (node_time[20])
+			ft_memmove(node_time + 8, node_time + 16, 5);
+		else
+			ft_memmove(node_time + 8, node_time + 16, 4);
 		node_time[7] = ' ';
 	}
-	ft_printf(" %.*s ", 12, node_time);
+	node_time[12] = (node_time[12] == ':') ? '\0' : node_time[12];
+	ft_printf(" %.*s ", 13, node_time);
 }

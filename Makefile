@@ -6,14 +6,14 @@
 #    By: snunes <snunes@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/05 12:37:58 by snunes            #+#    #+#              #
-#    Updated: 2019/08/24 17:25:12 by snunes           ###   ########.fr        #
+#    Updated: 2019/08/26 13:54:58 by snunes           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
 CC = gcc
 NAME = ft_ls
-VPATH = .:include:src
+VPATH = .:include:src:libft
 
 SRC = 		ft_ls.c \
 			fill_tree.c \
@@ -26,10 +26,12 @@ SRC = 		ft_ls.c \
 			error.c \
 			option_t.c \
 			ft_filequ.c \
-			first_tree.c
+			first_tree.c \
+			option_t2.c
 
 LDFLAG = -Llibft
 LDLIB = -lft
+LIB = libft.a
 OBJ_PATH = obj
 I_PATH = include
 HEADER = ft_ls.h ft_printf.h libft.h
@@ -51,7 +53,7 @@ all : $(NAME)
 $(NAME) ::
 	@cd libft/ && $(MAKE)
 
-$(NAME) :: $(OBJ)
+$(NAME) :: $(OBJ) $(LIB)
 	@echo "$(BYELLOW)Generating $(RED)$@$(CLEAR)"
 	@$(CC) $(CCFLAGS) -o $@ $^ -I $(I_PATH) $(LDFLAG) $(LDLIB) 
 	@echo "$(GREEN)[DONE]$(CLEAR)"

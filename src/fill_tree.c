@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 18:17:45 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/24 18:53:07 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/26 12:35:56 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,7 @@ int		fill_spec(struct stat st, t_node *new_node)
 	new_node->blocks = st.st_blocks;
 	if (!(new_node->mtime = ft_strdup(ctime(&st.st_mtimespec.tv_sec))))
 		return (0);
-	new_node->mtime = ft_memmove(new_node->mtime, new_node->mtime + 4, 20);
-	new_node->mtime[20] = '\0';
-	new_node->mtime[22] = '\0';
+	new_node->mtime = adjust_time(new_node->mtime);
 	return (1);
 }
 

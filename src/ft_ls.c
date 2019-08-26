@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 17:53:15 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/24 19:04:26 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/26 15:30:50 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int			get_options(char **argv, int *option)
 			if (ft_occur(argv[i] + j, "tr 1   a       R"))
 				*option |= ft_occur(argv[i] + j, "tr 1   a       R");
 			else if (argv[i][j] == 'l' && !(*option & 256))
-				*option += (*option & 4) ? 256 : 260;
+				*option += 256;
 			else if ((argv[i][j] != '-' || j > 2))
 				return (-ft_printf("ls: illegal option -- %c\n", argv[i][j]));
 			argv[i][j + 1] = ret;
@@ -61,7 +61,7 @@ int			get_options(char **argv, int *option)
 		}
 		i++;
 	}
-	*option = *option | 64;
+	*option |= (*option & 256 && !(*option & 4)) ? 68 : 64;
 	return (i);
 }
 

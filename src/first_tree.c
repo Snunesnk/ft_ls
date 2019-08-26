@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/24 14:27:38 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/24 19:02:33 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/26 12:11:38 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	print_first(t_node *tree, t_length *len)
 			print_first(tree->right, len);
 		return ;
 	}
-	if (len->option & 4)
+	if (len->option & 256)
 		print_info(tree, len);
 	if (!(len->option & 4) && len->written + len->name_l > len->column)
 		len->written = write(1, "\n", 1) - 1;

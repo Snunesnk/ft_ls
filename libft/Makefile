@@ -6,7 +6,7 @@
 #    By: snunes <snunes@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/05 12:37:58 by snunes            #+#    #+#              #
-#    Updated: 2019/08/24 14:18:54 by snunes           ###   ########.fr        #
+#    Updated: 2019/08/26 14:09:02 by snunes           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ SRC = ft_putchar.c ft_putstr.c ft_putchar_fd.c ft_putstr_fd.c ft_isdigit.c \
 		get_flags.c print_multi.c arrange_flags.c ft_nblen.c deal_wdouble.c \
 		exept_double.c big_int.c print_csp.c handle_flags.c deal_w_l_double.c \
 		handle_colors.c init_arrays.c ft_dprintf.c ft_occur.c ft_strshift.c \
-		ft_strreplace.c
+		ft_strreplace.c ft_strprepend.c
 
 OBJ_PATH = obj
 I_PATH = ../include
