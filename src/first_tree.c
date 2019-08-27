@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/24 14:27:38 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/26 12:11:38 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/27 19:47:24 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ t_node	*add_content(t_node *tree, char *path, t_length *len)
 	if (!(root = find_root(path)))
 		return (NULL);
 	directory = opendir(root);
+	if (!directory)
+		return ((t_node *)ft_error(ft_strdup(path)));
 	if (!(name = (ft_strequ(root, ".")) ? ft_strdup(path) : extract_name(path)))
 		return (NULL);
 	file = readdir(directory);
@@ -32,7 +34,7 @@ t_node	*add_content(t_node *tree, char *path, t_length *len)
 		return ((t_node *)ft_error(name));
 	if (!(tree = add_node(tree, file, path, len)))
 		return (NULL);
-	tree->type = (name[ft_strlen(name) - 1] == '/') ? 4 : tree->type;
+	tree->type = (tree->type == 10 && tree->links > 1) ? 4 : tree->type;
 	free(name);
 	free(root);
 	closedir(directory);
@@ -51,6 +53,8 @@ void	print_content(t_node *tree, t_length *len)
 	if (!(new_tree = recurs(new_tree, tree->name, new_len)))
 		return ;
 	print_tree(new_tree, new_len);
+	if (!(len->option & 4))
+		ft_printf("\n");
 	free_tree(new_tree);
 	free(new_len);
 }

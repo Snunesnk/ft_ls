@@ -6,36 +6,29 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/07 13:17:17 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/26 16:34:51 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/27 19:46:48 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-void	print_perms(int perm)
+void	print_perms(int perm, t_node *node)
 {
 	int i;
 
-	i = 100;
-	while (i > 0)
+	i = 1000;
+	while ((i /= 10))
 	{
-		if ((perm / i) % 10 == 7)
-			ft_printf("rwx");
-		else if ((perm / i) % 10 == 6)
-			ft_printf("rw-");
-		else if ((perm / i) % 10 == 5)
-			ft_printf("r-x");
-		else if ((perm / i) % 10 == 4)
-			ft_printf("r--");
-		else if ((perm / i) % 10 == 3)
-			ft_printf("-wx");
-		else if ((perm / i) % 10 == 2)
-			ft_printf("-w-");
-		else if ((perm / i) % 10 == 1)
-			ft_printf("--x");
-		else if ((perm / i) % 10 == 0)
-			ft_printf("---");
-		i /= 10;
+		((perm / i) % 10 > 3) ? ft_printf("r") : ft_printf("-");
+		(IS_WRITEABLE((perm / i) % 10)) ? ft_printf("w") : ft_printf("-");
+		if ((node->sp_bit & 1) && i < 10)
+			(IS_EXEC((perm / i) % 10)) ? ft_printf("t") : ft_printf("T");
+		else if (node->sp_bit & 2 && i == 10)
+			(IS_EXEC((perm / i) % 10)) ? ft_printf("s") : ft_printf("S");
+		else if (node->sp_bit & 4 && i == 100)
+			(IS_EXEC((perm / i) % 10)) ? ft_printf("s") : ft_printf("S");
+		else
+		   (IS_EXEC((perm / i) % 10)) ? ft_printf("x") : ft_printf("-");
 	}
 }
 
@@ -52,7 +45,7 @@ void	print_info(t_node *node, t_length *len)
 	while (node->type != file_type[i] && file_type[i])
 		i += 2;
 	ft_printf("%c", file_type[i + 1]);
-	print_perms((node->u_perm * 10 + node->g_perm) * 10 + node->o_perm);
+	print_perms((node->u_perm * 10 + node->g_perm) * 10 + node->o_perm, node);
 	link_l = give_length(ft_nbrlen(node->links), len->link_l);
 	i = give_length(ft_strlen(node->owner), len->user_l);
 	group_l = give_length(ft_strlen(node->group), len->group_l);
@@ -62,17 +55,22 @@ void	print_info(t_node *node, t_length *len)
 	print_time(node->mtime);
 }
 
-int		print_sp(t_node *node, char *name)
+int		print_sp(t_node *node, char *name, t_length *len)
 {
+	if (!(len->option & 512))
+	{
+		ft_printf("%s", name);
+		return (1);
+	}
 	if ((node->type == 4 && !IS_WRITEABLE(node->o_perm)))
 		ft_printf("{B_cyan}%s", name);
-	else if (node->type == 4 && IS_WRITEABLE(node->o_perm) && node->sp_bit == 1)
+	else if (node->type == 4 && IS_WRITEABLE(node->o_perm) && node->sp_bit & 1)
 		ft_printf("{black}{H_green}%s", name);
 	else if (node->type == 4 && IS_WRITEABLE(node->o_perm) && node->sp_bit != 1)
 		ft_printf("{black}{H_yellow}%s", name);
 	else if (node->type == 10)
 		ft_printf("{purple}%s", name);
-	else if (node->type == 7 && node->sp_bit == 0)
+	else if (node->type == 7 && node->sp_bit < 2)
 		ft_printf("{red}%s", name);
 	else if (node->type == 12)
 		ft_printf("{green}%s", name);
@@ -99,18 +97,18 @@ void	print_name(t_node *node, t_length *len)
 		free(name);
 		name = ft_strdup("/etc\0");
 	}
-	if (len->option & 512 && print_sp(node, name))
+	if (print_sp(node, name, len))
 	{
 		free(name);
 		return ;
 	}
-	else if (len->option & 512 && (node->type == 2 || node->type == 0))
+	else if ((node->type == 2 || node->type == 0))
 		ft_printf("{blue}{H_yellow}%s", name);
-	else if (len->option & 512 && node->type == 6)
+	else if (node->type == 6)
 		ft_printf("{blue}{H_cyan}%s", name);
-	else if (len->option & 512 && node->type == 7 && node->sp_bit == 4)
+	else if (node->type == 7 && node->sp_bit & 4)
 		ft_printf("{black}{h_red}%s", name);
-	else if (len->option & 512 && node->type == 7 && node->sp_bit == 2)
+	else if (node->type == 7 && node->sp_bit & 2)
 		ft_printf("{black}{H_cyan}%s", name);
 	else
 		ft_printf("%s", name);

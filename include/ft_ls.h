@@ -6,7 +6,7 @@
 /*   By: root <snunes@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/19 15:11:41 by root              #+#    #+#             */
-/*   Updated: 2019/08/26 12:34:21 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/27 17:47:58 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 
 # define MAX(x, y) (x > y ? x : y)
 # define IS_WRITEABLE(x) ((x) == 7 || (x) == 6 || (x) == 3 || (x) == 2)
+# define IS_EXEC(x) ((x) == 7 || (x) == 5 || (x) == 3 || (x) == 1)
 
 typedef struct	s_length
 {

@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/15 11:31:41 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/24 19:03:23 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/27 19:25:55 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 void	*ft_error(char *error)
 {
 	ft_printf("ft_ls: ");
+	if (!*error)
+		ft_printf(" fts_open: ");
 	perror(error);
 	free(error);
 	return (0);

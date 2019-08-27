@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 18:17:45 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/26 12:35:56 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/27 19:46:18 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int		fill_spec(struct stat st, t_node *new_node)
 	new_node->g_perm = (st.st_mode & S_IRWXG) % 64 / 8;
 	new_node->o_perm = (st.st_mode & S_IRWXO) % 8;
 	new_node->owner = (user) ? ft_strdup(user->pw_name) : ft_strdup("4389\0");
-	new_node->group = (grp) ? ft_strdup(grp->gr_name) : ft_strdup("daemon\0");
+	new_node->group = (grp) ? ft_strdup(grp->gr_name) : ft_strdup("wheel\0");
 	if (!new_node->group || !new_node->group)
 		return (0);
 	new_node->links = st.st_nlink;
@@ -48,12 +48,11 @@ t_node	*init_node(t_node *node)
 		return (NULL);
 	node->length = ft_strlen(name);
 	free(name);
-	if (node->type == 8
-			&& (st.st_mode & (S_IRWXU | S_IRWXG | S_IRWXO)) / 64 == 7)
-		node->type = 7;
 	lstat(node->name, &st);
 	if (!(fill_spec(st, node)))
 		return (NULL);
+	if (node->type == 8 && IS_EXEC(node->o_perm))
+		node->type = 7;
 	node->heigth = 1;
 	return (node);
 }
