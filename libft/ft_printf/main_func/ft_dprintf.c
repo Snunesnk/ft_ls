@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/28 11:59:55 by snunes            #+#    #+#             */
-/*   Updated: 2019/06/28 12:12:16 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/28 19:10:57 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ int	ft_dprintf(int fd, const char *format, ...)
 		else if (flag.len == 17)
 			len += print_percent(&flag);
 	}
+	if (flag.color == 1)
+		write(1, "\033[0m", sizeof("\033[0m"));
 	va_end(ap);
 	return (len);
 }

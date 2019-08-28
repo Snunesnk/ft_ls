@@ -6,7 +6,7 @@
 #    By: snunes <snunes@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/05 12:37:58 by snunes            #+#    #+#              #
-#    Updated: 2019/08/26 13:54:58 by snunes           ###   ########.fr        #
+#    Updated: 2019/08/28 18:15:44 by snunes           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,14 +29,14 @@ SRC = 		ft_ls.c \
 			first_tree.c \
 			option_t2.c
 
-LDFLAG = -Llibft
+LDFLAGS = -Llibft
 LDLIB = -lft
 LIB = libft.a
 OBJ_PATH = obj
 I_PATH = include
 HEADER = ft_ls.h ft_printf.h libft.h
 OBJ_NAME = $(SRC:.c=.o)
-CCFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -g
 OBJ = $(addprefix $(OBJ_PATH)/,$(OBJ_NAME))
 
 CLINE = \033[K
@@ -55,13 +55,13 @@ $(NAME) ::
 
 $(NAME) :: $(OBJ) $(LIB)
 	@echo "$(BYELLOW)Generating $(RED)$@$(CLEAR)"
-	@$(CC) $(CCFLAGS) -o $@ $^ -I $(I_PATH) $(LDFLAG) $(LDLIB) 
+	@$(CC) $(CFLAGS) -o $@ $^ -I $(I_PATH) $(LDFLAGS) $(LDLIB) 
 	@echo "$(GREEN)[DONE]$(CLEAR)"
 
 ## objet		: verifie que les objets et le header soient a jour
 $(OBJ_PATH)/%.o : %.c $(HEADER)
 	@mkdir $(OBJ_PATH) 2> /dev/null || true 
-	@$(CC) $(CCFLAGS) -I $(I_PATH) -o $@ -c $< 
+	@$(CC) $(CFLAGS) -I $(I_PATH) -o $@ -c $< 
 	@echo "$(GREEN)[OK]\t$(BYELLOW)Compiling$(CLEAR) $<"
 
 ## clean		: efface tout les binaires

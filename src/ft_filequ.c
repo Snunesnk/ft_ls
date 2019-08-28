@@ -6,7 +6,7 @@
 /*   By: snunes <snunes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 14:34:33 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/26 12:09:11 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/28 18:22:16 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	abs_char(char c1, char c2)
 		}
 		return (c1 == c2);	
 	}
-	return (1);
+	return (c1 == c2);
 }
 
 int	ft_filequ(char const *s1, char const *s2)

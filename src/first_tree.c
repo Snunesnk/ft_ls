@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/24 14:27:38 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/27 19:47:24 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/28 18:39:13 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	print_content(t_node *tree, t_length *len)
 	t_node		*new_tree;
 	t_length	*new_len;
 
+	len->option |= 1024;
 	new_tree = NULL;
 	print_dir(tree, len, 1);
 	if (!(new_len = init_len(len)))

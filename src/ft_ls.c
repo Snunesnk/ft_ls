@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 17:53:15 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/27 19:26:17 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/28 19:30:30 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void		init_poss(char **poss)
 	poss[7] = "\0";
 }
 
-int			get_options(char **argv, int *option)
+int			get_options(char **av, int *option)
 {
 	char	*poss[8];
 	int		i;
@@ -57,25 +57,25 @@ int			get_options(char **argv, int *option)
 
 	init_poss(poss);
 	i = 1;
-	while (argv[i] && argv[i][0] == '-' && argv[i][1])
+	while (av[i] && av[i][0] == '-' && av[i][1] && !ft_strequ(av[i], "--"))
 	{
 		j = 1;
-		while (argv[i][j])
+		while (av[i][j])
 		{
 			k = 0;
-			while (poss[k][0] != argv[i][j] && poss[k][0])
+			while (poss[k][0] != av[i][j] && poss[k][0])
 				k++;
-			if (!poss[k][0] && !(argv[i][j] == '-' && j <= 2 && !argv[i][j + 1]))
-				return (-ft_printf("ft_ls: illegal option -- %c\n", argv[i][j]));
+			if (!poss[k][0] && !(av[i][j] == '-' && j <= 2 && !av[i][j + 1]))
+				return (-ft_printf("ft_ls: illegal option -- %c\n", av[i][j]));
 			*option |= ft_atoi(poss[k] + 1);
-			if (argv[i][j] == '1' && (*option & 256))
+			if (av[i][j] == '1' && (*option & 256))
 				*option -= 256;
 			j++;
 		}
 		i++;
 	}
 	*option += ((*option & 256) && !(*option & 4)) ? 4 : 0;
-	return (i);
+	return ((ft_strequ(av[i], "--")) ? i + 1 : i);
 }
 
 int			main(int argc, char **argv)
@@ -102,6 +102,8 @@ int			main(int argc, char **argv)
 	print_first(tree, len);
 	if (len->option & 16)
 		print_recurs(tree, len);
+	if (!(len->option & 1024) && !(len->option & 4))
+		ft_printf("\n");
 	free(len);
 	free_tree(tree);
 	return (0);
