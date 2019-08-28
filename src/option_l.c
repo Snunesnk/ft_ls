@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/07 13:10:13 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/24 19:02:11 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/28 20:03:43 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	update_l(t_node *nod, t_length *len)
 	char			*name;
 	struct	winsize	size;
 
-	if ((len->option & 64) && nod->type == 4)
+	if (((len->option & 64) && nod->type == 4))
 		return ;
 	ioctl(0, TIOCGWINSZ, &size);
 	len->column = size.ws_col;
