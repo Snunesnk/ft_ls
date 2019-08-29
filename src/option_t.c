@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/15 17:55:02 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/29 14:45:43 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/29 16:56:24 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,10 @@ long int	calc_time(char *time)
 	seconds = 0;
 	jan = ft_strdup("Jan\0");
 	i = cmp_month(time, jan) * -1;
+	free(jan);
 	seconds += 86400 * 30 * i + ((i - 1) / 2) * 86400;
 	if (i >= 2)
 		seconds -= 86400;
-	free(jan);
 	seconds += (ft_atoi(time + 16) - 1970) * 31536000;
 	seconds += ((ft_atoi(time + 16) - 1969) / 4) * 86400 - 86400;
 	time[6] = '\0';

@@ -6,7 +6,7 @@
 #    By: snunes <snunes@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/05 12:37:58 by snunes            #+#    #+#              #
-#    Updated: 2019/08/29 14:47:24 by snunes           ###   ########.fr        #
+#    Updated: 2019/08/29 17:12:13 by snunes           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -72,12 +72,12 @@ clean :
 	@cd libft && $(MAKE) $@
 	@echo "$(RED)Deleting $(NAME) obj$(CLEAR)$(CURSOR)"
 	@rm -f $(OBJ)
-	@echo "$(LCLEAR)$(RED)Deleting $(NAME) obj folder$(CLEAR)"
+	@echo "$(LCLEAR)$(RED)Deleting $(NAME) obj folder$(CLEAR)$(CURSOR)"
 	@rm -rf $(OBJ_PATH) 2> /dev/null || true
 
 ## fclean		: efface les binaires ainsi que l'executable
 fclean : clean
-	@echo "$(LCLEAR)$(RED)Deleting libft.a$(CLEAR)"
+	@echo "$(LCLEAR)$(RED)Deleting libft.a$(CLEAR)$(CURSOR)"
 	@cd libft && rm -f libft.a
 	@echo "$(LCLEAR)$(RED)Deleting $(NAME)$(CLEAR)"
 	@rm -f $(NAME)
