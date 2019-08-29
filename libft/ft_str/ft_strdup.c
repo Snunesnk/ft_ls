@@ -6,7 +6,7 @@
 /*   By: snunes <snunes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 13:44:24 by snunes            #+#    #+#             */
-/*   Updated: 2019/04/15 19:10:29 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/29 10:08:20 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ char	*ft_strdup(const char *s1)
 	int		i;
 	char	*s2;
 
+	if (!s1)
+		return (NULL);
 	i = 0;
 	if (!(s2 = (char *)ft_memalloc(sizeof(*s2) * (ft_strlen(s1) + 1))))
 		return (NULL);

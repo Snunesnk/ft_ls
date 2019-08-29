@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 17:53:15 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/28 19:30:30 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/29 10:05:15 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,11 +92,8 @@ int			main(int argc, char **argv)
 	if (argc - arg == 0 && !(tree = add_content(tree, ".\0", len)))
 		return (1);
 	len->option += (argc - arg > 1) ? 32 : 0;
-	while (argc > arg)
-	{
-		tree = add_content(tree, argv[arg], len);
-		arg++;
-	}
+	while (argc > arg++)
+		tree = add_content(tree, argv[arg - 1], len);
 	if (!tree)
 		return (1);
 	print_first(tree, len);

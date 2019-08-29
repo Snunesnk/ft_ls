@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/24 14:27:38 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/28 18:39:13 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/29 10:07:24 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ t_node	*add_content(t_node *tree, char *path, t_length *len)
 	struct dirent	*file;
 	char			*root;
 
-	root = NULL;
 	if (!(root = find_root(path)))
 		return (NULL);
 	directory = opendir(root);

@@ -6,7 +6,7 @@
 #    By: snunes <snunes@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/05 12:37:58 by snunes            #+#    #+#              #
-#    Updated: 2019/08/28 18:15:44 by snunes           ###   ########.fr        #
+#    Updated: 2019/08/29 12:08:02 by snunes           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,10 +39,14 @@ OBJ_NAME = $(SRC:.c=.o)
 CFLAGS = -Wall -Wextra -Werror -g
 OBJ = $(addprefix $(OBJ_PATH)/,$(OBJ_NAME))
 
-CLINE = \033[K
+CURSOR = \033[A
+LCLEAR = \033[K
 CLEAR = \033[0m
 GREEN = \033[32m
+BGREEN = \033[32;1m
 BYELLOW = \033[33;1m
+BWHITE = \033[37;1m
+BCYAN = \033[36;1m
 RED = \033[31m
 
 .PHONY : all, clean, fclean, re, help, norme
@@ -54,29 +58,28 @@ $(NAME) ::
 	@cd libft/ && $(MAKE)
 
 $(NAME) :: $(OBJ) $(LIB)
-	@echo "$(BYELLOW)Generating $(RED)$@$(CLEAR)"
+	@echo "$(LCLEAR)$(BCYAN)[Executable] => $(BGREEN)$@$(CLEAR)"
 	@$(CC) $(CFLAGS) -o $@ $^ -I $(I_PATH) $(LDFLAGS) $(LDLIB) 
-	@echo "$(GREEN)[DONE]$(CLEAR)"
 
 ## objet		: verifie que les objets et le header soient a jour
 $(OBJ_PATH)/%.o : %.c $(HEADER)
-	@mkdir $(OBJ_PATH) 2> /dev/null || true 
-	@$(CC) $(CFLAGS) -I $(I_PATH) -o $@ -c $< 
-	@echo "$(GREEN)[OK]\t$(BYELLOW)Compiling$(CLEAR) $<"
+	@mkdir $(OBJ_PATH) 2> /dev/null || true; \
+	$(CC) $(CFLAGS) -I $(I_PATH) -o $@ -c $< ; \
+	echo "$(LCLEAR)$(BWHITE)[Compile] =>$(CLEAR) $<$(CLINE)$(CURSOR)"
 
 ## clean		: efface tout les binaires
 clean :
 	@cd libft && $(MAKE) $@
-	@echo "$(RED)Cleaning all binaries$(CLEAR)"
+	@echo "$(RED)Deleting $(NAME) obj$(CLEAR)$(CURSOR)"
 	@rm -f $(OBJ)
-	@echo "$(RED)Removing binaries folder$(CLEAR)"
+	@echo "$(LCLEAR)$(RED)Deleting $(NAME) obj folder$(CLEAR)"
 	@rm -rf $(OBJ_PATH) 2> /dev/null || true
 
 ## fclean		: efface les binaires ainsi que l'executable
 fclean : clean
-	@echo "$(RED)Deleting libft.a$(CLEAR)"
+	@echo "$(LCLEAR)$(RED)Deleting libft.a$(CLEAR)"
 	@cd libft && rm -f libft.a
-	@echo "$(RED)Deleting $(NAME)$(CLEAR)"
+	@echo "$(LCLEAR)$(RED)Deleting $(NAME)$(CLEAR)"
 	@rm -f $(NAME)
 
 ## re		: lance la regle "fclean", puis la regle "all"
