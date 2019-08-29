@@ -6,40 +6,39 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/07 13:10:13 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/28 20:03:43 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/29 16:50:54 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-void	update_l(t_node *nod, t_length *len)
+void	update_l(t_node *node, t_length *len)
 {
-	char			*name;
 	struct	winsize	size;
 
-	if (((len->option & 64) && nod->type == 4))
+	if (((len->option & 64) && node->type == 4))
 		return ;
 	ioctl(0, TIOCGWINSZ, &size);
 	len->column = size.ws_col;
-	name = (len->option & 64) ? ft_strdup(nod->name) : extract_name(nod->name);
-	if (ft_strlen(name) + 1 > (size_t)len->name_l
-			&& (name[0] != '.' || len->option & 8))
-		len->name_l = ft_strlen(name) + 1;
-	if (ft_nbrlen(nod->links) + 2 > len->link_l
-					&& (name[0] != '.' || len->option & 8))
-		len->link_l = ft_nbrlen(nod->links) + 2;
-	if (ft_strlen(nod->owner) + 1 > (size_t)len->user_l
-					&& (name[0] != '.' || len->option & 8))
-		len->user_l = ft_strlen(nod->owner);
-	if (ft_strlen(nod->group) > (size_t)len->group_l
-					&& (name[0] != '.' || len->option & 8))
-		len->group_l = ft_strlen(nod->group);
-	if (ft_nbrlen(nod->size) + 2 > len->size_l
-					&& (name[0] != '.' || len->option & 8))
-		len->size_l = ft_nbrlen(nod->size) + 2;
-	if ((name[0] != '.' || len->option & 8))
-		len->blocks += nod->blocks;
-	free(name);
+	if (ft_strlen(node->name) + 1 > (size_t)len->name_l
+			&& (node->name[0] != '.' || len->option & 8))
+		len->name_l = ft_strlen(node->name) + 1;
+	if (!(len->option & 256))
+		return ;
+	if (ft_nbrlen(node->links) + 2 > len->link_l
+					&& (node->name[0] != '.' || len->option & 8))
+		len->link_l = ft_nbrlen(node->links) + 2;
+	if (ft_strlen(node->owner) + 2 > (size_t)len->user_l
+					&& (node->name[0] != '.' || len->option & 8))
+		len->user_l = ft_strlen(node->owner) + 1;
+	if (ft_strlen(node->group) > (size_t)len->group_l
+					&& (node->name[0] != '.' || len->option & 8))
+		len->group_l = ft_strlen(node->group);
+	if (ft_nbrlen(node->size) + 2 > len->size_l
+					&& (node->name[0] != '.' || len->option & 8))
+		len->size_l = ft_nbrlen(node->size) + 2;
+	if ((node->name[0] != '.' || len->option & 8))
+		len->blocks += node->blocks;
 }
 
 void	init_file_type(char file_type[20])
@@ -66,20 +65,13 @@ void	init_file_type(char file_type[20])
 	file_type[19] = 0;
 }
 
-int		give_length(int length, int to_reach)
-{
-	while (length < to_reach)
-		length++;
-	return (length);
-}
-
 int		print_link(t_node *tree)
 {
 	char	buff[500];
 	size_t	size;
 
-	if (!(size = readlink(tree->name, buff, 500)))
-		return ((int)ft_error(extract_name(tree->name)));
+	if (!(size = readlink(tree->path, buff, 500)))
+		return ((int)ft_error(ft_strdup(tree->name)));
 	buff[size] = '\0';
 	ft_printf(" -> %s", buff);
 	return (1);

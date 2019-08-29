@@ -6,7 +6,7 @@
 #    By: snunes <snunes@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/05 12:37:58 by snunes            #+#    #+#              #
-#    Updated: 2019/08/29 12:07:58 by snunes           ###   ########.fr        #
+#    Updated: 2019/08/29 14:47:36 by snunes           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,15 +59,15 @@ BCYAN = \033[36;1m
 all : $(NAME)
 
 $(NAME) : $(OBJ)
-	@echo "$(LCLEAR)$(BCYAN)[Lib] => $(CLEAR)$(BGREEN)$@$(CLEAR)"
+	@echo "$(LCLEAR)$(BCYAN)$@$(BWHITE) => $(BGREEN)[done]$(CLEAR)"
 	@ar -rc $@ $^
 	@ranlib $@
 
 ## objet		: verifie que les objets et le header soient a jour
 $(OBJ_PATH)/%.o : %.c $(HEADER)
-	@mkdir $(OBJ_PATH) 2> /dev/null || true; \
-	$(CC) $(CCFLAGS) -I $(I_PATH) -o $@ -c $<; \
-	echo "$(LCLEAR)$(BWHITE)[Compile] => $(CLEAR)$<$(CURSOR)" 
+	@mkdir $(OBJ_PATH) 2> /dev/null || true
+	@$(CC) $(CCFLAGS) -I $(I_PATH) -o $@ -c $<
+	@echo "$(LCLEAR)$(BWHITE)[Compiling] => $(CLEAR)$<$(CURSOR)" 
 
 ## clean		: efface tout les binaires
 clean :

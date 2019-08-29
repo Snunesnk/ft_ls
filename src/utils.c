@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/08 11:13:08 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/24 18:35:11 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/29 15:14:05 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,32 +68,18 @@ char	*find_root(char *file)
 	return (root);
 }
 
-int		requi(t_length *len, char *root, int mode)
+int		requi(t_length *len, char *name, int mode)
 {
-	char	*name;
-
-	name = extract_name(root);
 	if ((ft_strequ(name, ".\0") || ft_strequ(name, "..\0")) && !mode)
 	{
 		if (len->option & 64)
-		{
-			free(name);
 			return (1);
-		}
-		free(name);
 		return (0);
 	}
 	if (name[0] != '.')
-	{
-		free(name);
 		return (1);
-	}
 	if (name[0] == '.' && (ft_strequ(name, "./") || len->option & 8))
-	{
-		free(name);
 		return (1);
-	}
-	free(name);
 	return (0);
 }
 
@@ -104,9 +90,9 @@ void	print_dir(t_node *tree, t_length *len, int mode)
 		if (!(len->option & 4) && len->option & 128)
 			ft_printf("\n");
 		if (len->option & 128)
-			ft_printf("\n", tree->name);
+			ft_printf("\n");
 		if ((len->option & 32) || (len->option & 16 && len->option & 128))
-			ft_printf("%s:\n", tree->name);
+			ft_printf("%s:\n", tree->path);
 	}
 	if (!mode || (mode == 3 && (len->option & 256)))
 		ft_printf("total %d\n", len->blocks);

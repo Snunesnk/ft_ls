@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/13 19:00:18 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/21 15:35:59 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/29 15:04:11 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,13 @@ void	free_tree(t_node *tree)
 	if (tree->left)
 		free_tree(tree->left);
 	free(tree->name);
-	free(tree->owner);
-	free(tree->group);
-	free(tree->mtime);
+	free(tree->path);
+	if (tree->owner)
+		free(tree->owner);
+	if (tree->group)
+		free(tree->group);
+	if (tree->mtime)
+		free(tree->mtime);
 	if (tree->right)
 		free_tree(tree->right);
 	free(tree);

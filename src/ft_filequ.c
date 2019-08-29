@@ -6,7 +6,7 @@
 /*   By: snunes <snunes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 14:34:33 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/28 18:22:16 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/29 13:48:30 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,21 @@ int	ft_filequ(char const *s1, char const *s2)
 	if (!abs_char(s1[i], s2[i]) && s1[i] != '/')
 		return (0);
 	return (1);
+}
+
+int	ft_namelen(char *path)
+{
+	int		i;
+	int		j;
+
+	j = 0;
+	i = 0;
+	while (path[i])
+	{
+		if (path[i] == '/' && path[i + 1])
+			j = i + 1;
+		i++;
+	}
+	i = (path[i] == '/') ? i - 1 : i;
+	return (ABS(i - j));
 }

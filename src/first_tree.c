@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/24 14:27:38 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/29 10:07:24 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/29 16:29:32 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_node	*add_content(t_node *tree, char *path, t_length *len)
 	while (file && !ft_filequ(name, file->d_name))
 		file = readdir(directory);
 	if (!file && !(opendir(path)))
-		return ((t_node *)ft_error(name));
+		return ((t_node *)ft_error(ft_strdup(path)));
 	if (!(tree = add_node(tree, file, path, len)))
 		return (NULL);
 	tree->type = (tree->type == 10 && tree->links > 1) ? 4 : tree->type;
@@ -50,7 +50,7 @@ void	print_content(t_node *tree, t_length *len)
 	print_dir(tree, len, 1);
 	if (!(new_len = init_len(len)))
 		return ;
-	if (!(new_tree = recurs(new_tree, tree->name, new_len)))
+	if (!(new_tree = recurs(new_tree, tree->path, new_len)))
 		return ;
 	print_tree(new_tree, new_len);
 	if (!(len->option & 4))

@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 12:39:35 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/24 19:01:59 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/29 15:14:13 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ t_node	*recurs(t_node *tree, char *path, t_length *len)
 	{
 		if (!(name = creat_path(path, file->d_name)))
 			return (NULL);
-		if (requi(len, name, 1))
+		if (requi(len, file->d_name, 1))
 		{
 			if (!(tree = add_node(tree, file, path, len)))
 				return (NULL);
@@ -70,7 +70,7 @@ void	print_recurs(t_node *tree, t_length *len)
 		print_dir(tree, len, 1);
 		if (!(new_len = init_len(len)))
 			return ;
-		directory = recurs(directory, tree->name, new_len);
+		directory = recurs(directory, tree->path, new_len);
 		if (directory)
 		{
 			print_tree(directory, new_len);

@@ -6,7 +6,7 @@
 #    By: snunes <snunes@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/05 12:37:58 by snunes            #+#    #+#              #
-#    Updated: 2019/08/29 12:08:02 by snunes           ###   ########.fr        #
+#    Updated: 2019/08/29 14:47:24 by snunes           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,14 +58,14 @@ $(NAME) ::
 	@cd libft/ && $(MAKE)
 
 $(NAME) :: $(OBJ) $(LIB)
-	@echo "$(LCLEAR)$(BCYAN)[Executable] => $(BGREEN)$@$(CLEAR)"
+	@echo "$(LCLEAR)$(BCYAN)$@$(BWHITE) => $(BGREEN)[done]$(CLEAR)"
 	@$(CC) $(CFLAGS) -o $@ $^ -I $(I_PATH) $(LDFLAGS) $(LDLIB) 
 
 ## objet		: verifie que les objets et le header soient a jour
 $(OBJ_PATH)/%.o : %.c $(HEADER)
-	@mkdir $(OBJ_PATH) 2> /dev/null || true; \
-	$(CC) $(CFLAGS) -I $(I_PATH) -o $@ -c $< ; \
-	echo "$(LCLEAR)$(BWHITE)[Compile] =>$(CLEAR) $<$(CLINE)$(CURSOR)"
+	@mkdir $(OBJ_PATH) 2> /dev/null || true
+	@$(CC) $(CFLAGS) -I $(I_PATH) -o $@ -c $< 
+	@echo "$(LCLEAR)$(BWHITE)[Compiling] =>$(CLEAR) $<$(CLINE)$(CURSOR)"
 
 ## clean		: efface tout les binaires
 clean :

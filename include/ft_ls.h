@@ -6,7 +6,7 @@
 /*   By: root <snunes@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/19 15:11:41 by root              #+#    #+#             */
-/*   Updated: 2019/08/28 18:17:02 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/29 15:19:36 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # include <string.h>
 # include <sys/ioctl.h>
 
+# define ABS(x) (x >= 0 ? x : -1 * x)
 # define MAX(x, y) (x > y ? x : y)
 # define IS_WRITEABLE(x) ((x) == 7 || (x) == 6 || (x) == 3 || (x) == 2)
 # define IS_EXEC(x) ((x) == 7 || (x) == 5 || (x) == 3 || (x) == 1)
@@ -46,6 +47,7 @@ typedef struct	s_length
 
 typedef struct	s_node
 {
+	char			*path;
 	char			*name;
 	int				type;
 	int				u_perm;
@@ -64,6 +66,7 @@ typedef struct	s_node
 	struct s_node	*left;
 }				t_node;
 
+int				ft_namelen(char *path);
 char			*adjust_time(char *time);
 char			*creat_path(char *root, char *dir);
 int				ft_filequ(char const *s1, char const *s2);
