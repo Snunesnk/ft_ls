@@ -6,14 +6,14 @@
 #    By: snunes <snunes@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/05 12:37:58 by snunes            #+#    #+#              #
-#    Updated: 2019/08/30 12:32:52 by snunes           ###   ########.fr        #
+#    Updated: 2019/08/30 16:35:10 by snunes           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
 CC = gcc
 NAME = ft_ls
-VPATH = .:include:src:libft
+VPATH = .:include:src/options:src/binary_tree:src/main_func:src/utils:libft
 
 SRC = 		ft_ls.c \
 			fill_tree.c \
