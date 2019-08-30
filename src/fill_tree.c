@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 18:17:45 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/30 13:49:11 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/30 15:28:10 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ t_node	*add_node(t_node *tree, struct dirent *files, char *root, t_length *len)
 	node->type = files->d_type;
 	if (!(node = init_node(node, len)))
 		return (NULL);
+	(ft_strequ(node->name, "etc") && len->option & 256) ? node->type = 10 : 0;
 	if ((len->option & 64))
 		node->length = ft_strlen(node->name);
 	update_l(node, len);
