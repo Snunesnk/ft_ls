@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/24 14:27:38 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/29 16:29:32 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/30 15:04:26 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,17 +23,16 @@ t_node	*add_content(t_node *tree, char *path, t_length *len)
 		return (NULL);
 	directory = opendir(root);
 	if (!directory)
-		return ((t_node *)ft_error(ft_strdup(path)));
+		return (add_error(tree, path, strerror(errno), len));
 	if (!(name = (ft_strequ(root, ".")) ? ft_strdup(path) : extract_name(path)))
 		return (NULL);
 	file = readdir(directory);
 	while (file && !ft_filequ(name, file->d_name))
 		file = readdir(directory);
 	if (!file && !(opendir(path)))
-		return ((t_node *)ft_error(ft_strdup(path)));
+		return (add_error(tree, path, strerror(errno), len));
 	if (!(tree = add_node(tree, file, path, len)))
 		return (NULL);
-	tree->type = (tree->type == 10 && tree->links > 1) ? 4 : tree->type;
 	free(name);
 	free(root);
 	closedir(directory);
@@ -74,19 +73,19 @@ void	print_first(t_node *tree, t_length *len)
 			print_first(tree->right, len);
 		return ;
 	}
-	if (len->option & 256)
+	if (len->option & 256 && tree->type != 20)
 		print_info(tree, len);
 	if (!(len->option & 4) && len->written + len->name_l > len->column)
-		len->written = write(1, "\n", 1) - 1;
+		len->written = (tree->type == 20) ? 0 : write(1, "\n", 1) - 1;
 	print_name(tree, len);
 	len->written += len->name_l;
 	if ((len->option & 256) && tree->type == 10)
 		print_link(tree);
 	while (len->name_l > tree->length++ && !(len->option & 4))
 		write(1, " ", 1);
-	if (len->option & 4)
+	if (len->option & 4 || tree->type == 20)
 		write(1, "\n", 1);
-	len->option += (len->option & 128) ? 0 : 128;
+	len->option += (len->option & 128 || tree->type == 20) ? 0 : 128;
 	if (tree->right && (tree->right->type != 4 || !(len->option & 16)))
 		print_first(tree->right, len);
 }

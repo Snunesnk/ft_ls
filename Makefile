@@ -6,7 +6,7 @@
 #    By: snunes <snunes@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/05 12:37:58 by snunes            #+#    #+#              #
-#    Updated: 2019/08/29 17:12:13 by snunes           ###   ########.fr        #
+#    Updated: 2019/08/30 12:32:52 by snunes           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,9 +36,8 @@ OBJ_PATH = obj
 I_PATH = include
 HEADER = ft_ls.h ft_printf.h libft.h
 OBJ_NAME = $(SRC:.c=.o)
-CFLAGS = -Wall -Wextra -Werror -g
 OBJ = $(addprefix $(OBJ_PATH)/,$(OBJ_NAME))
-
+CCFLAGS = -Wall -Wextra -Werror
 CURSOR = \033[A
 LCLEAR = \033[K
 CLEAR = \033[0m
@@ -59,12 +58,12 @@ $(NAME) ::
 
 $(NAME) :: $(OBJ) $(LIB)
 	@echo "$(LCLEAR)$(BCYAN)$@$(BWHITE) => $(BGREEN)[done]$(CLEAR)"
-	@$(CC) $(CFLAGS) -o $@ $^ -I $(I_PATH) $(LDFLAGS) $(LDLIB) 
+	@$(CC) $(CCFLAGS) -o $@ $^ -I $(I_PATH) $(LDFLAGS) $(LDLIB) 
 
 ## objet		: verifie que les objets et le header soient a jour
 $(OBJ_PATH)/%.o : %.c $(HEADER)
 	@mkdir $(OBJ_PATH) 2> /dev/null || true
-	@$(CC) $(CFLAGS) -I $(I_PATH) -o $@ -c $< 
+	@$(CC) $(CCFLAGS) -I $(I_PATH) -o $@ -c $< 
 	@echo "$(LCLEAR)$(BWHITE)[Compiling] =>$(CLEAR) $<$(CLINE)$(CURSOR)"
 
 ## clean		: efface tout les binaires

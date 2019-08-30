@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/07 13:17:17 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/29 16:50:29 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/30 15:17:53 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,12 @@ void	print_info(t_node *node, t_length *len)
 
 int		print_sp(t_node *node, char *name, t_length *len)
 {
-	if (!(len->option & 512))
+	if (!(len->option & 512) || node->type == 20)
 	{
-		ft_printf("%s", name);
+		if (node->type == 20)
+			ft_dprintf(2, "ft_ls: %s: %s", name, node->path);
+		else
+			ft_printf("%s", name);
 		return (1);
 	}
 	if ((node->type == 4 && !IS_WRITEABLE(node->o_perm)))
@@ -76,7 +79,7 @@ int		print_sp(t_node *node, char *name, t_length *len)
 
 void	print_name(t_node *node, t_length *len)
 {
-	if ((len->option & 64) && !ft_occur("./\0", node->path))
+	if ((len->option & 64) && !ft_occur("./\0", node->path) && node->type != 20)
 	{
 		free(node->name);
 		node->name = ft_strdup(node->path);
@@ -108,9 +111,10 @@ void	print_tree(t_node *tree, t_length *len)
 		return ;
 	if (tree->left)
 		print_tree(tree->left, len);
-	if (len->option & 256 && (tree->name[0] != '.' || len->option & 8))
+	if (len->option & 256 && (tree->name[0] != '.' || len->option & 8)
+			&& tree->type != 20)
 		print_info(tree, len);
-	if (tree->name[0] != '.' || len->option & 8)
+	if (tree->name[0] != '.' || len->option & 8 || tree->type == 20)
 	{
 		if (!(len->option & 4) && len->written + len->name_l > len->column)
 			len->written = write(1, "\n", 1) - 1;

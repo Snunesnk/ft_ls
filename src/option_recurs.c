@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 12:39:35 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/29 15:14:13 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/30 14:59:03 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,12 @@ t_node	*recurs(t_node *tree, char *path, t_length *len)
 	struct dirent	*file;
 	char			*name;
 
-	name = NULL;
-	file = NULL;
 	if (!(dir = opendir(path)))
-		return ((t_node *)ft_error(ft_strdup(path)));
+		return (add_error(tree, path, strerror(errno), len));
 	while ((file = readdir(dir)))
 	{
+		if (!file && !errno)
+			return (add_error(tree, path, strerror(errno), len));
 		if (!(name = creat_path(path, file->d_name)))
 			return (NULL);
 		if (requi(len, file->d_name, 1))

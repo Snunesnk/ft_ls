@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/08 11:13:08 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/29 15:14:05 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/30 14:54:17 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,12 +89,12 @@ void	print_dir(t_node *tree, t_length *len, int mode)
 	{
 		if (!(len->option & 4) && len->option & 128)
 			ft_printf("\n");
-		if (len->option & 128)
+		if (len->option & 128 && tree->type)
 			ft_printf("\n");
 		if ((len->option & 32) || (len->option & 16 && len->option & 128))
 			ft_printf("%s:\n", tree->path);
 	}
 	if (!mode || (mode == 3 && (len->option & 256)))
 		ft_printf("total %d\n", len->blocks);
-	len->option += (len->option & 128) ? 0 : 128;
+	len->option += (len->option & 128 && tree->type != 20) ? 0 : 128;
 }

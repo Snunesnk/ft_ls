@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/07 13:10:13 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/29 16:50:54 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/30 12:34:44 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int		print_link(t_node *tree)
 	size_t	size;
 
 	if (!(size = readlink(tree->path, buff, 500)))
-		return ((int)ft_error(ft_strdup(tree->name)));
+		return (0);
 	buff[size] = '\0';
 	ft_printf(" -> %s", buff);
 	return (1);

@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 18:17:45 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/29 16:26:55 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/30 13:49:11 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,10 @@ int		fill_spec(struct stat st, t_node *new_node, t_length *len)
 t_node	*init_node(t_node *node, t_length *len)
 {
 	struct stat	st;
+	DIR			*dir;
 
+	node->type = ((dir = opendir(node->path))) ? 4 : node->type;
+	(dir) ? closedir(dir) : 0;
 	node->right = NULL;
 	node->left = NULL;
 	node->mtime = NULL;
@@ -52,8 +55,7 @@ t_node	*init_node(t_node *node, t_length *len)
 		node->u_perm = (st.st_mode & S_IRWXU) / 64;
 		node->g_perm = (st.st_mode & S_IRWXG) % 64 / 8;
 		node->o_perm = (st.st_mode & S_IRWXO) % 8;
-		if (node->type == 8 && IS_EXEC(node->o_perm))
-			node->type = 7;
+		node->type -= (node->type == 8 && IS_EXEC(node->o_perm)) ? 1 : 0;
 	}
 	if ((len->option & 256 || len->option & 1) && !(fill_spec(st, node, len)))
 		return (NULL);
@@ -105,26 +107,30 @@ t_node	*add_node(t_node *tree, struct dirent *files, char *root, t_length *len)
 	return (tree);
 }
 
-int		ft_node_cmp(t_node *tree, t_node *new_node, t_length *len)
+int		ft_node_cmp(t_node *tree, t_node *node, t_length *len)
 {
-	int			result;
+	int	result;
 
 	result = 0;
 	if (!tree)
 		return (-1);
+	if (tree->type == 20 || node->type == 20)
+	{
+		if (tree->type == node->type)
+			return (ft_strcmp(node->name, tree->name));
+		return (tree->type - node->type);
+	}
 	if (len->option & 64)
 	{
-		if ((tree->type == 4 && new_node->type != 4)
-				|| (tree->type != 4 && new_node->type == 4))
-			return (new_node->type == 4);
+		if ((tree->type == 4 && node->type != 4)
+				|| (tree->type != 4 && node->type == 4))
+			return (node->type == 4);
 	}
-	if (!new_node)
+	if (!node)
 		return (1);
 	if ((len->option & 1))
-		result = (ft_tmpcmp(new_node->mtime, tree->mtime));
+		result = (ft_tmpcmp(node->mtime, tree->mtime));
 	if (result == 0)
-		result = ft_strcmp(new_node->path, tree->path);
-	if (len->option & 2)
-		result = -result;
-	return (result);
+		result = ft_strcmp(node->path, tree->path);
+	return ((len->option & 2) ? -result : result);
 }
