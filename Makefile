@@ -6,7 +6,7 @@
 #    By: snunes <snunes@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/05 12:37:58 by snunes            #+#    #+#              #
-#    Updated: 2019/08/30 16:35:10 by snunes           ###   ########.fr        #
+#    Updated: 2019/08/30 16:46:13 by snunes           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,7 @@ I_PATH = include
 HEADER = ft_ls.h ft_printf.h libft.h
 OBJ_NAME = $(SRC:.c=.o)
 OBJ = $(addprefix $(OBJ_PATH)/,$(OBJ_NAME))
-CCFLAGS = -Wall -Wextra -Werror
+CCFLAGS = -Wall -Wextra -Werror -g
 CURSOR = \033[A
 LCLEAR = \033[K
 CLEAR = \033[0m
