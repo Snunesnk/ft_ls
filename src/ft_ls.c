@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 17:53:15 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/30 15:11:56 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/30 16:01:47 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ t_length	*init_len(t_length *len)
 		if (len->option & 64)
 			new_len->option -= 64;
 	}
+	new_len->major = 0;
 	new_len->column = 0;
 	new_len->name_l = 0;
 	new_len->size_l = 0;

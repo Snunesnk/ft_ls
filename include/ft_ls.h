@@ -6,7 +6,7 @@
 /*   By: root <snunes@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/19 15:11:41 by root              #+#    #+#             */
-/*   Updated: 2019/08/30 12:33:57 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/30 16:01:25 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include <errno.h>
 # include <string.h>
 # include <sys/ioctl.h>
+# include <sys/types.h>
 
 # define ABS(x) (x >= 0 ? x : -1 * x)
 # define MAX(x, y) (x > y ? x : y)
@@ -40,6 +41,7 @@ typedef struct	s_length
 	int				user_l;
 	int				group_l;
 	int				size_l;
+	int				major;
 	long long int	blocks;
 	int				column;
 	int				written;
@@ -59,6 +61,7 @@ typedef struct	s_node
 	char			*owner;
 	char			*group;
 	long long int	size;
+	int				major;
 	long long int	blocks;
 	char			*mtime;
 	int				heigth;

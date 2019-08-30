@@ -6,11 +6,22 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/07 13:10:13 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/30 12:34:44 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/30 16:25:23 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
+
+void	update_l_next(t_node *node, t_length *len)
+{
+	if ((node->name[0] != '.' || len->option & 8))
+		len->blocks += node->blocks;
+	if (node->major == -1)
+		return ;
+	if (ft_nbrlen(node->major) + 3 > len->major
+					&& (node->name[0] != '.' || len->option & 8))
+		len->major = ft_nbrlen(node->major) + 3;
+}
 
 void	update_l(t_node *node, t_length *len)
 {
@@ -37,8 +48,7 @@ void	update_l(t_node *node, t_length *len)
 	if (ft_nbrlen(node->size) + 2 > len->size_l
 					&& (node->name[0] != '.' || len->option & 8))
 		len->size_l = ft_nbrlen(node->size) + 2;
-	if ((node->name[0] != '.' || len->option & 8))
-		len->blocks += node->blocks;
+	update_l_next(node, len);
 }
 
 void	init_file_type(char file_type[20])

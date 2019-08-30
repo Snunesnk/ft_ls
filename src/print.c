@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/07 13:17:17 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/30 15:17:53 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/30 16:24:32 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,17 @@ void	print_info(t_node *node, t_length *len)
 	ft_printf("%c", file_type[i + 1]);
 	print_perms((node->u_perm * 10 + node->g_perm) * 10 + node->o_perm, node);
 	ft_printf("%*d %-*s", len->link_l, node->links, len->user_l, node->owner);
-	ft_printf(" %-*s%*lld", len->group_l, node->group, len->size_l, node->size);
+	ft_printf(" %-*s", len->group_l, node->group);
+	if (len->major)
+	{
+		if (node->major > -1)
+			ft_printf("%*d, ", len->major, node->major);
+		else
+			ft_printf("%*s  ", len->major, "");
+		ft_printf("%*d", 3, node->size);
+	}
+	else
+		ft_printf("%*lld", len->size_l, node->size);
 	print_time(node->mtime);
 }
 

@@ -6,30 +6,35 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 18:17:45 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/30 15:28:10 by snunes           ###   ########.fr       */
+/*   Updated: 2019/08/30 16:17:03 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-int		fill_spec(struct stat st, t_node *new_node, t_length *len)
+int		fill_spec(struct stat st, t_node *node, t_length *len)
 {
 	struct passwd	*user;
 	struct group	*grp;
 
-	if (!(new_node->mtime = ft_strdup(ctime(&st.st_mtimespec.tv_sec))))
+	if (!(node->mtime = ft_strdup(ctime(&st.st_mtimespec.tv_sec))))
 		return (0);
-	new_node->mtime = adjust_time(new_node->mtime);
+	node->mtime = adjust_time(node->mtime);
 	if (!(len->option & 256))
 		return 1;
 	user = getpwuid(st.st_uid);
 	grp = getgrgid(st.st_gid);
-	new_node->owner = (user) ? ft_strdup(user->pw_name) : ft_strdup("4389\0");
-	new_node->group = (grp) ? ft_strdup(grp->gr_name) : ft_strdup("wheel\0");
-	if (!new_node->group || !new_node->group)
+	node->owner = (user) ? ft_strdup(user->pw_name) : ft_strdup("4389\0");
+	node->group = (grp) ? ft_strdup(grp->gr_name) : ft_strdup("wheel\0");
+	if (!node->group || !node->group)
 		return (0);
-	new_node->size = st.st_size;
-	new_node->blocks = st.st_blocks;
+	node->size = st.st_size;
+	if (len->option & 256 && (node->type == 2 || node->type == 6))
+	{
+		node->size = minor(st.st_rdev);
+		node->major = major(st.st_rdev);
+	}
+	node->blocks = st.st_blocks;
 	return (1);
 }
 
@@ -46,6 +51,7 @@ t_node	*init_node(t_node *node, t_length *len)
 	node->owner = NULL;
 	node->group = NULL;
 	node->heigth = 1;
+	node->major = -1;
 	node->length = ft_namelen(node->name);
 	lstat(node->path, &st);
 	node->links = st.st_nlink;
