@@ -6,7 +6,7 @@
 #    By: snunes <snunes@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/05 12:37:58 by snunes            #+#    #+#              #
-#    Updated: 2019/08/30 16:46:13 by snunes           ###   ########.fr        #
+#    Updated: 2019/08/31 15:23:29 by snunes           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,9 +29,10 @@ SRC = 		ft_ls.c \
 			first_tree.c \
 			option_t2.c
 
+SRC_PATH = src
 LDFLAGS = -Llibft
 LDLIB = -lft
-LIB = libft.a
+LIB = libft/libft.a
 OBJ_PATH = obj
 I_PATH = include
 HEADER = ft_ls.h ft_printf.h libft.h
@@ -86,8 +87,9 @@ re : fclean all
 
 ## norme		: verifie la norme du projet
 norme :
-	@norminette $(SRC)
-	@norminette $(HEADER)
+	@norminette $(SRC_PATH) | grep -B1 --colour=auto "Error" || true
+	@norminette $(I_PATH) | grep -B1 --colour=auto "Error" || true
+	@cd libft && $(MAKE) $@
 
 ## help		: affiche les options disponibles et leurs utilitees
 help : Makefile

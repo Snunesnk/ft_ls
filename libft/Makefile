@@ -6,7 +6,7 @@
 #    By: snunes <snunes@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/05 12:37:58 by snunes            #+#    #+#              #
-#    Updated: 2019/08/29 17:11:44 by snunes           ###   ########.fr        #
+#    Updated: 2019/08/31 13:56:14 by snunes           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -86,8 +86,7 @@ re : fclean all
 
 ## norme		: verifie la norme du projet
 norme :
-	@norminette $(SRC)
-	@norminette $(HEADER)
+	@norminette | grep -B1 --colour=auto "Error" || true 
 
 ## help		: affiche les options disponibles et leurs utilitees
 help : Makefile
