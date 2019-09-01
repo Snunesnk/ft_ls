@@ -6,7 +6,7 @@
 #    By: snunes <snunes@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/05 12:37:58 by snunes            #+#    #+#              #
-#    Updated: 2019/08/31 13:56:14 by snunes           ###   ########.fr        #
+#    Updated: 2019/09/01 16:20:30 by snunes           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,7 +44,7 @@ OBJ = $(addprefix $(OBJ_PATH)/,$(OBJ_NAME))
 HEADER = $(addprefix $(I_PATH)/,$(HEADER_NAME))
 
 CURSOR = \033[A
-LCLEAR = \033[K
+LCLEAR = \033[2K
 CLEAR = \033[0m
 BGREEN = \033[32;1m
 BYELLOW = \033[33;1m

@@ -6,7 +6,7 @@
 #    By: snunes <snunes@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/05 12:37:58 by snunes            #+#    #+#              #
-#    Updated: 2019/08/31 15:23:29 by snunes           ###   ########.fr        #
+#    Updated: 2019/09/01 16:20:21 by snunes           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,8 +39,9 @@ HEADER = ft_ls.h ft_printf.h libft.h
 OBJ_NAME = $(SRC:.c=.o)
 OBJ = $(addprefix $(OBJ_PATH)/,$(OBJ_NAME))
 CCFLAGS = -Wall -Wextra -Werror -g
-CURSOR = \033[A
-LCLEAR = \033[K
+
+CURSOR = \033[1A
+LCLEAR = \033[2K
 CLEAR = \033[0m
 GREEN = \033[32m
 BGREEN = \033[32;1m
