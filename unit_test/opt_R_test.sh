@@ -6,7 +6,7 @@
 #    By: snunes <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/01 18:03:31 by snunes            #+#    #+#              #
-#    Updated: 2019/09/02 13:58:29 by snunes           ###   ########.fr        #
+#    Updated: 2019/09/02 14:10:01 by snunes           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 #!/bin/bash
@@ -231,7 +231,7 @@ else
 fi
 rm -rf .result;
 
-printf $Byellow"\nEnd of option l tests\n"$clear;
+printf $Byellow"\nEnd of option R tests\n"$clear;
 if [ $success -eq $nb_test ]
 then
 	echo $green"Congratulation ! You passed all the tests."$clear;
