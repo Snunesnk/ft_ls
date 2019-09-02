@@ -6,7 +6,7 @@
 #    By: snunes <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/01 18:03:31 by snunes            #+#    #+#              #
-#    Updated: 2019/09/02 13:51:16 by snunes           ###   ########.fr        #
+#    Updated: 2019/09/02 13:58:29 by snunes           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 #!/bin/bash
@@ -103,10 +103,10 @@ then
 		cat .result/r3;
 		echo "";
 	fi
-	echo $red"Test "$nb_test": ft_ls -1R without permission"$pos$cross$clear;
+	echo $red"Test "$nb_test": file without permission"$pos$cross$clear;
 else
 	((success+=1));
-	echo $green"Test "$nb_test": ft_ls -1R without permission"$pos$tick$clear;
+	echo $green"Test "$nb_test": file without permission"$pos$tick$clear;
 fi
 rm -rf .result;
 chmod 777 dir1;
@@ -204,8 +204,11 @@ rm -rf dir;
 rm -rf symdir;
 
 mkdir -p .result;
-./$1 -1R ~/ | grep -v "ls:" > .result/r1 2>&1;
-ls -1R ~/ | grep -v "ls:" > .result/r2 2>&1;
+echo $cyan"==========\ntime of [ft_ls -R ~/]:"$clear;
+time ./$1 -1R ~/ | grep -v "ls:" > .result/r1 2>&1;
+echo $cyan"==========\ntime of [ls -R ~/]:"$clear;
+time ls -1R ~/ | grep -v "ls:" > .result/r2 2>&1;
+echo $cyan"=========="$clear;
 diff .result/r1 .result/r2 > .result/r3;
 	((nb_test+=1));
 if [ -s .result/r3 ]
@@ -227,14 +230,6 @@ else
 	echo $green"Test "$nb_test": [ft_ls -1R ~/]"$pos$tick$clear;
 fi
 rm -rf .result;
-
-echo $cyan"==========\ntime of [ft_ls -R ~/]:"$clear;
-time ./$1 -R ~/ > .r1;
-echo $cyan"==========\ntime of [ls -R ~/]:"$clear;
-time ls -R ~/ > .r2;
-echo $cyan"=========="$clear;
-rm -rf .r1;
-rm -rf .r2;
 
 printf $Byellow"\nEnd of option l tests\n"$clear;
 if [ $success -eq $nb_test ]
