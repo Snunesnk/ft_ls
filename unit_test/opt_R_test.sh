@@ -6,7 +6,7 @@
 #    By: snunes <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/01 18:03:31 by snunes            #+#    #+#              #
-#    Updated: 2019/09/02 11:26:19 by snunes           ###   ########.fr        #
+#    Updated: 2019/09/02 11:56:01 by snunes           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 #!/bin/bash
@@ -38,7 +38,7 @@ diff .result/r1 .result/r2 > .result/r3;
 	((nb_test+=1))
 if [ -s .result/r3 ]
 then
-	echo $red"Test "$nb_test": [ft_ls -1R simple]"$pos$cross$clear;
+	echo $red"Test "$nb_test": ft_ls -1R simple"$pos$cross$clear;
 	echo $cyan"\n==========\nft_ls:"$clear;
 	cat -e .result/r1;
 	echo $cyan"==========\nls:"$clear;
@@ -51,7 +51,7 @@ then
 	fi
 else
 	((success+=1));
-	echo $green"Test "$nb_test": [ft_ls -1R simple]"$pos$pos$tick$clear;
+	echo $green"Test "$nb_test": ft_ls -1R simple"$pos$pos$tick$clear;
 fi
 rm -rf .result;
 rm -rf level1;
@@ -66,7 +66,7 @@ diff .result/r1 .result/r2 > .result/r3;
 	((nb_test+=1));
 if [ -s .result/r3 ]
 then
-	echo $red"Test "$nb_test": [ft_ls -1R with hidden files]"$pos$cross$clear;
+	echo $red"Test "$nb_test": ft_ls -1R with hidden files"$pos$cross$clear;
 	echo $cyan"\n==========\nft_ls:"$clear;
 	cat -e .result/r1;
 	echo $cyan"==========\nls:"$clear;
@@ -79,7 +79,7 @@ then
 	fi
 else
 	((success+=1));
-	echo $green"Test "$nb_test": [ft_ls -1R with hidden files]"$pos$tick$clear;
+	echo $green"Test "$nb_test": ft_ls -1R with hidden files"$pos$tick$clear;
 fi
 rm -rf .result;
 rm -rf tests;
@@ -87,13 +87,13 @@ rm -rf tests;
 mkdir -p .result;
 mkdir -p dir1 dir2 dir3;
 chmod 000 dir1;
-./$1 -1Ra 2>&1 | grep -v denied> .result/r1 2>&1;
+./$1 -1R 2>&1 | grep -v denied> .result/r1 2>&1;
 ls -1R 2>&1 | grep -v denied > .result/r2 2>&1;
 diff .result/r1 .result/r2 > .result/r3;
 	((nb_test+=1));
 if [ -s .result/r3 ]
 then
-	echo $red"Test "$nb_test": [ft_ls -1R without permission]"$pos$cross$clear;
+	echo $red"Test "$nb_test": ft_ls -1R without permission"$pos$cross$clear;
 	echo $cyan"\n==========\nft_ls:"$clear;
 	cat -e .result/r1;
 	echo $cyan"==========\nls:"$clear;
@@ -106,7 +106,7 @@ then
 	fi
 else
 	((success+=1));
-	echo $green"Test "$nb_test": [ft_ls -1R without permission]"$pos$tick$clear;
+	echo $green"Test "$nb_test": ft_ls -1R without permission"$pos$tick$clear;
 fi
 rm -rf .result;
 chmod 777 dir1;
@@ -121,7 +121,7 @@ diff .result/r1 .result/r2 > .result/r3;
 	((nb_test+=1));
 if [ -s .result/r3 ]
 then
-	echo $red"Test "$nb_test": [Case insensitive test]"$pos$cross$clear;
+	echo $red"Test "$nb_test": Case insensitive test"$pos$cross$clear;
 	echo $cyan"\n==========\nft_ls:"$clear;
 	cat -e .result/r1;
 	echo $cyan"==========\nls:"$clear;
@@ -135,34 +135,23 @@ then
 	fi
 else
 	((success+=1));
-	echo $green"Test "$nb_test": [Case insensitive test]"$pos$tick$clear;
+	echo $green"Test "$nb_test": Case insensitive test"$pos$tick$clear;
 fi
 rm -rf .result;
 rm -rf A rootFile;
 
 mkdir -p .result;
 mkdir -p dir;
-touch dir/file ;
-ln dir/file sym0;
-ln dir/file sym1;
-ln dir/file sym2;
-ln dir/file sym3;
-ln dir/file sym4;
-ln dir/file sym5;
-ln dir/file sym6;
-ln dir/file sym7;
-ln dir/file sym8;
-ln dir/file sym9;
-ln dir/file sym10;
-ln dir/file sym11;
-ln dir/file sym12;
-./$1 -la dir > .result/r1 2>&1;
-ls -la dir > .result/r2 2>&1;
+mkdir -p open/closed;
+chmod 000 dir;
+chmod 000 open/closed;
+./$1 -1R 2>&1 | grep -v denied | wc -l | tr -d ' ' | tr -d '\n' > .result/r1 2>&1;
+ls -1R 2>&1 | grep -v denied | wc -l | tr -d ' ' | tr -d '\n' > .result/r2 2>&1;
 diff .result/r1 .result/r2 > .result/r3;
 	((nb_test+=1));
 if [ -s .result/r3 ]
 then
-	echo $red"Test "$nb_test": files with link"$pos$cross$clear;
+	echo $red"Test "$nb_test": Count of error message"$pos$cross$clear;
 	echo $cyan"\n==========\nft_ls:"$clear;
 	cat -e .result/r1;
 	echo $cyan"==========\nls:"$clear;
@@ -176,23 +165,13 @@ then
 	fi
 else
 	((success+=1));
-	echo $green"Test "$nb_test": files with link"$pos$tick$clear;
+	echo $green"Test "$nb_test": Count of error message"$pos$tick$clear;
 fi
 rm -rf .result;
+chmod 777 dir;
+chmod 777 open/closed;
 rm -rf dir;
-rm -rf sym0;
-rm -rf sym1;
-rm -rf sym2;
-rm -rf sym3;
-rm -rf sym4;
-rm -rf sym5;
-rm -rf sym6;
-rm -rf sym7;
-rm -rf sym8;
-rm -rf sym9;
-rm -rf sym10;
-rm -rf sym11;
-rm -rf sym12;
+rm -rf open;
 
 mkdir -p .result;
 mkdir -p dir;
