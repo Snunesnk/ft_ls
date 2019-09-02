@@ -6,7 +6,7 @@
 #    By: snunes <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/01 18:03:31 by snunes            #+#    #+#              #
-#    Updated: 2019/09/01 19:14:17 by snunes           ###   ########.fr        #
+#    Updated: 2019/09/02 11:09:02 by snunes           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 #!/bin/bash
@@ -91,7 +91,7 @@ then
 	cat -e .result/r1;
 	echo $cyan"==========\nls:"$clear;
 	cat -e .result/r2;
-	if [ -n $2 ] && [ "$1" == "p" ]
+	if [ -n $2 ] && [ "$2" == "p" ]
 	then
 		echo "\nDiff:";
 		cat .result/r3;
@@ -188,6 +188,48 @@ rm -rf sym9;
 rm -rf sym10;
 rm -rf sym11;
 rm -rf sym12;
+
+mkdir -p .result;
+mkdir -p dir;
+touch file1;
+touch file2;
+touch file3;
+echo "YA PA D PANNO" > file1;
+echo "To be or not to be" > file2;
+echo "Stonks" > file3;
+ln -s file1 dir/sym1;
+ln -s file2 dir/sym2;
+ln -s file3 dir/sym3;
+echo "I like trains" > dir/sym1;
+echo "2B3" > dir/sym2;
+echo "Ah yes, enslaved words" > dir/sym3;
+./$1 -l dir > .result/r1 2>&1;
+ls -l dir > .result/r2 2>&1;
+diff .result/r1 .result/r2 > .result/r3;
+	((nb_test+=1));
+if [ -s .result/r3 ]
+then
+	echo $red"Test "$nb_test": files with symlink"$pos$cross$clear;
+	echo $cyan"\n==========\nft_ls:"$clear;
+	cat -e .result/r1;
+	echo $cyan"==========\nls:"$clear;
+	cat -e .result/r2;
+	echo $cyan"=========="$clear;
+	if [ -n $2 ] && [ "$2" = "p" ]
+	then
+		echo "\nDiff:";
+		cat .result/r3;
+		echo "";
+	fi
+else
+	((success+=1));
+	echo $green"Test "$nb_test": files with symlink"$pos$tick$clear;
+fi
+rm -rf .result;
+rm -rf dir;
+rm -rf file1;
+rm -rf file2;
+rm -rf file3;
 
 mkdir -p .result;
 ./$1 -l1 ../ > .result/r1 2>&1;
@@ -294,6 +336,6 @@ then
 	echo $green"Congratulation ! You passed all the tests."$clear;
 else
 	printf $cyan"%d test succeed, " "$success";
-	((success= 4 - success));
+	((success= $nb_test - $success));
 	printf "%d test failed\n"$clear "$success";
 fi
