@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 18:17:45 by snunes            #+#    #+#             */
-/*   Updated: 2019/09/02 13:38:06 by snunes           ###   ########.fr       */
+/*   Updated: 2019/09/02 17:19:21 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ int		fill_spec(struct stat st, t_node *node, t_length *len)
 	if (!node->group || !node->group)
 		return (0);
 	node->size = st.st_size;
-	if (len->option & 256 && (node->type == 2 || node->type == 6))
+	if (len->option & 256 && (node->type == 2 || node->type == 6
+															|| !node->type))
 	{
 		node->size = minor(st.st_rdev);
 		node->major = major(st.st_rdev);
@@ -41,17 +42,14 @@ int		fill_spec(struct stat st, t_node *node, t_length *len)
 t_node	*init_node(t_node *node, t_length *len)
 {
 	struct stat	st;
-	DIR			*dir;
 
-	lstat(node->path, &st);
+	if ((node->type == 10 && !(len->option & 256))
+			|| node->name[ft_strlen(node->name) - 1] == '/')
+		stat(node->path, &st);
+	else
+		lstat(node->path, &st);
 	node->links = st.st_nlink;
-	dir = opendir(node->path);
-	node->changed = (dir && node->type != 4 && !ft_strequ(node->name, "fd"));
-	if (dir && ((node->type != 4 && node->links > 1)
-				|| ft_strequ(node->name, "fd")))
-		node->type = 4;
-	if (dir)
-		closedir(dir);
+	node = node_type(node, len);
 	node->right = NULL;
 	node->left = NULL;
 	node->mtime = NULL;
