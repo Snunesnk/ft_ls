@@ -6,7 +6,7 @@
 /*   By: root <snunes@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/19 15:11:41 by root              #+#    #+#             */
-/*   Updated: 2019/08/31 14:34:04 by snunes           ###   ########.fr       */
+/*   Updated: 2019/09/02 12:53:35 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef struct	s_node
 	char			*path;
 	char			*name;
 	int				type;
+	int				changed;
 	int				u_perm;
 	int				g_perm;
 	int				o_perm;

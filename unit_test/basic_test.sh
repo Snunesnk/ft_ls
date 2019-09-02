@@ -6,7 +6,7 @@
 #    By: snunes <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/01 18:04:41 by snunes            #+#    #+#              #
-#    Updated: 2019/09/01 18:32:37 by snunes           ###   ########.fr        #
+#    Updated: 2019/09/02 13:10:36 by snunes           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 #!/bin/bash
@@ -37,7 +37,6 @@ diff result/r1 result/r2 > result/r3;
 	((nb_test+=1))
 if [ -s result/r3 ]
 then
-	echo $red"Test "$nb_test": [ft_ls -1]"$pos$cross$clear;
 	echo $cyan"\n==========\nft_ls:"$clear;
 	cat -e result/r1;
 	echo $cyan"==========\nls:"$clear;
@@ -48,6 +47,7 @@ then
 		cat result/r3;
 		echo "";
 	fi
+	echo $red"Test "$nb_test": [ft_ls -1]"$pos$cross$clear;
 else
 	((success+=1));
 	echo $green"Test "$nb_test": [ft_ls -1]"$pos$pos$tick$clear;
@@ -61,7 +61,6 @@ diff result/r1 result/r2 > result/r3;
 	((nb_test+=1));
 if [ -s result/r3 ]
 then
-	echo $red"Test "$nb_test": [ft_ls -1 ../]"$pos$cross$clear;
 	echo $cyan"\n==========\nft_ls:"$clear;
 	cat -e result/r1;
 	echo $cyan"==========\nls:"$clear;
@@ -72,6 +71,7 @@ then
 		cat result/r3;
 		echo "";
 	fi
+	echo $red"Test "$nb_test": [ft_ls -1 ../]"$pos$cross$clear;
 else
 	((success+=1));
 	echo $green"Test "$nb_test": [ft_ls -1 ../]"$pos$tick$clear;
@@ -86,7 +86,6 @@ diff result/r1 result/r2 > result/r3;
 	((nb_test+=1));
 if [ -s result/r3 ]
 then
-	echo $red"Test "$nb_test": [ft_ls -1 dir1 dir2 dir3]"$pos$cross$clear;
 	echo $cyan"\n==========\nft_ls:"$clear;
 	cat -e result/r1;
 	echo $cyan"==========\nls:"$clear;
@@ -97,6 +96,7 @@ then
 		cat result/r3;
 		echo "";
 	fi
+	echo $red"Test "$nb_test": [ft_ls -1 dir1 dir2 dir3]"$pos$cross$clear;
 else
 	((success+=1));
 	echo $green"Test "$nb_test": [ft_ls -1 dir1 dir2 dir3]"$pos$tick$clear;
@@ -113,7 +113,6 @@ diff result/r1 result/r2 > result/r3;
 	((nb_test+=1));
 if [ -s result/r3 ]
 then
-	echo $red"Test "$nb_test": [ft_ls -1 dir1 dir2 dir3]"$pos$cross$clear;
 	echo $cyan"\n==========\nft_ls:"$clear;
 	cat -e result/r1;
 	echo $cyan"==========\nls:"$clear;
@@ -125,6 +124,7 @@ then
 		cat result/r3;
 		echo "";
 	fi
+	echo $red"Test "$nb_test": [ft_ls -1 dir1 dir2 dir3]"$pos$cross$clear;
 else
 	((success+=1));
 	echo $green"Test "$nb_test": [ft_ls -1 dir1 dir2 dir3]"$pos$tick$clear;
