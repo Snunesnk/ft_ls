@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 18:17:45 by snunes            #+#    #+#             */
-/*   Updated: 2019/09/02 17:19:21 by snunes           ###   ########.fr       */
+/*   Updated: 2019/09/03 17:54:37 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,10 @@ t_node	*init_node(t_node *node, t_length *len)
 {
 	struct stat	st;
 
-	if ((node->type == 10 && !(len->option & 256))
-			|| node->name[ft_strlen(node->name) - 1] == '/')
-		stat(node->path, &st);
-	else
+	if (node->type == 10 || len->option & 256)
 		lstat(node->path, &st);
+	else
+		stat(node->path, &st);
 	node->links = st.st_nlink;
 	node = node_type(node, len);
 	node->right = NULL;

@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 12:39:35 by snunes            #+#    #+#             */
-/*   Updated: 2019/09/02 12:37:07 by snunes           ###   ########.fr       */
+/*   Updated: 2019/09/03 17:52:59 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	print_recurs(t_node *tree, t_length *len)
 	if (!tree)
 		return ;
 	(tree->left) ? print_recurs(tree->left, len) : 0;
-	if (tree->type == 4 && requi(len, tree->name, 0))
+	if (tree->type == 4 && requi(len, tree->name, 0) && tree->links > 1)
 	{
 		print_dir(tree, len, 1);
 		if (!(new_len = init_len(len)))

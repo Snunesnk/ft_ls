@@ -6,7 +6,7 @@
 #    By: snunes <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/01 18:00:17 by snunes            #+#    #+#              #
-#    Updated: 2019/09/02 16:07:34 by snunes           ###   ########.fr        #
+#    Updated: 2019/09/03 18:02:59 by snunes           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 #!/bin/sh
@@ -28,6 +28,14 @@ echo ""
 echo ""
 ./opt_t_test.sh $1 $2
 echo ""
-./opt_rev_test.sh $1 $2
+./reverse_basic_test.sh $1 $2
+echo ""
+./reverse_opt_l.sh $1 $2
+echo ""
+./reverse_opt_R.sh $1 $2
+echo ""
+./reverse_opt_a.sh $1 $2
+echo ""
+./reverse_opt_t.sh $1 $2
 echo ""
 ./symdir_test.sh $1 $2
