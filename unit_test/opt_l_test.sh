@@ -6,7 +6,7 @@
 #    By: snunes <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/01 18:03:31 by snunes            #+#    #+#              #
-#    Updated: 2019/09/02 13:42:14 by snunes           ###   ########.fr        #
+#    Updated: 2019/09/03 19:08:24 by snunes           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 #!/bin/bash
@@ -134,6 +134,37 @@ else
 fi
 rm -rf .result;
 rm -rf dir1 dir2 dir3;
+
+mkdir -p .result;
+mkdir -p tests/a tests/b tests/c;
+chmod 644 tests/a;
+chmod 755 tests/b;
+chmod 311 tests/c;
+./$1 -l tests > .result/r1 2>&1;
+ls -l tests > .result/r2 2>&1;
+diff .result/r1 .result/r2 > .result/r3;
+	((nb_test+=1));
+if [ -s .result/r3 ]
+then
+	echo $cyan"\n==========\nft_ls:"$clear;
+	cat -e .result/r1;
+	echo $cyan"==========\nls:"$clear;
+	cat -e .result/r2;
+	echo $cyan"=========="$clear;
+	if [ -n $2 ] && [ "$2" = "p" ]
+	then
+		echo "\nDiff:";
+		cat .result/r3;
+		echo "";
+	fi
+	echo $red"Test "$nb_test": Permissions display test"$pos$cross$clear;
+else
+	((success+=1));
+	echo $green"Test "$nb_test": Permissions display test"$pos$tick$clear;
+fi
+rm -rf .result;
+chmod 777 tests/c;
+rm -rf tests;
 
 mkdir -p .result;
 mkdir -p dir;
