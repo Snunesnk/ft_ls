@@ -6,7 +6,7 @@
 #    By: snunes <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/01 18:00:17 by snunes            #+#    #+#              #
-#    Updated: 2019/09/03 18:02:59 by snunes           ###   ########.fr        #
+#    Updated: 2019/09/03 18:35:33 by snunes           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 #!/bin/sh
@@ -39,3 +39,5 @@ echo ""
 ./reverse_opt_t.sh $1 $2
 echo ""
 ./symdir_test.sh $1 $2
+echo ""
+./hyphen_test.sh $1 $2
