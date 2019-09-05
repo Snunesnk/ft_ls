@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 12:39:35 by snunes            #+#    #+#             */
-/*   Updated: 2019/09/03 17:52:59 by snunes           ###   ########.fr       */
+/*   Updated: 2019/09/05 12:57:18 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ void	print_recurs(t_node *tree, t_length *len)
 			print_recurs(directory, new_len);
 			free_tree(directory);
 		}
+		len->option += (new_len->option & 2048) ? 2048 : 0;
 		free(new_len);
 	}
 	if (tree->right)

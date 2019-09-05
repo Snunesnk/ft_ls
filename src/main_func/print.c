@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/07 13:17:17 by snunes            #+#    #+#             */
-/*   Updated: 2019/09/05 12:25:52 by snunes           ###   ########.fr       */
+/*   Updated: 2019/09/05 13:19:24 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int		print_sp(t_node *node, char *name, t_length *len)
 
 void	print_name(t_node *node, t_length *len)
 {
-	len->option += (len->option & 2048) ? 0 : 2048;
+	len->option += (len->option & 2048 || node->type == 20) ? 0 : 2048;
 	if ((len->option & 64) && !ft_occur("./\0", node->path) && node->type != 20)
 	{
 		free(node->name);
