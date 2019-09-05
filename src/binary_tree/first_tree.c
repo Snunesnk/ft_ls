@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/24 14:27:38 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/31 14:49:52 by snunes           ###   ########.fr       */
+/*   Updated: 2019/09/05 12:41:06 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,19 @@ void	print_content(t_node *tree, t_length *len)
 		return ;
 	print_tree(new_tree, new_len);
 	free_tree(new_tree);
+	len->option += (new_len->option & 2048) ? 2048 : 0;
 	free(new_len);
+}
+
+int		valid_spaces(t_length *len, t_node *tree)
+{
+	if (len->option & 4)
+		return (0);
+	if (tree->heigth == 1 && (tree->right || tree->left))
+		return (1);
+	if (tree->heigth != 1)
+		return (1);
+	return (0);
 }
 
 void	print_first(t_node *tree, t_length *len)
@@ -77,7 +89,7 @@ void	print_first(t_node *tree, t_length *len)
 	print_name(tree, len);
 	len->written += len->name_l;
 	((len->option & 256) && tree->type == 10) ? print_link(tree) : 0;
-	while (len->name_l > tree->length++ && !(len->option & 4))
+	while (len->name_l > tree->length++ && valid_spaces(len, tree))
 		write(1, " ", 1);
 	(len->option & 4 || tree->type == 20) ? write(1, "\n", 1) : 0;
 	len->option += (len->option & 128 || tree->type == 20) ? 0 : 128;

@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 17:53:15 by snunes            #+#    #+#             */
-/*   Updated: 2019/09/05 12:04:45 by snunes           ###   ########.fr       */
+/*   Updated: 2019/09/05 12:23:35 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,9 @@ int			main(int argc, char **argv)
 	print_first(tree, len);
 	if (len->option & 16)
 		print_recurs(tree, len);
-	if (!(len->option & 4) && !(len->option & 128))
+	if (!(len->option & 4) && (len->option & 2048))
 		ft_printf("\n");
+	if (len->option & 16)
 	free(len);
 	free_tree(tree);
 	return (0);
