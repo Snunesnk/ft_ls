@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/24 14:27:38 by snunes            #+#    #+#             */
-/*   Updated: 2019/09/05 12:41:06 by snunes           ###   ########.fr       */
+/*   Updated: 2019/09/06 12:40:14 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	print_content(t_node *tree, t_length *len)
 		return ;
 	print_tree(new_tree, new_len);
 	free_tree(new_tree);
-	len->option += (new_len->option & 2048) ? 2048 : 0;
+	len->option |= (new_len->option & 2048) ? 2048 : 0;
 	free(new_len);
 }
 
