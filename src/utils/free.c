@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/13 19:00:18 by snunes            #+#    #+#             */
-/*   Updated: 2019/08/29 15:04:11 by snunes           ###   ########.fr       */
+/*   Updated: 2019/09/06 13:15:14 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,4 +30,11 @@ void	free_tree(t_node *tree)
 		free_tree(tree->right);
 	free(tree);
 	tree = NULL;
+}
+
+int		free_len(t_length *len)
+{
+	if (len)
+		free(len);
+	return (1);
 }

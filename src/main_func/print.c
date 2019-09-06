@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/07 13:17:17 by snunes            #+#    #+#             */
-/*   Updated: 2019/09/05 13:19:24 by snunes           ###   ########.fr       */
+/*   Updated: 2019/09/06 13:08:17 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ int		print_sp(t_node *node, char *name, t_length *len)
 			ft_printf("%s", name);
 		return (1);
 	}
+		ft_printf("pas print\n");
 	if ((node->type == 4 && !IS_WRITEABLE(node->o_perm)))
 		ft_printf("{B_cyan}%s", name);
 	else if (node->type == 4 && IS_WRITEABLE(node->o_perm) && node->sp_bit & 1)
@@ -84,6 +85,7 @@ int		print_sp(t_node *node, char *name, t_length *len)
 		ft_printf("{yellow}%s", name);
 	else
 		return (0);
+		ft_printf("print\n");
 	return (1);
 }
 

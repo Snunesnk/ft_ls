@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/24 14:27:38 by snunes            #+#    #+#             */
-/*   Updated: 2019/09/06 12:40:14 by snunes           ###   ########.fr       */
+/*   Updated: 2019/09/06 13:12:05 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,11 @@ t_node	*add_content(t_node *tree, char *path, t_length *len)
 	while (file && !ft_filequ(name, file->d_name))
 		file = readdir(directory);
 	free(name);
+	if (file && !(tree = add_node(tree, file, path, len)))
+		return (NULL);
 	closedir(directory);
 	if (!file && !((directory = opendir(path))))
 		return (add_error(tree, path, strerror(errno), len));
-	if (!(tree = add_node(tree, file, path, len)))
-		return (NULL);
 	return (tree);
 }
 
@@ -51,10 +51,14 @@ void	print_content(t_node *tree, t_length *len)
 		return ;
 	if (!(new_tree = recurs(new_tree, tree->path, new_len)))
 		return ;
+	tree->type = (new_tree->type == 20) ? 20 : tree->type;
 	print_tree(new_tree, new_len);
-	free_tree(new_tree);
 	len->option |= (new_len->option & 2048) ? 2048 : 0;
+	if (!(new_len->option & 2048) && !new_tree->left && !new_tree->right
+			&& new_tree->heigth == 1)
+		len->option |= 2048;
 	free(new_len);
+	free_tree(new_tree);
 }
 
 int		valid_spaces(t_length *len, t_node *tree)

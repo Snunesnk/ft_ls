@@ -6,7 +6,7 @@
 /*   By: root <snunes@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/19 15:11:41 by root              #+#    #+#             */
-/*   Updated: 2019/09/02 16:29:51 by snunes           ###   ########.fr       */
+/*   Updated: 2019/09/06 13:15:36 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ typedef struct	s_node
 	struct s_node	*left;
 }				t_node;
 
+int				free_len(t_length *len);
 t_node			*node_type(t_node *node, t_length *len);
 void			add_perm(t_node *node, struct stat st);
 t_node			*place_node(t_node *tree, t_node *new_node, t_length *len);
