@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/08 11:13:08 by snunes            #+#    #+#             */
-/*   Updated: 2019/09/03 17:54:27 by snunes           ###   ########.fr       */
+/*   Updated: 2019/09/08 16:09:47 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,8 @@ int		requi(t_length *len, char *name, int mode)
 	}
 	if (name[0] != '.')
 		return (1);
-	if (name[0] == '.' && (ft_strequ(name, "./") || len->option & 8))
+	if (name[0] == '.' && (ft_strequ(name, "./") || len->option & 8
+				|| len->option & 64))
 		return (1);
 	return (0);
 }
